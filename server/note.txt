@@ -35,7 +35,7 @@ roles 👍
 react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
         styling the table
         integrating react tost 
-        *now checking the booking status and showing accordingly 
+        now checking the booking status and showing accordingly 
         integrating header and footer 
         admin pannel 
         integrating super admin creation up on user table creation
@@ -45,5 +45,4 @@ react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
         HOW TO INTERFEAR TO GIVE HOLIDAY OR OTHER THINGS
         forgot password feature
         admin daash board
-        pasword reset
         

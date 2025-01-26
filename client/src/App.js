@@ -7,6 +7,11 @@ import BookingTable from "./pages/BookingTable/BookingTable.jsx"
 import EmailForPassword from "./pages/EmailForPassword/EmailForPassword.jsx";
 import PasswordUpdater from "./pages/PasswordUpdator/PasswordUpdater.jsx"
 import PageNotFound from "./pages/PageNotFound/PageNotFound.jsx";
+import LayOut from "./components/LayOut/LayOut.jsx"
+import AddEquipment from "./pages/AddEquipment/AddEquipment.jsx";
+import AddProfessors from "./pages/AddProfessors/AddProfessors.jsx";
+
+
 function App() {
   return (
     <>
@@ -18,7 +23,9 @@ function App() {
           path="/dashBoard"
           element={
             <RequireAuth fallbackPath="/login">
+              <LayOut>
               <DashBoard />
+              </LayOut>
             </RequireAuth>
           }
         />
@@ -33,6 +40,8 @@ function App() {
            <Route path="/emailProvide" element={<EmailForPassword />} />
            <Route path="/userPasswordReset/:userId" element={<PasswordUpdater />} />
            <Route path="/*" element={<PageNotFound />} />
+           <Route path="/addEquipments" element={<AddEquipment />} />
+           <Route path="/addProfessors" element={<AddProfessors />} />
       </Routes>
     </>
   );

@@ -1,0 +1,18 @@
+/* Ensure the footer stays at the bottom */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10; /* Optional: Ensures it appears above content if needed */
+    background-color: white; /* Matches the footer's background */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow for better visibility */
+  }
+  
+  /* Adjust padding at the bottom to avoid content overlap */
+  body {
+    margin: 0;
+    padding-bottom: 80px; /* Set this equal to the footer's height */
+    box-sizing: border-box;
+  }
+  
