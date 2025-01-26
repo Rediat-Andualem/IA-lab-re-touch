@@ -1,0 +1,49 @@
+error handling for user table 
+            try {
+            await User.create({
+                firstName: 'Jane',
+                lastName: 'Doe',
+                email: 'jane.doe@example.com', // Duplicate email
+                mobileNumber: '1234567890', // Duplicate mobile number
+                password: 'securepassword',
+                role: 'admin',
+            });
+            } catch (error) {
+            if (error.name === 'SequelizeUniqueConstraintError') {
+                const constraintName = error.errors[0].path; // Gets the unique constraint field
+                switch (constraintName) {
+                case 'email':
+                    console.error('Custom Message:', 'Email already in use');
+                    break;
+                case 'mobileNumber':
+                    console.error('Custom Message:', 'Mobile number already in use');
+                    break;
+                default:
+                    console.error('Custom Message:', 'Unique constraint violation');
+                }
+            } else {
+                console.error('Error:', error);
+            }
+            }
+roles 👍
+// 0 user (default)
+// 1 lab technician  
+// 2  TA
+// 3  admin 
+// 4  super-admin
+
+react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
+        styling the table
+        integrating react tost 
+        *now checking the booking status and showing accordingly 
+        integrating header and footer 
+        admin pannel 
+        integrating super admin creation up on user table creation
+        delete everything based on batch or year.. to save data
+        proffesor name should be dropdown and proffesor's Id should be saved in users table
+        make sure to have one equipment but if its more than one to delete.. i just made it open for equipments since one equipment may have different models
+        HOW TO INTERFEAR TO GIVE HOLIDAY OR OTHER THINGS
+        forgot password feature
+        admin daash board
+        pasword reset
+        
