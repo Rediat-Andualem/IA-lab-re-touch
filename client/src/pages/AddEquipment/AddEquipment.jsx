@@ -34,14 +34,15 @@ function AddEquipment() {
     password: "",
   });
   const [signUpData, setSignUpData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    instituteId: "",
-    guideName: "",
-    mobileNumber: "",
-    password: "",
-    confirmPassword: "",
+    equipmentName: "",
+    equipmentModel: "",
+    guidelines: "",
+    maxSamples: "",
+    maxBookingsPerTwoWeeks: "",
+    operatorName: "",
+    operatorEmail: "",
+    operatorPhoneNumber: "",
+    workingStatus: "",
   });
   //! --- check user Auth
   useEffect(() => {
@@ -174,44 +175,44 @@ function AddEquipment() {
   console.log(logInData);
   let handleSignUpChange = (e) => {
     switch (e.target.name) {
-      case "firstName":
+      case "equipmentName":
         setSignUpData((pre) => {
-          return { ...pre, firstName: e.target.value };
+          return { ...pre, equipmentName: e.target.value };
         });
         break;
-      case "lastName":
+      case "equipmentModel":
         setSignUpData((pre) => {
-          return { ...pre, lastName: e.target.value };
+          return { ...pre, equipmentModel: e.target.value };
         });
         break;
-      case "email":
+      case "guidelines":
         setSignUpData((pre) => {
-          return { ...pre, email: e.target.value };
+          return { ...pre, guidelines: e.target.value };
         });
         break;
-      case "mobileNumber":
+      case "maxSamples":
         setSignUpData((pre) => {
-          return { ...pre, mobileNumber: e.target.value };
+          return { ...pre, maxSamples: e.target.value };
         });
         break;
-      case "password":
+      case "maxBookingsPerTwoWeeks":
         setSignUpData((pre) => {
-          return { ...pre, password: e.target.value };
+          return { ...pre, maxBookingsPerTwoWeeks: e.target.value };
         });
         break;
-      case "confirmPassword":
+      case "operatorName":
         setSignUpData((pre) => {
-          return { ...pre, confirmPassword: e.target.value };
+          return { ...pre, operatorName: e.target.value };
         });
         break;
-      case "instituteId":
+      case "operatorEmail":
         setSignUpData((pre) => {
-          return { ...pre, instituteId: e.target.value };
+          return { ...pre, operatorEmail: e.target.value };
         });
         break;
-      case "guideName":
+      case "operatorPhoneNumber":
         setSignUpData((pre) => {
-          return { ...pre, guideName: e.target.value };
+          return { ...pre, operatorPhoneNumber: e.target.value };
         });
         break;
       default:
@@ -221,7 +222,7 @@ function AddEquipment() {
 
   // !--------------------------------------------
   return (
-    <MDBContainer fluid className="p-5 container">
+    <MDBContainer fluid className="p-4 container">
       <MDBRow>
         <MDBCol
           md="6"
@@ -236,7 +237,7 @@ function AddEquipment() {
             style={{ color: "#F5F5F5", textAlign: "justify" }}
           >
 
-Welcome to IA Lab Equipment Booking Portal. Simplify your access to essential tools and resources with just a few clicks. Sign up or log in to manage your bookings effortlessly!
+Please enter the equipments details in the designated space. Be sure to double-check the information and refer to the example provided in the label if needed.
           </h5>
         </MDBCol>
 
@@ -244,7 +245,7 @@ Welcome to IA Lab Equipment Booking Portal. Simplify your access to essential to
           <MDBCard className="">
             <MDBCardBody
               className="p-5 position-relative overflow-hidden"
-              style={{ height: "550px" }}
+              style={{ height: "650px" }}
             >
               <div
                 className="form-transition-container"
@@ -259,7 +260,7 @@ Welcome to IA Lab Equipment Booking Portal. Simplify your access to essential to
                 }}
               >
                 {/* Login Form */}
-                <div className="auth-form mt-5">
+                <div className="auth-form mt-1">
                   {handleError && (
                     <span className="errorDisplay">{handleError}</span>
                   )}
@@ -267,13 +268,70 @@ Welcome to IA Lab Equipment Booking Portal. Simplify your access to essential to
                     <h2 className="mb-4">Insert  Details</h2>
                     <MDBInput
                       wrapperClass="mb-4"
-                      label="Email"
+                      label="Equipment name"
                       id="email-login"
-                      type="email"
-                      name="email"
+                      type="text"
+                      name="equipmentName"
                       onChange={handleLogIn}
                     />
-                    <div className="position-relative">
+                    <MDBInput
+                      wrapperClass="mb-4"
+                      label="Equipment model"
+                      id="email-login"
+                      type="text"
+                      name="equipmentModel"
+                      onChange={handleLogIn}
+                    />
+                    <MDBInput
+                      wrapperClass="mb-4"
+                      label="Guideline"
+                      id="email-login"
+                      type="text"
+                      name="guidelines"
+                      onChange={handleLogIn}
+                    />
+                    <MDBInput
+                      wrapperClass="mb-4"
+                      label="Maximum number of sample per slot"
+                      id="email-login"
+                      type="text"
+                      name="maxSamples"
+                      onChange={handleLogIn}
+                    />
+                    <MDBInput
+                      wrapperClass="mb-4"
+                      label="Maximum booking for 2 weeks"
+                      id="email-login"
+                      type="text"
+                      name="maxBookingsPerTwoWeeks"
+                      onChange={handleLogIn}
+                    />
+                    <MDBInput
+                      wrapperClass="mb-4"
+                      label="Operator name"
+                      id="email-login"
+                      type="text"
+                      name="operatorName"
+                      onChange={handleLogIn}
+                    />
+                    <MDBInput
+                      wrapperClass="mb-4"
+                      label="Operator email (IITR)"
+                      id="email-login"
+                      type="text"
+                      name="operatorEmail"
+                      onChange={handleLogIn}
+                    />
+                    <MDBInput
+                      wrapperClass="mb-4"
+                      label="Operator phone number (10 digit)"
+                      id="email-login"
+                      type="text"
+                      name="operatorPhoneNumber"
+                      onChange={handleLogIn}
+                    />
+
+                    {/* <div className="position-relative">
                       <MDBInput
                         wrapperClass="mb-4"
                         label="Password"
@@ -289,7 +347,7 @@ Welcome to IA Lab Equipment Booking Portal. Simplify your access to essential to
                       >
                         {showPassword ? "🙈" : "👁️"}
                       </span>
-                    </div>
+                    </div> */}
                     <MDBBtn
                       className="w-100 mb-4"
                       size="md"
@@ -333,7 +391,7 @@ Welcome to IA Lab Equipment Booking Portal. Simplify your access to essential to
                   {handleError && (
                     <span className="errorDisplay">{handleError}</span>
                   )}
-                  <form onSubmit={SignUp}>
+                  {/* <form onSubmit={SignUp}>
                     <h2 className="mb-3 mt-2">Sign Up</h2>
                     <MDBRow>
                       <MDBCol col="6">
@@ -454,7 +512,7 @@ Welcome to IA Lab Equipment Booking Portal. Simplify your access to essential to
                         Log In
                       </span>
                     </p>
-                  </form>
+                  </form> */}
                 </div>
               </div>
             </MDBCardBody>

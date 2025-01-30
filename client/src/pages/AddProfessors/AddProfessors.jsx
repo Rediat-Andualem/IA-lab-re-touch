@@ -37,11 +37,8 @@ function AddProfessors() {
     firstName: "",
     lastName: "",
     email: "",
-    instituteId: "",
-    guideName: "",
-    mobileNumber: "",
-    password: "",
-    confirmPassword: "",
+    labName: "",
+    labRoomNumber: ""
   });
   //! --- check user Auth
   useEffect(() => {
@@ -171,7 +168,7 @@ function AddProfessors() {
     }
   };
 
-  console.log(logInData);
+
   let handleSignUpChange = (e) => {
     switch (e.target.name) {
       case "firstName":
@@ -189,29 +186,14 @@ function AddProfessors() {
           return { ...pre, email: e.target.value };
         });
         break;
-      case "mobileNumber":
+      case "labName":
         setSignUpData((pre) => {
-          return { ...pre, mobileNumber: e.target.value };
+          return { ...pre, labName: e.target.value };
         });
         break;
-      case "password":
+      case "labRoomNumber":
         setSignUpData((pre) => {
-          return { ...pre, password: e.target.value };
-        });
-        break;
-      case "confirmPassword":
-        setSignUpData((pre) => {
-          return { ...pre, confirmPassword: e.target.value };
-        });
-        break;
-      case "instituteId":
-        setSignUpData((pre) => {
-          return { ...pre, instituteId: e.target.value };
-        });
-        break;
-      case "guideName":
-        setSignUpData((pre) => {
-          return { ...pre, guideName: e.target.value };
+          return { ...pre, labRoomNumber: e.target.value };
         });
         break;
       default:
@@ -236,7 +218,7 @@ function AddProfessors() {
             style={{ color: "#F5F5F5", textAlign: "justify" }}
           >
 
-Welcome to IA Lab Equipment Booking Portal. Simplify your access to essential tools and resources with just a few clicks. Sign up or log in to manage your bookings effortlessly!
+Please enter the professor's details in the designated space. Be sure to double-check the information and refer to the example provided in the label if needed.
           </h5>
         </MDBCol>
 
@@ -267,19 +249,51 @@ Welcome to IA Lab Equipment Booking Portal. Simplify your access to essential to
                     <h2 className="mb-4">Insert Profile Details </h2>
                     <MDBInput
                       wrapperClass="mb-4"
-                      label="Email"
+                      label="First name (Eg. Dr.Rama)"
                       id="email-login"
-                      type="email"
+                      type="text"
+                      name="firstName"
+                      onChange={handleLogIn}
+                    />
+                    <MDBInput
+                      wrapperClass="mb-4"
+                      label="Last name"
+                      id="email-login"
+                      type="text"
+                      name="lastName"
+                      onChange={handleLogIn}
+                    />
+                    <MDBInput
+                      wrapperClass="mb-4"
+                      label="email (IITR)"
+                      id="email-login"
+                      type="text"
                       name="email"
                       onChange={handleLogIn}
                     />
-                    <div className="position-relative">
+                    <MDBInput
+                      wrapperClass="mb-4"
+                      label="Lab name"
+                      id="email-login"
+                      type="text"
+                      name="labName"
+                      onChange={handleLogIn}
+                    />
+                    <MDBInput
+                      wrapperClass="mb-4"
+                      label="Lab room Number"
+                      id="email-login"
+                      type="text"
+                      name="labRoomNumber"
+                      onChange={handleLogIn}
+                    />
+                    {/* <div className="position-relative">
                       <MDBInput
                         wrapperClass="mb-4"
-                        label="Password"
+                        label="Last name"
                         id="password-login"
                         type={showPassword ? "text" : "password"}
-                        name="password"
+                        name="lastName"
                         onChange={handleLogIn}
                       />
                       <span
@@ -289,7 +303,7 @@ Welcome to IA Lab Equipment Booking Portal. Simplify your access to essential to
                       >
                         {showPassword ? "🙈" : "👁️"}
                       </span>
-                    </div>
+                    </div> */}
                     <MDBBtn
                       className="w-100 mb-4"
                       size="md"
@@ -309,9 +323,9 @@ Welcome to IA Lab Equipment Booking Portal. Simplify your access to essential to
                         Sign Up
                       </span>
                     </p> */}
-                    <div className="forgot">
+                    {/* <div className="forgot"> */}
                   {/* <Link to="/emailProvide">Forgot password?</Link> */}
-                </div>
+                {/* </div> */}
                   </form>
                 </div>
               </div>
