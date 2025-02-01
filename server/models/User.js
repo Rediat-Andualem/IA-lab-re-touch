@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    guideName: {
+    guideId: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -46,7 +46,12 @@ module.exports = (sequelize, DataTypes) => {
     role: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0, // Default to a normal user role
+      defaultValue: 0, 
+    },
+    verification: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
   }, {
     timestamps: true,
@@ -73,10 +78,11 @@ module.exports = (sequelize, DataTypes) => {
           firstName: "Rediat",
           lastName:"Andualem",
           instituteId:"22908021",
-          guideName:"Dr.Prakash Biswas",
+          guideId:"Dr.Prakash Biswas",
           email:"rediat_ta@ch.iitr.ac.in",
           mobileNumber:"+917452099300",
           role: '4',
+          verification:true,
           password: hashedPasswordSuperAdmin,
         },
       });
@@ -86,10 +92,11 @@ module.exports = (sequelize, DataTypes) => {
           firstName: "Deepak",
           lastName:"Ojha",
           instituteId:"13328249",
-          guideName:"Dr.Deepak Kumar Ojha",
+          guideId:"Dr.Deepak Kumar Ojha",
           email:"dojha@ch.iitr.ac.in",
           mobileNumber:"+911332824945",
           role: '3',
+          verification:true,
           password: hashedPasswordSubAdmin,
         },
       });
@@ -99,10 +106,11 @@ module.exports = (sequelize, DataTypes) => {
           firstName: "Shushil ",
           lastName:"Kumar",
           instituteId:"28494413",
-          guideName:"Dr.Shushil Kumar",
+          guideId:"Dr.Shushil Kumar",
           email:"shushil@ch.iitr.ac.in",
           mobileNumber:"+911332284944",
           role: '3',
+          verification:true,
           password: hashedPasswordSubAdmin,
         },
       });

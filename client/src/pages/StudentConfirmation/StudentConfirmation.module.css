@@ -1,0 +1,10 @@
+.successDisplay{
+    width: 35%;
+    margin: 10% auto;
+    background: silver;
+    height: 150px;
+    border-radius: 15px;
+    padding:3% ;
+    text-align: justify;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}

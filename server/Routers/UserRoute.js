@@ -10,6 +10,7 @@ const {
   userPasswordResetRequest,
   allUserFinder,
   userPasswordUpdate,
+  confirmUser
 } = require("../Controllers/userController");
 // const {checkRole} = require('../middleware/CheckRole.js')
 // const {authenticateToken} = require('../Auth/Auth.js')
@@ -24,6 +25,8 @@ userRoute.get("/getSingleUser/:userId", singleUserFinder);
 userRoute.post("/userPasswordResetRequest", userPasswordResetRequest);
 userRoute.post("/userPasswordReset/:userId", userPasswordUpdate);
 userRoute.get("/allUsers", allUserFinder);
+userRoute.post("/studentConfirmation/:userId", confirmUser);  
+
 
 module.exports = { userRoute };
 

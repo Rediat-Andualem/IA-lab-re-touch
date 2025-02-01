@@ -156,7 +156,8 @@ function AddProfessors() {
             },
           })
         ) {
-          navigate("/dashboard");
+          navigate("/successReg");
+           
         } else {
           navigate("/signUp");
         }

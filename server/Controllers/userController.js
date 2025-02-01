@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { User } = require("../models");
+const { User,Professor} = require("../models");
 const nodemailer = require("nodemailer");
 
 // const {html}=mjml2html(mjml)
@@ -10,7 +10,7 @@ const createUser = async (req, res) => {
     lastName,
     email,
     instituteId,
-    guideName,
+    guideId,
     mobileNumber,
     password,
   } = req.body;
@@ -23,7 +23,7 @@ const createUser = async (req, res) => {
     const trimmedLastName = lastName ? lastName.trim() : "";
     const trimmedEmail = email ? email.trim() : "";
     const trimmedInstituteID = instituteId ? instituteId.trim() : "";
-    const trimmedGuideName = guideName ? guideName.trim() : "";
+    const trimmedGuideId= guideId ? guideId.trim() : "";
     const trimmedMobileNumber = mobileNumber? mobileNumber.trim():""
     const trimmedPassword = password ? password.trim() : "";
     // Check for missing fields
@@ -32,7 +32,7 @@ const createUser = async (req, res) => {
       !trimmedLastName ||
       !trimmedEmail ||
       !trimmedInstituteID ||
-      !trimmedGuideName ||
+      !trimmedGuideId ||
       !trimmedMobileNumber ||
       !trimmedPassword
     ) {
@@ -94,27 +94,154 @@ if (!emailRegex.test(trimmedEmail)) {
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         instituteId: instituteId.trim(),
-        guideName: guideName.trim(),
+        guideId: guideId.trim(),
         email: email.trim().toLowerCase(),
         mobileNumber: mobileNumber.trim(),
         password: hashPassword,
     });
-    // Generate JWT token
-    const token = jwt.sign(
-      {
-        userId: user.userId,
-        userName: user.firstName,
-        userEmail:user.email,
-        userRole: user.role,
-      },
-      process.env.JWT_SECRET_KEY,
-      { expiresIn: "3d" }
-    );
 
-    res.setHeader("Authorization", `Bearer ${token}`);
-    return res.status(200).json({
-      message: ["User created successfully"],
+    const guideEmail = await Professor.findOne({
+      where: { professorId: guideId },
+      attributes: ['email'],
     });
+ 
+
+// Create a password reset link
+const resetLink = `http://${process.env.FRONTEND_URL}/studentConfirmation/${user.userId}`
+
+
+// Send email asynchronously
+const sendEmail = async () => {
+  // let mailSender = nodemailer.createTransport({
+  //   service: "gmail",
+  //   port: 465,
+  //   auth: {
+  //     user: process.env.EMAIL_USER,
+  //     pass: process.env.EMAIL_PASS,
+  //   },
+  // });
+  const mailSender = nodemailer.createTransport({
+    service: "gmail",
+    port: 465,
+    secure: true, // Use SSL
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+    tls: {
+      rejectUnauthorized: false, 
+    },
+  });
+  
+
+  const details = {
+    from: process.env.EMAIL_USER,
+    to: user.email,
+    subject: `${user.firstName} is requesting to access IA lab booking portal`,
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Confirm Student</title>
+          <style>
+              body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f6f6f6;
+                  margin: 0;
+                  padding: 0;
+              }
+              .container {
+                  max-width: 600px;
+                  margin: 0 auto;
+                  background-color: #ffffff;
+                  padding: 20px;
+                  border-radius: 8px;
+                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                  border: 1px solid #cccccc;
+              }
+              .header {
+                  text-align: center;
+                  padding: 10px 0;
+              }
+              .content {
+                  text-align: center;
+                  padding: 20px;
+              }
+              .cta-button {
+                  display: inline-block;
+                  padding: 15px 25px;
+                  margin: 20px 0;
+                  background-color: #FF8318;
+                  color: #ffffff;
+                  font-weight: bold;
+                  text-decoration: none;
+                  border-radius: 5px;
+                  text-align: center;
+              }
+              .footer {
+                  text-align: center;
+                  padding: 10px 0;
+                  font-size: 12px;
+                  color: #777777;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <div class="header">
+                  <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="100" height="100" fill="#007BFF"/>
+                      <h1>IA Lab.</h1>
+                  </svg>
+              </div>
+              <div class="content">
+                  <h3>Confirm student</h3>
+                  <h5>By clicking the button below, you are confirming that the student is working under your supervision and granting permission for the use of equipment in the IA lab. Additionally, you will have access to view the equipment utilized by your students through the IA Lab Professors Portal.</h5>
+                  <a href="${resetLink}" class="cta-button">Confirm Access to ${user.firstName}</a>
+              </div>
+              <div class="footer">
+                  <p>If you did not sign up for this account, please ignore this email.</p>
+              </div>
+          </div>
+      </body>
+      </html>
+    `,
+  };
+  
+  try {
+    // Send the email asynchronously and await its result
+    const info = await mailSender.sendMail(details);
+    console.log("Email sent:", info.response);
+    return res.status(200).json({ message: ["Password reset email sent"] });
+  } catch (err) {
+    console.log("Error sending email:", err);
+    return res.status(500).json({ message: ["Error sending email"] });
+  }
+};
+
+// Call sendEmail asynchronously
+await sendEmail();
+    // Generate JWT token
+    // const token = jwt.sign(
+    //   {
+    //     userId: user.userId,
+    //     userName: user.firstName,
+    //     userEmail:user.email,
+    //     userRole: user.role,
+    //     verification:user.verification,
+    //     userGuidEmail : guideEmail.email
+    //   },
+    //   process.env.JWT_SECRET_KEY,
+    //   { expiresIn: "3d" }
+    // );
+
+    // res.setHeader("Authorization", `Bearer ${token}`);
+    // return res.status(200).json({
+    //   message: ["User created successfully"],
+    // });
+
   } catch (err) {
     if (err.name === "ValidationErrorItem") {
       const validationErrors = err.errors.map((e) => e.message);
@@ -268,8 +395,16 @@ const userRoleUpdater = async (req, res) => {
 
   const errors = [];
 
+  // roles 👍
+  // 0 user (default)
+  // 1 lab technician  
+  // 2  TA
+  // 3  admin 
+  // 4  super-admin
+
+
   // List of valid roles
-  const validRoles = ["0", "1", "2"];
+  const validRoles = ["0", "1", "2","3","4"];
 
   // Validation checks
   if (!role) {
@@ -609,6 +744,29 @@ const userPasswordUpdate = async (req, res) => {
   }
 };
 
+const confirmUser = async (req, res) => {
+  const { userId } = req.params;
+  console.log(userId)
+  try {
+    // Find the user by primary key (userId)
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ errors: ["User not found."] });
+    }
+
+    // Update only the 'verification' column to true
+    await user.update({
+      verification: true,
+    });
+
+    return res.status(200).json({ message: "Student Confirmation successfully." });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ errors: ["An error occurred while updating user verification."] });
+  }
+};
+
+
 module.exports = {
   createUser,
   userLogIn,
@@ -619,4 +777,5 @@ module.exports = {
   userPasswordResetRequest,
   allUserFinder,
   userPasswordUpdate,
+  confirmUser
 };

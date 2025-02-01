@@ -10,7 +10,8 @@ import PageNotFound from "./pages/PageNotFound/PageNotFound.jsx";
 import LayOut from "./components/LayOut/LayOut.jsx"
 import AddEquipment from "./pages/AddEquipment/AddEquipment.jsx";
 import AddProfessors from "./pages/AddProfessors/AddProfessors.jsx";
-
+import VerifyRequest from "./pages/verifyRequestPage/VerifyRequest.jsx";
+import StudentConfirmation from "./pages/StudentConfirmation/StudentConfirmation.jsx"
 
 function App() {
   return (
@@ -42,6 +43,8 @@ function App() {
            <Route path="/*" element={<PageNotFound />} />
            <Route path="/addEquipments" element={<AddEquipment />} />
            <Route path="/addProfessors" element={<AddProfessors />} />
+           <Route path="/successReg" element={<VerifyRequest />} />
+           <Route path="/studentConfirmation/:userId" element={<StudentConfirmation />} />
       </Routes>
     </>
   );
