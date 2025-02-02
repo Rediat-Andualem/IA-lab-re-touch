@@ -35,18 +35,29 @@ roles 👍
 react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
         styling the table
         integrating react tost 
-        admin pannel 
-        integrating super admin creation up on user table creation
-        delete everything based on batch or year.. to save data
-        proffesor name should be dropdown and proffesor's Id should be saved in users table
-        make sure to have one equipment but if its more than one to delete.. i just made it open for equipments since one equipment may have different models
+        delete everything based on batch or year.. to save data ( yehenen functionality inside user create argew ke admin pannel clean endiderege)
+        make sure to have one equipment but if its more than one to delete.. i just made it open for equipments since one equipment may have different models ( yehe yaw equipment delete option selemenorew admin yane )
         HOW TO INTERFEAR TO GIVE HOLIDAY OR OTHER THINGS
-        forgot password feature
         admin daash board
-        finish adding professor and adding equipment part 
         on booking quota should be checke for a single proffesor and the booking student for blocking
-        operator add setarege email becha tekebele ena ke user information malet new ke database lelochune endiwesde arge automatically meaning the operator will be registered as a user but by permission assign yederegale maet new
         ክሊን አፕ ስታረግ ፣ ኢሜል ስትልክ ያካተትካቸውን ሊንኮች ቼክ አርጋቸው http እና ሪሌትድ ነገሮች ፕሮዳክሽን ላይ መስተካከል አለባቸው
       
         
+        
+
+        admin
+            see all users , delete users (except super admin)
+            see all equipments, delete equipments , make outOfServde etc 
+            see all professors, delete profesorr
+            do clean up based on year 
+            grant privileges to users 
+            
+        studetn dashboard 
+            see all bookings  and make complete if its successful done, 
+            and make booking 
+        operator dashboard 
+            for the particular assigned equipment see the booking  and mark completed or commenting ..
+        professors dashboard 
+            see there students list and booking 
+            remove the student from there lab list 
         
