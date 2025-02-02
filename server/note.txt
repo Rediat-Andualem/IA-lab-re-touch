@@ -41,6 +41,7 @@ react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
         admin daash board
         on booking quota should be checke for a single proffesor and the booking student for blocking
         ክሊን አፕ ስታረግ ፣ ኢሜል ስትልክ ያካተትካቸውን ሊንኮች ቼክ አርጋቸው http እና ሪሌትድ ነገሮች ፕሮዳክሽን ላይ መስተካከል አለባቸው
+        FINALLY DO CLEANUP ON THE CODE SPECAILLY IN FRONTEND NAMING AND FLOW .. (REFACTOR)
 ------------------------------      
         admin
             see all users , delete users individually (except super admin)

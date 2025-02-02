@@ -285,7 +285,7 @@ const userLogIn = async (req, res) => {
       return res.status(401).json({ errors: ["Invalid credentials"] });
     }
     if(!user.verification){
-      return res.status(401).json({ errors: ["You're not verified yet. Please ask your guide to respond to the confirmation email already sent."] });
+      return res.status(401).json({ errors: ["You're not verified yet. Please ask your guide to respond to the confirmation email that was already sent."] });
     }
 
     // Generate JWT token

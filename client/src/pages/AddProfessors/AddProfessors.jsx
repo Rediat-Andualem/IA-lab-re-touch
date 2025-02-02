@@ -9,8 +9,8 @@ import {
   MDBCardBody,
   MDBInput,
 } from "mdb-react-ui-kit";
-import "./AddProfessors.css";
 import {BeatLoader} from 'react-spinners'
+import classes from './AddProfessors.module.css'
 // import Spinner from 'react-bootstrap/spi';
 function AddProfessors() {
   const [loading, setLoading] = useState(false);
@@ -75,7 +75,8 @@ function AddProfessors() {
     }
   };
   return (
-    <MDBContainer fluid className="p-5 container">
+   <div className={classes.mainDash}>
+       <MDBContainer fluid  className="p-5 container">
       <MDBRow>
         <MDBCol
           md="6"
@@ -179,6 +180,7 @@ function AddProfessors() {
         </MDBCol>
       </MDBRow>
     </MDBContainer>
+   </div>
   );
 }
 

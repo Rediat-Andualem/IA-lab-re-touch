@@ -619,7 +619,7 @@ function LogInSignUp() {
                 style={{ position: "absolute", width: "80%", height: "100%", top: 0, left: isLogin ? "0%" : "-100%", transition: "left 0.6s ease-in-out", padding: "6% 0 0 20%" }}>
                 <form onSubmit={(e) => handleSubmit(e, "login")}>
                   <h2 className="mb-4">Log In</h2>
-                  {error && <span className="errorDisplay">{error}</span>}
+                  {error && <span className="errorDisplay fw-bold ">{error}</span>}
                   <MDBInput wrapperClass="mb-4" label="Email" type="email" name="email" onChange={handleInputChange(setLogInData)} />
                   <div className="position-relative">
                     <MDBInput wrapperClass="mb-4" label="Password" type={showPassword ? "text" : "password"} name="password" onChange={handleInputChange(setLogInData)} />

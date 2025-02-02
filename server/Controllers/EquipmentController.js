@@ -60,7 +60,6 @@ const addEquipment = async (req, res) => {
     const operator = await User.findOne({
       where: { userId: operatorId },
     });
-console.log(operator)
     if (!operator) {
       return res.status(404).json({ message: "Operator not found" });
     }
@@ -89,9 +88,6 @@ console.log(operator)
     });
   }
 };
-
-
-
 
 //  update inserted equipments based on availability 
 const updateEquipment = async (req, res) => {
