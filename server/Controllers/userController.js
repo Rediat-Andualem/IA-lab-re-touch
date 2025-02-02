@@ -273,7 +273,7 @@ const userLogIn = async (req, res) => {
   try {
     // Find the user by email
     const user = await User.findOne({ where: { email: trimmedEmail } });
-
+console.log("the user user",user.verification)
     // Check if user exists
     if (!user) {
       return res.status(401).json({ errors: ["Invalid credentials"] });
@@ -283,6 +283,9 @@ const userLogIn = async (req, res) => {
     const isMatch = await bcrypt.compare(trimmedPassword, user.password);
     if (!isMatch) {
       return res.status(401).json({ errors: ["Invalid credentials"] });
+    }
+    if(!user.verification){
+      return res.status(401).json({ errors: ["You're not verified yet. Please ask your guide to respond to the confirmation email already sent."] });
     }
 
     // Generate JWT token

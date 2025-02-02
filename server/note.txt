@@ -46,6 +46,7 @@ react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
         finish adding professor and adding equipment part 
         on booking quota should be checke for a single proffesor and the booking student for blocking
         operator add setarege email becha tekebele ena ke user information malet new ke database lelochune endiwesde arge automatically meaning the operator will be registered as a user but by permission assign yederegale maet new
-        upon registeration , confirming that the proffessor should confirm.
         ክሊን አፕ ስታረግ ፣ ኢሜል ስትልክ ያካተትካቸውን ሊንኮች ቼክ አርጋቸው http እና ሪሌትድ ነገሮች ፕሮዳክሽን ላይ መስተካከል አለባቸው
+      
+        
         
