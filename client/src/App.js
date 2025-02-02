@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DashBoard from "./pages/DashBoard/DashBoard";
 import { Routes, Route } from "react-router-dom";
 import LogInSignUp from "./pages/LogInSignUp/LogInSignUp.jsx";
@@ -12,8 +12,17 @@ import AddEquipment from "./pages/AddEquipment/AddEquipment.jsx";
 import AddProfessors from "./pages/AddProfessors/AddProfessors.jsx";
 import VerifyRequest from "./pages/verifyRequestPage/VerifyRequest.jsx";
 import StudentConfirmation from "./pages/StudentConfirmation/StudentConfirmation.jsx"
-
+import UserRoleUpdater from "./pages/userRoleUpdator/UserRoleUpdater.jsx"
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import {useNavigate } from "react-router-dom";
 function App() {
+  const auth = useAuthUser();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (auth?.token && auth?.verification===true) {
+      navigate("/dashboard");
+    }
+  }, [auth, navigate]);
   return (
     <>
       <Routes>
@@ -45,6 +54,7 @@ function App() {
            <Route path="/addProfessors" element={<AddProfessors />} />
            <Route path="/successReg" element={<VerifyRequest />} />
            <Route path="/studentConfirmation/:userId" element={<StudentConfirmation />} />
+           <Route path="/userRoleUpdate" element={<UserRoleUpdater/>} />
       </Routes>
     </>
   );

@@ -273,7 +273,6 @@ const userLogIn = async (req, res) => {
   try {
     // Find the user by email
     const user = await User.findOne({ where: { email: trimmedEmail } });
-console.log("the user user",user.verification)
     // Check if user exists
     if (!user) {
       return res.status(401).json({ errors: ["Invalid credentials"] });

@@ -1,7 +1,48 @@
 
-const { Equipment } = require('../models'); 
+const { Equipment,User } = require('../models'); 
 
 //  add new equipment 
+// const addEquipment = async (req, res) => {
+//   const {
+//     equipmentName,
+//     equipmentModel,
+//     guidelines,
+//     maxSamples,
+//     maxBookingsPerTwoWeeks,
+//     operatorName,
+//     operatorEmail,
+//     operatorPhoneNumber,
+//     workingStatus,
+//   } = req.body;
+
+//   try {
+//     // Create a new equipment record
+//     const newEquipment = await Equipment.create({
+//       equipmentName,
+//       equipmentModel,
+//       guidelines,
+//       maxSamples,
+//       maxBookingsPerTwoWeeks,
+//       operatorName,
+//       operatorEmail,
+//       operatorPhoneNumber,
+//       workingStatus,
+//     });
+
+//     // Respond with the newly created equipment
+//     res.status(201).json({
+//       message: 'Equipment added successfully',
+//       data: newEquipment,
+//     });
+//   } catch (error) {
+//     // Handle validation errors or other database-related issues
+//     res.status(500).json({
+//       message: 'Failed to add equipment',
+//       error: error.message,
+//     });
+//   }
+// };
+
 const addEquipment = async (req, res) => {
   const {
     equipmentName,
@@ -9,39 +50,46 @@ const addEquipment = async (req, res) => {
     guidelines,
     maxSamples,
     maxBookingsPerTwoWeeks,
-    operatorName,
-    operatorEmail,
-    operatorPhoneNumber,
+    operatorId,
     workingStatus,
   } = req.body;
 
+
   try {
-    // Create a new equipment record
+    // Fetch operator details based on the operatorId
+    const operator = await User.findOne({
+      where: { userId: operatorId },
+    });
+console.log(operator)
+    if (!operator) {
+      return res.status(404).json({ message: "Operator not found" });
+    }
+
+    // Create a new equipment record using operator information
     const newEquipment = await Equipment.create({
       equipmentName,
       equipmentModel,
       guidelines,
       maxSamples,
       maxBookingsPerTwoWeeks,
-      operatorName,
-      operatorEmail,
-      operatorPhoneNumber,
+      operatorName: operator.firstName,
+      operatorEmail: operator.email,
+      operatorPhoneNumber: operator.mobileNumber,
       workingStatus,
     });
 
-    // Respond with the newly created equipment
     res.status(201).json({
-      message: 'Equipment added successfully',
+      message: "Equipment added successfully",
       data: newEquipment,
     });
   } catch (error) {
-    // Handle validation errors or other database-related issues
     res.status(500).json({
-      message: 'Failed to add equipment',
+      message: "Failed to add equipment",
       error: error.message,
     });
   }
 };
+
 
 
 
@@ -145,6 +193,28 @@ const deleteEquipment = async (req, res) => {
       });
     }
   };
+
+
+  const getOperator = async (req, res) => {
+    try {
+      const users = await User.findAll({
+        attributes: { exclude: ["password"] },
+        where: { role: 1 }, 
+      });
+      if (users.length === 0) {
+        return res.status(200).json({ message: ["No operator found."] });
+      }
+  
+      // Respond with the list of users
+      return res.status(200).json({ users });
+    } catch (err) {
+      if (err.name === "ValidationErrorItem") {
+        const validationErrors = err.errors.map((e) => e.message);
+        return res.status(400).json({ errors: [validationErrors.message] });
+      }
+      return res.status(500).json({ errors: [err.message] });
+    }
+  };
   
 
-  module.exports = { addEquipment,updateEquipment,getAllEquipments,getEquipmentById,deleteEquipment };
+  module.exports = { addEquipment,updateEquipment,getAllEquipments,getEquipmentById,deleteEquipment,getOperator };

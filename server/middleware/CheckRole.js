@@ -11,8 +11,9 @@ const checkRole = (roles) => {
 
 module.exports = {checkRole};
 
-// roles given
-    // 1. user role = 0
-    // 2. admin role = 1
-    // 3. subAdmin role = 2
-    // 4. super admin = 3
+
+// 0 user (default)
+// 1 lab technician  (operator)
+// 2  TA
+// 3  admin 
+// 4  super-admin
