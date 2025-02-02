@@ -1,0 +1,21 @@
+.custom_navbar_link {
+    border: 1px solid black;
+    /* background-color: #522C5D; */
+    color: white; /* Ensures the text is readable */
+    transition: background-color 0.3s ease; /* Smooth transition for hover */
+    margin: 5px;
+    border-radius: 5PX;
+  }
+  
+  .custom_navbar_link:hover {
+    background-color: #0C969C;
+    color: white !important;
+  }
+  
+.link{
+  color: black;
+}
+
+.link:hover {
+  color: white !important;
+}

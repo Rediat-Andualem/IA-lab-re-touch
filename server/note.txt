@@ -45,8 +45,6 @@ react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
 ------------------------------      
         admin
             see all users , delete users individually (except super admin)
-            see all equipments, delete equipments , make outOfServde etc 
-            see all professors, delete profesorr
             do clean up based on year 
             grant privileges to users   
         studetn dashboard 
