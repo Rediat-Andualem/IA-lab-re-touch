@@ -11,11 +11,13 @@ import {
 } from "mdb-react-ui-kit";
 import {BeatLoader} from 'react-spinners'
 import classes from './AddProfessors.module.css'
+import Button from "react-bootstrap/Button";
 // import Spinner from 'react-bootstrap/spi';
 function AddProfessors() {
   const [loading, setLoading] = useState(false);
   const [handleError, setHandleError] = useState("");
   const [success, setHandleSuccess] = useState("");
+  const [professors, setProfessors] = useState("");
   //!   ---------------------
   const [registerProf, setProfData] = useState({
     firstName: "",
@@ -29,12 +31,12 @@ function AddProfessors() {
     setLoading(true);
   
     // Clear previous messages
-    setHandleError(""); // Clear any previous error
-    setHandleSuccess(""); // Clear any previous success
-  
+    setHandleError(""); 
+    setHandleSuccess(""); 
     try {
       const response = await axiosInstance.post("/professors/createProfessorProfile", registerProf);
       setHandleSuccess(response?.data.message);
+      getProfessorsDetail()
     } catch (error) {
       setHandleError(error.response.data.errors[0]);
     } finally {
@@ -74,6 +76,41 @@ function AddProfessors() {
         break;
     }
   };
+
+
+
+   const getProfessorsDetail = async () => {
+      try {
+        const res = await axiosInstance.get(`/professors/getAllProfessors`);  
+        if (res?.data.AllProfessors.length > 0) {
+          setProfessors(res?.data.AllProfessors);
+        } else {
+          setProfessors([]);
+        }
+      } catch (error) {
+        setProfessors([]); 
+      }
+    };
+
+    let toDelete = async (equipmentId) => {
+      // let token = auth.token;
+      try {
+        await axiosInstance.delete(`/professors/deleteProfessorProfile/${equipmentId}`);
+        // await axiosInstance.delete(`equipments/deleteEquipmentDetails/${equipmentId}`, { 
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // });
+        getProfessorsDetail();
+      } catch (error) {
+        console.error("Error deleting answer:", error);
+      }
+    };
+    console.log(professors)
+      useEffect(() => {
+        getProfessorsDetail();
+      }, []);
+    console.log(professors)
   return (
    <div className={classes.mainDash}>
        <MDBContainer fluid  className="p-5 container">
@@ -179,6 +216,43 @@ function AddProfessors() {
           </MDBCard>
         </MDBCol>
       </MDBRow>
+      <div className={`${classes.listContainer}`}>
+  <h2 className="text-center text-decoration-underline text-white m-4">List of Professors</h2>
+  {professors?.length > 0 ? (
+    professors.map((singleProfessor, i) => (
+      <div key={i} className={`${classes.equipment_row} text-white mb-3`}>
+    
+        <div className={`${classes.equipment_item} col-12 col-md-3`}>
+          <strong>Prof. First Name:</strong> {singleProfessor?.firstName}
+        </div>
+        <div className={`${classes.equipment_item} col-12 col-md-3`}>
+          <strong>Prof. Last Name:</strong> {singleProfessor?.lastName}
+        </div>
+        <div className={`${classes.equipment_item} col-12 col-md-4 ${classes.guideline}`}>
+          <strong>Prof. email:</strong> {singleProfessor?.email}
+        </div>
+        <div className={`${classes.equipment_item} col-12 col-md-2`}>
+          <strong>Prof. Lab Name::</strong> {singleProfessor?.labName}
+        </div>
+        <div className={`${classes.equipment_item} col-12 col-md-2`}>
+          <strong>Prof. lab room number:</strong> {singleProfessor?.labRoomNumber}
+        </div>
+        
+
+        <div>
+          <Button className="m-4" onClick={() => toDelete(singleProfessor?.professorId)} variant="danger">
+            Delete Prof. profile
+          </Button>
+        </div>
+      <h1>-------------------------------------------------------------------------</h1>
+      </div>    
+    ))
+  
+  ) : (
+    <h3 className="text-center text-white">No Professor Detail Added so far.</h3>
+  )}
+</div>
+
     </MDBContainer>
    </div>
   );

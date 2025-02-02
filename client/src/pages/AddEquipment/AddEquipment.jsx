@@ -86,7 +86,7 @@ function AddEquipment() {
   let toDelete = async (equipmentId) => {
     // let token = auth.token;
     try {
-      await axiosInstance.delete(`equipments/deleteEquipmentDetails/${equipmentId}`);
+      await axiosInstance.delete(`/equipments/deleteEquipmentDetails/${equipmentId}`);
       // await axiosInstance.delete(`equipments/deleteEquipmentDetails/${equipmentId}`, { 
       //   headers: {
       //     Authorization: `Bearer ${token}`,
@@ -213,10 +213,6 @@ return (
 
    <div className={`${classes.listContainer}`}>
   <h2 className="text-center text-decoration-underline text-white m-4">List of Equipment</h2>
-
-
-
-
   {Equipments?.length > 0 ? (
     Equipments.map((singleEquipment, i) => (
       <div key={i} className={`${classes.equipment_row} text-white mb-3`}>

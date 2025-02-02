@@ -63,7 +63,7 @@ function App() {
         <Route
           path="/addProfessors"
           element={
-            <LayOut>
+            <LayOut showHeader={true} showFooter={false}>
               <AddProfessors />
             </LayOut>
           }
