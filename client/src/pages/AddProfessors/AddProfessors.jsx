@@ -9,191 +9,64 @@ import {
   MDBCardBody,
   MDBInput,
 } from "mdb-react-ui-kit";
-import useSignIn from "react-auth-kit/hooks/useSignIn";
-import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-import { jwtDecode } from "jwt-decode";
-import { Link, useNavigate } from "react-router-dom";
 import "./AddProfessors.css";
 import {BeatLoader} from 'react-spinners'
 // import Spinner from 'react-bootstrap/spi';
-import Spinner from "react-bootstrap/Spinner";
 function AddProfessors() {
-  const [isLogin, setIsLogin] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [handleError, setHandleError] = useState("");
-
+  const [success, setHandleSuccess] = useState("");
   //!   ---------------------
-  const signIn = useSignIn();
-  const navigate = useNavigate();
-  const auth = useAuthUser();
-  //   ! sign up and log in data
-  const [logInData, setLogInData] = useState({
-    email: "",
-    password: "",
-  });
-  const [signUpData, setSignUpData] = useState({
+  const [registerProf, setProfData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     labName: "",
     labRoomNumber: ""
   });
-  //! --- check user Auth
-  useEffect(() => {
-    if (auth?.token) {
-      navigate("/dashboard");
-    }
-  }, [auth, navigate]);
-  // !--------------------------
-  const toggleAuthMode = () => {
-    setIsLogin(!isLogin);
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
-
-  // *-----------LogIn handler
-  const LogIn = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+  
+    // Clear previous messages
+    setHandleError(""); // Clear any previous error
+    setHandleSuccess(""); // Clear any previous success
+  
     try {
-      const res = await axiosInstance.post("/user/login", {
-        email: logInData.email,
-        password: logInData.password,
-      });
-      setHandleError(false);
-      const token = res.headers["authorization"]?.split(" ")[1];
-      const decodedToken = jwtDecode(token);
-      console.log("decoded from login", decodedToken);
-      if (token) {
-        if (
-          signIn({
-            auth: {
-              token,
-              type: "Bearer",
-              expiresIn: 4320,
-            },
-            userState: {
-              userId: decodedToken.userId,
-              userName: decodedToken.userName,
-              userRole: decodedToken.userRole,
-              token,
-            },
-          })
-        ) {
-          navigate("/dashboard");
-        } else {
-          navigate("/signUp");
-        }
-      }
+      const response = await axiosInstance.post("/professors/createProfessorProfile", registerProf);
+      setHandleSuccess(response?.data.message);
     } catch (error) {
       setHandleError(error.response.data.errors[0]);
     } finally {
       setLoading(false);
     }
   };
-
-  let handleLogIn = (e) => {
-    switch (e.target.name) {
-      case "email":
-        setLogInData((pre) => {
-          return { ...pre, email: e.target.value };
-        });
-        break;
-      case "password":
-        setLogInData((pre) => {
-          return { ...pre, password: e.target.value };
-        });
-        break;
-      default:
-        break;
-    }
-  };
-  //* -----------SignUp handler
-  const SignUp = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      if (signUpData.password !== signUpData.confirmPassword) {
-        setHandleError("Password doesn't match");
-      }
-
-      const res = await axiosInstance.post("/user/createUser", {
-        firstName: signUpData.firstName,
-        lastName: signUpData.lastName,
-        guideName: signUpData.guideName,
-        instituteId: signUpData.instituteId,
-        mobileNumber: signUpData.mobileNumber,
-        email: signUpData.email,
-        password: signUpData.password,
-      });
-
-      setHandleError(false);
-      const token = res.headers["authorization"]?.split(" ")[1];
-      const decodedToken = jwtDecode(token);
-      console.log("decoded from signup", decodedToken);
-      if (token) {
-        if (
-          signIn({
-            auth: {
-              token,
-              type: "Bearer",
-              expiresIn: 4320,
-            },
-            userState: {
-              userId: decodedToken.userId,
-              userName: decodedToken.userName,
-              userRole: decodedToken.userRole,
-              token,
-            },
-          })
-        ) {
-          navigate("/successReg");
-           
-        } else {
-          navigate("/signUp");
-        }
-      }
-    } catch (err) {
-      setHandleError(err?.response?.data?.errors[0]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
-  let handleSignUpChange = (e) => {
+  
+ //* -----------------------
+  let handleProfessorDetails = (e) => {
     switch (e.target.name) {
       case "firstName":
-        setSignUpData((pre) => {
+        setProfData((pre) => {
           return { ...pre, firstName: e.target.value };
         });
         break;
       case "lastName":
-        setSignUpData((pre) => {
+        setProfData((pre) => {
           return { ...pre, lastName: e.target.value };
         });
         break;
       case "email":
-        setSignUpData((pre) => {
+        setProfData((pre) => {
           return { ...pre, email: e.target.value };
         });
         break;
       case "labName":
-        setSignUpData((pre) => {
+        setProfData((pre) => {
           return { ...pre, labName: e.target.value };
         });
         break;
       case "labRoomNumber":
-        setSignUpData((pre) => {
+        setProfData((pre) => {
           return { ...pre, labRoomNumber: e.target.value };
         });
         break;
@@ -201,8 +74,6 @@ function AddProfessors() {
         break;
     }
   };
-
-  // !--------------------------------------------
   return (
     <MDBContainer fluid className="p-5 container">
       <MDBRow>
@@ -218,8 +89,7 @@ function AddProfessors() {
             className="px-3"
             style={{ color: "#F5F5F5", textAlign: "justify" }}
           >
-
-Please enter the professor's details in the designated space. Be sure to double-check the information and refer to the example provided in the label if needed.
+               Please enter the professor's details in the designated space. Be sure to double-check the information and refer to the example provided in the label if needed.
           </h5>
         </MDBCol>
 
@@ -229,24 +99,26 @@ Please enter the professor's details in the designated space. Be sure to double-
               className="p-5 position-relative overflow-hidden"
               style={{ height: "550px" }}
             >
-              <div
+            <div
                 className="form-transition-container"
                 style={{
                   position: "absolute",
                   width: "80%",
                   height: "100%",
                   top: 0,
-                  left: isLogin ? "0%" : "-100%",
-                  transition: "left 0.6s ease-in-out",
+                  left: "0%",
                   padding: "6% 0 0 20%",
                 }}
               >
                 {/* Login Form */}
                 <div className="auth-form mt-5">
                   {handleError && (
-                    <span className="errorDisplay">{handleError}</span>
+                    <span className="text-danger fw-bold">{handleError}</span>
                   )}
-                  <form onSubmit={LogIn}>
+                  {success && (
+                    <span className="text-success fw-bold">{success}</span>
+                  )}
+                  <form onSubmit={handleSubmit}>
                     <h2 className="mb-4">Insert Profile Details </h2>
                     <MDBInput
                       wrapperClass="mb-4"
@@ -254,7 +126,7 @@ Please enter the professor's details in the designated space. Be sure to double-
                       id="email-login"
                       type="text"
                       name="firstName"
-                      onChange={handleLogIn}
+                      onChange={handleProfessorDetails}
                     />
                     <MDBInput
                       wrapperClass="mb-4"
@@ -262,7 +134,7 @@ Please enter the professor's details in the designated space. Be sure to double-
                       id="email-login"
                       type="text"
                       name="lastName"
-                      onChange={handleLogIn}
+                      onChange={handleProfessorDetails}
                     />
                     <MDBInput
                       wrapperClass="mb-4"
@@ -270,7 +142,7 @@ Please enter the professor's details in the designated space. Be sure to double-
                       id="email-login"
                       type="text"
                       name="email"
-                      onChange={handleLogIn}
+                      onChange={handleProfessorDetails}
                     />
                     <MDBInput
                       wrapperClass="mb-4"
@@ -278,7 +150,7 @@ Please enter the professor's details in the designated space. Be sure to double-
                       id="email-login"
                       type="text"
                       name="labName"
-                      onChange={handleLogIn}
+                      onChange={handleProfessorDetails}
                     />
                     <MDBInput
                       wrapperClass="mb-4"
@@ -286,25 +158,9 @@ Please enter the professor's details in the designated space. Be sure to double-
                       id="email-login"
                       type="text"
                       name="labRoomNumber"
-                      onChange={handleLogIn}
+                      onChange={handleProfessorDetails}
                     />
-                    {/* <div className="position-relative">
-                      <MDBInput
-                        wrapperClass="mb-4"
-                        label="Last name"
-                        id="password-login"
-                        type={showPassword ? "text" : "password"}
-                        name="lastName"
-                        onChange={handleLogIn}
-                      />
-                      <span
-                        className="position-absolute top-50 end-0 translate-middle-y me-3"
-                        style={{ cursor: "pointer" }}
-                        onClick={togglePasswordVisibility}
-                      >
-                        {showPassword ? "🙈" : "👁️"}
-                      </span>
-                    </div> */}
+                    
                     <MDBBtn
                       className="w-100 mb-4"
                       size="md"
@@ -313,165 +169,11 @@ Please enter the professor's details in the designated space. Be sure to double-
                     >
                       {loading ? <BeatLoader /> : "Add Professor Profile"}
                     </MDBBtn>
-
-                    {/* <p>
-                      Don't have an account?{" "}
-                      <span
-                        className="text-primary"
-                        style={{ cursor: "pointer" }}
-                        onClick={toggleAuthMode}
-                      >
-                        Sign Up
-                      </span>
-                    </p> */}
-                    {/* <div className="forgot"> */}
-                  {/* <Link to="/emailProvide">Forgot password?</Link> */}
-                {/* </div> */}
                   </form>
                 </div>
               </div>
 
-              <div
-                className="form-transition-container"
-                style={{
-                  position: "absolute",
-                  width: "80%",
-                  height: "100%",
-                  top: 0,
-                  left: isLogin ? "100%" : "0%",
-                  transition: "left 0.6s ease-in-out",
-                  padding: "0 0 0 20%",
-                }}
-              >
-                {/* Signup Form */}
-                <div className="auth-form">
-                  {handleError && (
-                    <span className="errorDisplay">{handleError}</span>
-                  )}
-                  <form onSubmit={SignUp}>
-                    <h2 className="mb-3 mt-2">Sign Up</h2>
-                    <MDBRow>
-                      <MDBCol col="6">
-                        <MDBInput
-                          wrapperClass="mb-4"
-                          label="First name"
-                          id="first-name"
-                          type="text"
-                          name="firstName"
-                          onChange={handleSignUpChange}
-                        />
-                      </MDBCol>
-
-                      <MDBCol col="6">
-                        <MDBInput
-                          wrapperClass="mb-4"
-                          label="Last name"
-                          id="last-name"
-                          type="text"
-                          name="lastName"
-                          onChange={handleSignUpChange}
-                        />
-                      </MDBCol>
-                    </MDBRow>
-                    <MDBRow>
-                      <MDBCol col="6">
-                        <MDBInput
-                          wrapperClass="mb-4"
-                          label="Institute ID"
-                          id="institute-id"
-                          type="text"
-                          name="instituteId"
-                          onChange={handleSignUpChange}
-                        />
-                      </MDBCol>
-
-                      <MDBCol col="6">
-                        <MDBInput
-                          wrapperClass="mb-4"
-                          label="Institute Email"
-                          id="institute-email"
-                          type="email"
-                          name="email"
-                          onChange={handleSignUpChange}
-                        />
-                      </MDBCol>
-                    </MDBRow>
-
-                    <MDBInput
-                      wrapperClass="mb-4"
-                      label="Guide name (Dr.P..)"
-                      id="guide-name"
-                      type="text"
-                      name="guideName"
-                      onChange={handleSignUpChange}
-                    />
-                    <MDBInput
-                      wrapperClass="mb-4"
-                      label="Contact Number"
-                      id="contact-number"
-                      type="text"
-                      name="mobileNumber"
-                      onChange={handleSignUpChange}
-                    />
-
-                    <MDBCol col="6" className="position-relative">
-                      <MDBInput
-                        wrapperClass="mb-4"
-                        label="Password"
-                        id="password-signup"
-                        type={showPassword ? "text" : "password"}
-                        name="password"
-                        onChange={handleSignUpChange}
-                      />
-                      <span
-                        className="position-absolute top-50 end-0 translate-middle-y me-3"
-                        style={{ cursor: "pointer" }}
-                        onClick={togglePasswordVisibility}
-                      >
-                        {showPassword ? "🙈" : "👁️"}
-                      </span>
-                    </MDBCol>
-
-                    <MDBCol col="6" className="position-relative">
-                      <MDBInput
-                        wrapperClass="mb-4"
-                        label="Confirm Password"
-                        id="confirm-password"
-                        type={showConfirmPassword ? "text" : "password"}
-                        name="confirmPassword"
-                        onChange={handleSignUpChange}
-                      />
-                      <span
-                        className="position-absolute top-50 end-0 translate-middle-y me-3"
-                        style={{ cursor: "pointer" }}
-                        onClick={toggleConfirmPasswordVisibility}
-                      >
-                        {showConfirmPassword ? "🙈" : "👁️"}
-                      </span>
-                    </MDBCol>
-
-                    <MDBBtn
-                      className="w-100 mb-4"
-                      size="md"
-                      type="submit"
-                      disabled={loading}
-                    >
-                      {loading ? <BeatLoader /> : "Sign Up"}
-                    </MDBBtn>
-
-                    <p>
-                      Already have an account?{" "}
-                      <span
-                        className="text-primary"
-                        style={{ cursor: "pointer" }}
-                        onClick={toggleAuthMode}
-                      >
-                        Log In
-                      </span>
-                    </p>
-                  </form>
-                </div>
-              </div>
+             
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
