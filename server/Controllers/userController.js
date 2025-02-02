@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { User,Professor} = require("../models");
+const { User,Professor,Booking} = require("../models");
 const nodemailer = require("nodemailer");
+const { Op } = require('sequelize');
 
 // const {html}=mjml2html(mjml)
 const createUser = async (req, res) => {
@@ -469,8 +470,6 @@ const userProfileDelete = async (req, res) => {
     }
 
     // Check if the user's role is the admin role (1)
-    console.log(user.role);
-    console.log(typeof user.role);
     if (user.role === "1") {
       return res
         .status(403)
@@ -768,6 +767,68 @@ const confirmUser = async (req, res) => {
   }
 };
 
+const deleteUsersByYear = async (req, res) => {
+  const { year } = req.query; 
+
+  // Validation check
+  if (!year) {
+    return res.status(400).json({ errors: ["Year is required."] });
+  }
+
+  // Validate that the year is a valid number (should be 4 digits)
+  if (isNaN(year) || year.length !== 4) {
+    return res.status(400).json({ errors: ["Invalid year format."] });
+  }
+
+  try {
+    // Calculate the start and end date for the year
+    const startOfYear = new Date(`${year}-01-01T00:00:00.000Z`);
+    const endOfYear = new Date(`${year}-12-31T23:59:59.999Z`);
+
+    // Find all users created in the given year with role 0
+    const usersToDelete = await User.findAll({
+      where: {
+        createdAt: {
+          [Op.gte]: startOfYear, 
+          [Op.lte]: endOfYear,   
+        },
+        role: 0,  
+      },
+    });
+
+    // Check if any users were found
+    if (usersToDelete.length === 0) {
+      return res.status(404).json({ errors: ["No users found for the specified year and role."] });
+    }
+
+    // Get the userIds of the users to be deleted
+    const userIdsToDelete = usersToDelete.map(user => user.userId);
+
+    // Delete bookings related to these users
+    await Booking.destroy({
+      where: {
+        userId: {
+          [Op.in]: userIdsToDelete,
+        },
+      },
+    });
+
+    // Delete the users themselves
+    await User.destroy({
+      where: {
+        userId: {
+          [Op.in]: userIdsToDelete,
+        },
+      },
+    });
+
+    // Respond with a success message
+    return res.status(200).json({ message: "Users and their booking records deleted successfully." });
+  } catch (err) {
+    console.error("Error during deletion:", err);
+    return res.status(500).json({ errors: [err.message] });
+  }
+};
 
 module.exports = {
   createUser,
@@ -779,5 +840,6 @@ module.exports = {
   userPasswordResetRequest,
   allUserFinder,
   userPasswordUpdate,
-  confirmUser
+  confirmUser,
+  deleteUsersByYear
 };

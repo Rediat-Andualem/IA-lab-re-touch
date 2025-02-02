@@ -10,7 +10,8 @@ const {
   userPasswordResetRequest,
   allUserFinder,
   userPasswordUpdate,
-  confirmUser
+  confirmUser,
+  deleteUsersByYear
 } = require("../Controllers/userController");
 // const {checkRole} = require('../middleware/CheckRole.js')
 // const {authenticateToken} = require('../Auth/Auth.js')
@@ -26,6 +27,7 @@ userRoute.post("/userPasswordResetRequest", userPasswordResetRequest);
 userRoute.post("/userPasswordReset/:userId", userPasswordUpdate);
 userRoute.get("/allUsers", allUserFinder);
 userRoute.post("/studentConfirmation/:userId", confirmUser);  
+userRoute.delete("/deleteOldRecord", deleteUsersByYear);  
 
 
 module.exports = { userRoute };
