@@ -87,7 +87,7 @@ function DashBoard() {
             </MDBCollapse>
             <MDBRow>
               <MDBCol>
-                <h3>Welcome : {auth?.userName}</h3>
+                <h5>Welcome : {auth?.userName}</h5>
                 <MDBBtn onClick={logOut} className='me-1' color='danger'>
                   LogOut
                 </MDBBtn>

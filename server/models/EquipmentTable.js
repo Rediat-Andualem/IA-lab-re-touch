@@ -49,6 +49,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: true,
     },
+    workingStatusMessage: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: "Equipment not functioning",
+    },
   }, {
     timestamps: true,
     freezeTableName: true,

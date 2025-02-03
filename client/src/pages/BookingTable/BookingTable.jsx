@@ -713,7 +713,7 @@ function BookingTable({ day, reasonForBlock }) {
     });
 
   return (
-    <div className="h-100" >
+    <div className="" >
       <Header/>
       <div className="container">
         <table  {...getTableProps()}>
@@ -800,7 +800,7 @@ function BookingTable({ day, reasonForBlock }) {
           Continue
         </MDBBtn>
       </div>
-      {bookings.length > 0 && (
+      {/* {bookings.length > 0 && (
         <div className="booking-summary">
           <h3>Booking Summary</h3>
           {bookings.map((booking, index) => (
@@ -811,7 +811,7 @@ function BookingTable({ day, reasonForBlock }) {
             </div>
           ))}
         </div>
-      )}
+      )} */}
     </div>
   );
 }
