@@ -44,9 +44,7 @@ react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
         FINALLY DO CLEANUP ON THE CODE SPECAILLY IN FRONTEND NAMING AND FLOW .. (REFACTOR)
 ------------------------------      
         admin
-            see all users , delete users individually (except super admin)
-            do clean up based on year 
-            grant privileges to users   
+            alter equipment availability
         studetn dashboard 
             see all bookings  and make complete if its successful done, 
             and make booking 
@@ -56,3 +54,6 @@ react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
             see there students list and booking 
             remove the student from there lab list 
  --------------------------------       
+
+
+ፕሮፌሰር ቴብል ላይ ያው ከበድ ያለ ነገር ገጥሞኛል እና ያለው አማረጭ እአራስችን መዝግበን እራሳችን ፓስወርድ ሰጥተን እራሳችን እሜል እንልክላቸዋልነ ከነ ክሪደንሻል እና ናቪጌት አርገው ገብተው እሚያዩበትን ሊንክ እንዲሁም ፓስወርድ አፕዴት ሚያረጉበትን መንገድ ጭምር ከዛ በነሱ ክሪደንሻል ያው  ያሉትን ተማሪዎቻቸውን እና መደለት እንዲችሉ እንዲሁም ከነ ብኪንጊቻቸው እናሳያቸዋለነ ማለት ነው , ኢሜእል ላይ ማለትም ሪጂስተር ካረጉ ባእኋላ ለፕሮፌሰሮቹ ሚላከው ላየ የ ሎጊን ፓገ ሊንክ ማካተት አትርሳ

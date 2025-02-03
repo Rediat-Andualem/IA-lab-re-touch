@@ -105,26 +105,17 @@ if (!emailRegex.test(trimmedEmail)) {
       where: { professorId: guideId },
       attributes: ['email'],
     });
- 
-
+ let guideEmailAddress = guideEmail.email
 // Create a password reset link
 const resetLink = `http://${process.env.FRONTEND_URL}/studentConfirmation/${user.userId}`
 
 
 // Send email asynchronously
 const sendEmail = async () => {
-  // let mailSender = nodemailer.createTransport({
-  //   service: "gmail",
-  //   port: 465,
-  //   auth: {
-  //     user: process.env.EMAIL_USER,
-  //     pass: process.env.EMAIL_PASS,
-  //   },
-  // });
   const mailSender = nodemailer.createTransport({
     service: "gmail",
     port: 465,
-    secure: true, // Use SSL
+    secure: true, 
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
@@ -135,9 +126,10 @@ const sendEmail = async () => {
   });
   
 
+
   const details = {
     from: process.env.EMAIL_USER,
-    to: user.email,
+    to: guideEmailAddress,
     subject: `${user.firstName} is requesting to access IA lab booking portal`,
     html: `
       <!DOCTYPE html>
@@ -768,8 +760,8 @@ const confirmUser = async (req, res) => {
 };
 
 const deleteUsersByYear = async (req, res) => {
-  const { year } = req.query; 
-
+  const { year } = req.body;
+   console.log(year)
   // Validation check
   if (!year) {
     return res.status(400).json({ errors: ["Year is required."] });
@@ -785,20 +777,22 @@ const deleteUsersByYear = async (req, res) => {
     const startOfYear = new Date(`${year}-01-01T00:00:00.000Z`);
     const endOfYear = new Date(`${year}-12-31T23:59:59.999Z`);
 
-    // Find all users created in the given year with role 0
+    // Find all users created in the given year excluding roles 3 and 4
     const usersToDelete = await User.findAll({
       where: {
         createdAt: {
-          [Op.gte]: startOfYear, 
-          [Op.lte]: endOfYear,   
+          [Op.gte]: startOfYear,
+          [Op.lte]: endOfYear,
         },
-        role: 0,  
+        role: {
+          [Op.notIn]: [3, 4],  // Exclude roles 3 and 4
+        },
       },
     });
 
     // Check if any users were found
     if (usersToDelete.length === 0) {
-      return res.status(404).json({ errors: ["No users found for the specified year and role."] });
+      return res.status(404).json({ errors: ["No users found for the specified year and roles."] });
     }
 
     // Get the userIds of the users to be deleted
@@ -829,6 +823,7 @@ const deleteUsersByYear = async (req, res) => {
     return res.status(500).json({ errors: [err.message] });
   }
 };
+
 
 module.exports = {
   createUser,

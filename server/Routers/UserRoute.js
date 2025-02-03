@@ -27,7 +27,7 @@ userRoute.post("/userPasswordResetRequest", userPasswordResetRequest);
 userRoute.post("/userPasswordReset/:userId", userPasswordUpdate);
 userRoute.get("/allUsers", allUserFinder);
 userRoute.post("/studentConfirmation/:userId", confirmUser);  
-userRoute.delete("/deleteOldRecord", deleteUsersByYear);  
+userRoute.post("/deleteOldRecord", deleteUsersByYear);  
 
 
 module.exports = { userRoute };

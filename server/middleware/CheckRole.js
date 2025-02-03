@@ -17,3 +17,4 @@ module.exports = {checkRole};
 // 2  TA
 // 3  admin 
 // 4  super-admin
+// 5   professor
