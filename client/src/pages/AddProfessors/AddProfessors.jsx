@@ -24,7 +24,8 @@ function AddProfessors() {
     lastName: "",
     email: "",
     labName: "",
-    labRoomNumber: ""
+    labRoomNumber: "",
+    password:""
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,6 +39,7 @@ function AddProfessors() {
       setHandleSuccess(response?.data.message);
       getProfessorsDetail()
     } catch (error) {
+      console.log(error)
       setHandleError(error.response.data.errors[0]);
     } finally {
       setLoading(false);
@@ -72,12 +74,15 @@ function AddProfessors() {
           return { ...pre, labRoomNumber: e.target.value };
         });
         break;
+      case "password":
+        setProfData((pre) => {
+          return { ...pre, password: e.target.value };
+        });
+        break;
       default:
         break;
     }
   };
-
-
 
    const getProfessorsDetail = async () => {
       try {
@@ -135,7 +140,7 @@ function AddProfessors() {
           <MDBCard className="">
             <MDBCardBody
               className="p-5 position-relative overflow-hidden"
-              style={{ height: "550px" }}
+              style={{ height: "600px" }}
             >
             <div
                 className="form-transition-container"
@@ -160,7 +165,7 @@ function AddProfessors() {
                     <h2 className="mb-4">Insert Profile Details </h2>
                     <MDBInput
                       wrapperClass="mb-4"
-                      label="First name (Eg. Dr.Rama)"
+                      label="First name"
                       id="email-login"
                       type="text"
                       name="firstName"
@@ -182,6 +187,14 @@ function AddProfessors() {
                       name="email"
                       onChange={handleProfessorDetails}
                     />
+                     <MDBInput
+                      wrapperClass="mb-4"
+                      label="password"
+                      id="email-login"
+                      type="text"
+                      name="password"
+                      onChange={handleProfessorDetails}
+                    />
                     <MDBInput
                       wrapperClass="mb-4"
                       label="Lab name"
@@ -198,7 +211,6 @@ function AddProfessors() {
                       name="labRoomNumber"
                       onChange={handleProfessorDetails}
                     />
-                    
                     <MDBBtn
                       className="w-100 mb-4"
                       size="md"
@@ -210,8 +222,6 @@ function AddProfessors() {
                   </form>
                 </div>
               </div>
-
-             
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
@@ -228,17 +238,16 @@ function AddProfessors() {
         <div className={`${classes.equipment_item} col-12 col-md-3`}>
           <strong>Prof. Last Name:</strong> {singleProfessor?.lastName}
         </div>
-        <div className={`${classes.equipment_item} col-12 col-md-4 ${classes.guideline}`}>
+        <div className={`${classes.equipment_item} col-12 col-md-3 ${classes.guideline}`}>
           <strong>Prof. email:</strong> {singleProfessor?.email}
         </div>
-        <div className={`${classes.equipment_item} col-12 col-md-2`}>
-          <strong>Prof. Lab Name::</strong> {singleProfessor?.labName}
-        </div>
+     
         <div className={`${classes.equipment_item} col-12 col-md-2`}>
           <strong>Prof. lab room number:</strong> {singleProfessor?.labRoomNumber}
         </div>
-        
-
+        <div className={`${classes.equipment_item} col-12 col-md-2`}>
+          <strong>Prof. Lab Name:</strong> {singleProfessor?.labName}
+        </div>
         <div>
           <Button className="m-4" onClick={() => toDelete(singleProfessor?.professorId)} variant="danger">
             Delete Prof. profile

@@ -260,8 +260,8 @@ const createProfessorProfile = async (req, res) => {
   if (
     !validateField(
       trimmedFirstName,
-      'First name must start with "Dr." followed by a valid name(alphabet only) without spaces. Example: "Dr.George".',
-      /^Dr\.[A-Za-z]+$/
+      "Last name must contain only letters.",
+       /^[A-Za-z]+$/
     )
   ) return;
 
