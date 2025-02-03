@@ -313,6 +313,7 @@ function UserRoleUpdater() {
                   <option value="1">Operator</option>
                   <option value="2">TA</option>
                   <option value="3">Admin</option>
+                  <option value="5">Professor</option>
                 </select>
 
                 <MDBBtn className="w-100 mb-4" size="md" type="submit" disabled={loading}>

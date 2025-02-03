@@ -13,8 +13,11 @@ import AddProfessors from "./pages/AddProfessors/AddProfessors.jsx";
 import VerifyRequest from "./pages/verifyRequestPage/VerifyRequest.jsx";
 import StudentConfirmation from "./pages/StudentConfirmation/StudentConfirmation.jsx";
 import UserRoleUpdater from "./pages/userRoleUpdator/UserRoleUpdater.jsx";
+import ListOfUsers from "./pages/ListOfUsersForAdmin/ListOfUsers.jsx";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { useNavigate } from "react-router-dom";
+import DeleteRecords from "./pages/deleteOldRecords/DeleteRecords.jsx";
+import ProfessorDashboard from "./pages/ProffesorsDashboard/ProfessorDashboard.jsx"
 function App() {
   const auth = useAuthUser();
   const navigate = useNavigate();
@@ -73,7 +76,38 @@ function App() {
           path="/studentConfirmation/:userId"
           element={<StudentConfirmation />}
         />
-        <Route path="/userRoleUpdate" element={<UserRoleUpdater />} />
+        <Route
+          path="/userRoleUpdate"
+          element={
+            <LayOut showHeader={true} showFooter={true}>
+              <UserRoleUpdater />
+            </LayOut>
+          }
+        />
+        <Route
+          path="/ListOfAllUsers"
+          element={
+            <LayOut showHeader={true} showFooter={true}>
+              <ListOfUsers />
+            </LayOut>
+          }
+        />
+        <Route
+          path="/deleteOldData"
+          element={
+            <LayOut showHeader={true} showFooter={true}>
+              <DeleteRecords />
+            </LayOut>
+          }
+        />
+        <Route
+          path="/ProfessorDashboard"
+          element={
+            <LayOut showHeader={true} showFooter={true}>
+              <ProfessorDashboard />
+            </LayOut>
+          }
+        />
         <Route path="/*" element={<PageNotFound />} />
       </Routes>
     </>
