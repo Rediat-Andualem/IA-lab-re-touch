@@ -39,9 +39,9 @@ module.exports = (sequelize, DataTypes) => {
         'Book',
         'Booked',
         'Public Holiday',
-        'Booked for other department',
-        'Booked for professor',
-        'Equipment under maintenance'
+        'Equipment Not Working',
+        'Professor Booking',
+        'External User'
       ),
       allowNull: false,
       defaultValue: 'Book',

@@ -48,6 +48,7 @@ db.syncTablesInOrder = async () => {
     await db.Professor.sync({ alter: true });
     await db.Booking.sync({ alter: true });
     await db.Result.sync({ alter: true });
+    await db.Blocking.sync({ alter: true });
     console.log('Tables created in order successfully');
   } catch (error) {
     console.error('Error syncing tables:', error);
