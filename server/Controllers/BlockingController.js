@@ -100,7 +100,6 @@ const DeleteBlocking = async (req, res) => {
     try {
       // Retrieve all blocking records from the database
       const allBlockingRecords = await Blocking.findAll();
-  
       // Check if no records were found
       if (allBlockingRecords.length === 0) {
         return res.status(404).json({ errors: ["No blocking records found."] });

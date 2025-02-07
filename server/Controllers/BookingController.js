@@ -1,19 +1,28 @@
-const { Equipment } = require('../models');
-const { Booking } = require('../models');
 
+const { Equipment ,Booking,User } = require('../models');
 const bookEquipment = async (req, res) => {
   const { bookings, bookingsCount, equipmentId, userID } = req.body;
+  console.log(bookings.length)
   try {
     // Check if equipment exists
     const equipment = await Equipment.findOne({ where: { equipmentId } });
+    const {guideId} = await User.findOne({ where: { userID } });
+    const bookingDoneByProfessor = await Booking.count({
+      where: {
+        equipmentId: equipmentId,
+        guideId: guideId
+      }
+    });
+
+
 
     if (!equipment) {
       return res.status(404).json({ message: "Equipment not found." });
     }
 
     // Check maxBookingsPerTwoWeeks limit
-    if (parseInt(bookingsCount, 10) > parseInt(equipment.maxBookingsPerTwoWeeks, 10)) {
-      return res.status(400).json({ message: "Your booking exceeds the maximum limits." });
+    if (parseInt(bookingDoneByProfessor, 10) > parseInt(equipment.maxBookingsPerTwoWeeks, 10)) {
+      return res.status(201).json({ message: "Faculty quota exhausted" });
     }
 
     // Ensure bookings is a valid array
@@ -39,6 +48,7 @@ const bookEquipment = async (req, res) => {
       slotTime: booking.timeSlot,
       slotDate: booking.slotDate,
       bookingStatus: "Booked",
+      guideId
     }));
 
     // Insert bookings into the database
@@ -53,6 +63,9 @@ const bookEquipment = async (req, res) => {
 
  
 //  to get booked slot based on equipment ID 
+
+
+
 
 const getBookingById = async (req,res)=>{
   const {equipmentId} = req.params

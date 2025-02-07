@@ -90,34 +90,35 @@ const addEquipment = async (req, res) => {
 };
 
 //  update inserted equipments based on availability 
-const updateEquipment = async (req, res) => {
-    const { equipmentId} = req.params; // The ID of the equipment to update
-    const updates = req.body; // Fields to update
-  
-    try {
-      // Find the equipment by ID
-      const equipment = await Equipment.findByPk(equipmentId);
-  
-      if (!equipment) {
-        return res.status(404).json({
-          message: 'Equipment not found',
-        });
-      }
-  
-      // Update only the provided fields
-      await equipment.update(updates);
-  
-      res.status(200).json({
-        message: 'Equipment updated successfully',
-        data: equipment,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Failed to update equipment',
-        error: error.message,
+const updateEquipmentWorkingStatus = async (req, res) => {
+  const { equipmentId } = req.params; 
+  const { workingStatus } = req.body; 
+
+  try {
+    // Find the equipment by ID
+    const equipment = await Equipment.findByPk(equipmentId);
+
+    if (!equipment) {
+      return res.status(404).json({
+        message: 'Equipment not found',
       });
     }
-  };
+
+    // Update the workingStatus field
+    await equipment.update({ workingStatus });
+
+    res.status(200).json({
+      message: 'Equipment working status updated successfully',
+      data: equipment,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Failed to update equipment working status',
+      error: error.message,
+    });
+  }
+};
+
 
 // get all equipments 
 const getAllEquipments = async (req, res) => {
@@ -213,4 +214,4 @@ const deleteEquipment = async (req, res) => {
   };
   
 
-  module.exports = { addEquipment,updateEquipment,getAllEquipments,getEquipmentById,deleteEquipment,getOperator };
+  module.exports = { addEquipment,updateEquipmentWorkingStatus,getAllEquipments,getEquipmentById,deleteEquipment,getOperator };

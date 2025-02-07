@@ -22,6 +22,14 @@ module.exports = (sequelize, DataTypes) => {
         key: 'equipmentId',
       },
     },
+    guideId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'Professor', 
+        key: 'professorId',
+      },
+    },
     bookedDate: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -63,6 +71,7 @@ module.exports = (sequelize, DataTypes) => {
   Booking.associate = models => {
     Booking.belongsTo(models.User, { foreignKey: 'userId', onDelete: 'CASCADE' });
     Booking.belongsTo(models.Equipment, { foreignKey: 'equipmentId', onDelete: 'CASCADE' });
+    Booking.belongsTo(models.Professor, { foreignKey: 'professorId', onDelete: 'CASCADE' });
   };
 
   return Booking;
