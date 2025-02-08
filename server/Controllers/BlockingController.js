@@ -49,11 +49,11 @@ const BlockingInputs = async (req, res) => {
 
 
 const DeleteBlocking = async (req, res) => {
-    const { blockingId, role } = req.params;
+    const { blockingId} = req.params;
   
     // Validation checks
-    if (!blockingId || !role) {
-      return res.status(400).json({ errors: ["Blocking ID and role are required"] });
+    if (!blockingId) {
+      return res.status(400).json({ errors: ["Blocking ID  required"] });
     }
   
     try {
@@ -65,12 +65,6 @@ const DeleteBlocking = async (req, res) => {
         return res.status(404).json({ errors: ["Blocking Date not found."] });
       }
   
-      // Check if the user's role is an admin role
-      if (role !== "1" && role !== "3" && role !== "4") {
-        return res
-          .status(403)
-          .json({ errors: ["Only admin can delete Blocking"] });
-      }
   
       // Perform the deletion of the specific blocking entry
       await Blocking.destroy({

@@ -3,7 +3,7 @@ const {BlockingInputs,DeleteBlocking,GetAllBlocking} = require('../Controllers/B
 const BlockingRouter = express.Router();
 
 BlockingRouter.post('/createBlocking', BlockingInputs);
-BlockingRouter.delete('/deleteBlocking/:blockingId/:role',DeleteBlocking );
+BlockingRouter.delete('/deleteBlocking/:blockingId',DeleteBlocking );
 BlockingRouter.get('/getAllBlocking',GetAllBlocking );
 
 
