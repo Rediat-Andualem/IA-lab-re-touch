@@ -1,23 +1,35 @@
-// import React, { useEffect, useMemo, useState } from "react";
-// import { useTable } from "react-table";
-// import { axiosInstance } from "../../Utility/urlInstance";
-// import "./BookingTable.css";
-// import { MDBBtn } from "mdb-react-ui-kit";
-// import { useLocation } from "react-router-dom";
-// import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-// import Header from "../../components/Header/Header"
+import React, { useEffect, useMemo, useState } from "react";
+import { useTable } from "react-table";
+import { axiosInstance } from "../../Utility/urlInstance";
+import "./BookingTable.css";
+import { MDBBtn } from "mdb-react-ui-kit";
+import { useLocation } from "react-router-dom";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import Header from "../../components/Header/Header"
 
 
 // function BookingTable({ day, reasonForBlock }) {
 //   const [bookedCells, setBookedCells] = useState({});
 //   const [bookings, setBookings] = useState([]);
-//   const [blockedSlots, setBlockedSlots] = useState({}); // For storing fetched data
+//   const [blockedSlots, setBlockedSlots] = useState([]); 
+//   const [blockingData, setBlockingData] = useState({
+//     joinedDate: "", 
+//     blockingMessage: ""
+//   });
+  
 //   const auth = useAuthUser();
 //   const userID = auth.userId;
 
 //   const location = useLocation();
 //   const queryParams = new URLSearchParams(location.search);
 //   const equipmentId = queryParams.get("equipmentId");
+
+//   useEffect(() => {
+//     if (equipmentId) {
+//       fetchBookingStatus();
+//       fetchBlockingStatus();  
+//     }
+//   }, [equipmentId]);
 
 //   const startDate = useMemo(() => {
 //     const today = new Date();
@@ -78,22 +90,31 @@
    
 // const fetchBlockingStatus = async () => {
 //   try {
-//     const response = await axiosInstance.get(`/blocking/getAllBlocking`); 
-//     const blockingData = response.data; 
-//     // Transform the data for easier lookup
-//     let joinedDate = `${blockingData.blockingDay} ${blockingData.blockingNumber}`;
-//     let blockingMessage = blockingData.blockingMessage
+//     const response = await axiosInstance.get(`/blocking/getAllBlocking`);  
+//     const blockingData = response?.data?.data; 
 
+
+//     // Ensure the data is always treated as an array
+//     if (Array.isArray(blockingData)) {
+//       setBlockingData(blockingData); 
+
+//     } else {
+//       console.error("Expected blocking data to be an array");
+//     }
 //   } catch (error) {
-//     console.error("Error fetching blocking status:", error);
+//     if(error?.response.data.errors[0]==="No blocking records found.")
+//       setBlockingData({
+//         joinedDate: "", 
+//         blockingMessage: ""
+//       });
 //   }
 // };
 
 
 
-//   useEffect(() => {
-//     if (equipmentId) fetchBookingStatus();
-//   }, [equipmentId]);
+
+
+
 
 //   const parseTime = (time) => {
 //     const [hour, modifier] = time.match(/\d+|AM|PM/g);
@@ -132,36 +153,72 @@
 //     ]);
 //   };
 
+//   // const handleSubmit = async () => {
+//   //   if (!equipmentId) {
+//   //     alert("Problem with selecting equipment. Please try again.");
+//   //     return;
+//   //   }
+
+//   //   if (bookings.length === 0) {
+//   //     alert("No bookings selected!");
+//   //     return;
+//   //   }
+
+//   //   const payload = {
+//   //     equipmentId,
+//   //     bookingsCount: bookings.length,
+//   //     bookings,
+//   //     userID,
+//   //   };
+//   //   console.log(payload)
+
+//   //   try {
+//   //     const response = await axiosInstance.post(
+//   //       "/booking/equipmentBookings",
+//   //       payload
+//   //     );
+//   //     alert(response?.data.message);
+  
+//   //     fetchBookingStatus();
+//   //   } catch (error) {
+//   //     console.error("Error submitting booking:", error);
+//   //     alert("Error submitting booking.");
+//   //   }
+//   // };
+
 //   const handleSubmit = async () => {
 //     if (!equipmentId) {
 //       alert("Problem with selecting equipment. Please try again.");
 //       return;
 //     }
-
+  
 //     if (bookings.length === 0) {
 //       alert("No bookings selected!");
 //       return;
 //     }
-
+  
 //     const payload = {
 //       equipmentId,
 //       bookingsCount: bookings.length,
 //       bookings,
 //       userID,
 //     };
-
+  
 //     try {
-//       const response = await axiosInstance.post(
-//         "/booking/equipmentBookings",
-//         payload
-//       );
-//       alert("Booking submitted successfully!");
-//       fetchBookingStatus();
+//       const response = await axiosInstance.post("/booking/equipmentBookings", payload);
+//       alert(response?.data.message);
+  
+//       // Clear the selected bookings and booked cells after successful submission
+//       setBookings([]); // Reset bookings
+//       setBookedCells({}); // Reset booked cells to allow new selections
+  
+//       fetchBookingStatus(); // Refresh the booking status to show the latest availability
 //     } catch (error) {
 //       console.error("Error submitting booking:", error);
 //       alert("Error submitting booking.");
 //     }
 //   };
+  
 
 //   const columns = useMemo(() => {
 //     return [
@@ -199,73 +256,106 @@
 //               </tr>
 //             ))}
 //           </thead>
-//           <tbody  {...getTableBodyProps()}>
-//             {rows.map((row) => {
-//               prepareRow(row);
-//               return (
-//                 <tr {...row.getRowProps()}>
-//                   {row?.cells.map((cell, cellIndex) => {
-//                     const time = row.values.Time;
-//                     const dayIndex = cellIndex - 1;
-//                     const isTimeColumn = cell.column.id === "Time";
-//                     const dayDate = daysOfWeek[dayIndex];
-//                     const cellKey = `${time}-${dayDate?.toLocaleDateString()}`;
-//                     const bookingStatus = blockedSlots[cellKey];
-//                     const isBlocked = !!bookingStatus;
+//           <tbody {...getTableBodyProps()}>
+//   {rows.map((row) => {
+//     prepareRow(row);
+//     return (
+//       <tr {...row.getRowProps()}>
+//         {row?.cells.map((cell, cellIndex) => {
+//           const time = row.values.Time;
+//           const dayIndex = cellIndex - 1;
+//           const isTimeColumn = cell.column.id === "Time";
+//           const dayDate = daysOfWeek[dayIndex];
+//           const cellKey = `${time}-${dayDate?.toLocaleDateString()}`;
+//           const bookingStatus = blockedSlots[cellKey];
+//           const isBlocked = !!bookingStatus;
 
-//                     let cellStyle = {};
-//                     let cellText = cell.value;
+//           let cellStyle = {};
+//           let cellText = cell.value;
 
-//                     if (isTimeColumn) {
-//                       cellStyle = { backgroundColor: "#0A7075", color: "white" };
-//                     } else if (dayDate) {
-//                       const dayOfWeek = dayDate.getDay();
+//           // Ensure blockingData is available and is an array
+//           if (Array.isArray(blockingData) && dayDate) {
+//             // Check if any blocking record matches the current day
+//             const isBlockedByAny = blockingData.some((block) => {
+//               // Create a date string from blockingDay and blockingNumber
+//               const blockedDate = `${block.blockingDay} ${block.blockingNumber}`;
+//               const blockDateObj = new Date(`${blockedDate} 2025`); // Add year for completeness
+//               return blockDateObj.toLocaleDateString() === dayDate.toLocaleDateString();
+//             });
 
-//                       if (dayOfWeek === 6 || dayOfWeek === 0) {
-//                         // Weekend styling
-//                         cellStyle = {
-//                           backgroundColor: "#54162B",
-//                           color: "white",
-//                           cursor: "not-allowed",
-//                         };
-//                         cellText = "Holiday";
-//                       } else if (isPastTimeSlot(time, dayDate) && !isBlocked) {
-//                         // Closed without booking styling
-//                         cellStyle = {
-//                           backgroundColor: "black",
-//                           color: "white",
-//                           cursor: "not-allowed",
-//                         };
-//                         cellText = "Closed without booking";
-//                       } else if (isBlocked) {
-//                         // Blocked slot styling
-//                         cellStyle = {
-//                           backgroundColor: "lightcoral",
-//                           color: "white",
-//                           cursor: "not-allowed",
-//                         };
-//                         cellText = bookingStatus;
-//                       }
-//                     }
+//             if (isBlockedByAny) {
+//               const blockingRecord = blockingData.find((block) => {
+//                 const blockedDate = `${block.blockingDay} ${block.blockingNumber}`;
+//                 const blockDateObj = new Date(`${blockedDate} 2025`); // Add year for completeness
+//                 return blockDateObj.toLocaleDateString() === dayDate.toLocaleDateString();
+//               });
 
-//                     return (
-//                       <td
-//                         {...cell.getCellProps()}
-//                         style={cellStyle}
-//                         onClick={() => {
-//                           if (!isTimeColumn && !isBlocked && cellText !== "Holiday" && cellText !== "Closed without booking") {
-//                             handleCellClick(time, dayIndex);
-//                           }
-//                         }}
-//                       >
-//                         {cellText}
-//                       </td>
-//                     );
-//                   })}
-//                 </tr>
-//               );
-//             })}
-//           </tbody>
+//               cellStyle = {
+//                 backgroundColor: "lightcoral",
+//                 color: "white",
+//                 cursor: "not-allowed",
+//               };
+//               cellText = blockingRecord?.blockingMessage || "Blocked";  // Display the blocking message
+//             }
+//           }
+
+//           // Apply styles for weekends and other conditions
+//           if (isTimeColumn) {
+//             cellStyle = { backgroundColor: "#0A7075", color: "white" };
+//           } else if (dayDate) {
+//             const dayOfWeek = dayDate.getDay();
+
+//             // Apply styles for weekends
+//             if (dayOfWeek === 6 || dayOfWeek === 0) {
+//               cellStyle = {
+//                 backgroundColor: "#54162B",
+//                 color: "white",
+//                 cursor: "not-allowed",
+//               };
+//               cellText = "Holiday";
+//             }
+//             // Apply styles for past time slots
+//             else if (isPastTimeSlot(time, dayDate) && !isBlocked) {
+//               cellStyle = {
+//                 backgroundColor: "black",
+//                 color: "white",
+//                 cursor: "not-allowed",
+//               };
+//               cellText = "Closed without booking";
+//             } 
+//             // Apply styles for booked slots
+//             else if (isBlocked) {
+//               cellStyle = {
+//                 backgroundColor: "lightcoral",
+//                 color: "white",
+//                 cursor: "not-allowed",
+//               };
+//               cellText = bookingStatus;
+//             }
+//           }
+
+//           return (
+//             <td
+//               {...cell.getCellProps()}
+//               style={cellStyle}
+//               onClick={() => {
+//                 if (!isTimeColumn && !isBlocked && cellText !== "Holiday" && cellText !== "Closed without booking") {
+//                   handleCellClick(time, dayIndex);
+//                 }
+//               }}
+//             >
+//               {cellText}
+//             </td>
+//           );
+//         })}
+//       </tr>
+//     );
+//   })}
+// </tbody>
+
+
+
+
 //         </table>
 //         <MDBBtn className="m-2" color="success" onClick={handleSubmit}>
 //           Continue
@@ -286,26 +376,10 @@
 //     </div>
 //   );
 // }
-
-
-// export default BookingTable;
-//* --------------------------------------------------
-
-
-import React, { useEffect, useMemo, useState } from "react";
-import { useTable } from "react-table";
-import { axiosInstance } from "../../Utility/urlInstance";
-import "./BookingTable.css";
-import { MDBBtn } from "mdb-react-ui-kit";
-import { useLocation } from "react-router-dom";
-import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-import Header from "../../components/Header/Header"
-
-
 function BookingTable({ day, reasonForBlock }) {
   const [bookedCells, setBookedCells] = useState({});
   const [bookings, setBookings] = useState([]);
-  const [blockedSlots, setBlockedSlots] = useState({}); // For storing fetched data
+  const [blockedSlots, setBlockedSlots] = useState([]); 
   const [blockingData, setBlockingData] = useState({
     joinedDate: "", 
     blockingMessage: ""
@@ -317,6 +391,13 @@ function BookingTable({ day, reasonForBlock }) {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const equipmentId = queryParams.get("equipmentId");
+
+  useEffect(() => {
+    if (equipmentId) {
+      fetchBookingStatus();
+      fetchBlockingStatus();  
+    }
+  }, [equipmentId]);
 
   const startDate = useMemo(() => {
     const today = new Date();
@@ -377,18 +458,20 @@ function BookingTable({ day, reasonForBlock }) {
    
 const fetchBlockingStatus = async () => {
   try {
-    const response = await axiosInstance.get(`/blocking/getAllBlocking`);
-    const blockingData = response?.data?.data; // Make sure data is in the right format
+    const response = await axiosInstance.get(`/blocking/getAllBlocking`);  
+    const blockingData = response?.data?.data; 
 
     // Ensure the data is always treated as an array
     if (Array.isArray(blockingData)) {
-      setBlockingData(blockingData); // Store the array of blocking records
-      console.log("Blocking data fetched successfully:", blockingData);  // Debug log
+      setBlockingData(blockingData); 
     } else {
       console.error("Expected blocking data to be an array");
+      setBlockingData([]); // fallback in case of error
     }
   } catch (error) {
-    console.error("Error fetching blocking status:", error);
+    if (error?.response.data.errors[0] === "No blocking records found.") {
+      setBlockingData([]);
+    }
   }
 };
 
@@ -396,12 +479,7 @@ const fetchBlockingStatus = async () => {
 
 
 
-useEffect(() => {
-  if (equipmentId) {
-    fetchBookingStatus();
-    fetchBlockingStatus();  // Fetch blocking status as well
-  }
-}, [equipmentId]);
+
 
 
   const parseTime = (time) => {
@@ -441,36 +519,40 @@ useEffect(() => {
     ]);
   };
 
+
   const handleSubmit = async () => {
     if (!equipmentId) {
       alert("Problem with selecting equipment. Please try again.");
       return;
     }
-
+  
     if (bookings.length === 0) {
       alert("No bookings selected!");
       return;
     }
-
+  
     const payload = {
       equipmentId,
       bookingsCount: bookings.length,
       bookings,
       userID,
     };
-
+  
     try {
-      const response = await axiosInstance.post(
-        "/booking/equipmentBookings",
-        payload
-      );
-      alert("Booking submitted successfully!");
-      fetchBookingStatus();
+      const response = await axiosInstance.post("/booking/equipmentBookings", payload);
+      alert(response?.data.message);
+  
+      // Clear the selected bookings and booked cells after successful submission
+      setBookings([]); // Reset bookings
+      setBookedCells({}); // Reset booked cells to allow new selections
+  
+      fetchBookingStatus(); // Refresh the booking status to show the latest availability
     } catch (error) {
       console.error("Error submitting booking:", error);
       alert("Error submitting booking.");
     }
   };
+  
 
   const columns = useMemo(() => {
     return [
@@ -526,30 +608,34 @@ useEffect(() => {
           let cellText = cell.value;
 
           // Ensure blockingData is available and is an array
-          if (Array.isArray(blockingData) && dayDate) {
-            // Check if any blocking record matches the current day
-            const isBlockedByAny = blockingData.some((block) => {
-              // Create a date string from blockingDay and blockingNumber
-              const blockedDate = `${block.blockingDay} ${block.blockingNumber}`;
-              const blockDateObj = new Date(`${blockedDate} 2025`); // Add year for completeness
-              return blockDateObj.toLocaleDateString() === dayDate.toLocaleDateString();
-            });
+           // Inside your map block checking logic, update the date comparison:
 
-            if (isBlockedByAny) {
-              const blockingRecord = blockingData.find((block) => {
-                const blockedDate = `${block.blockingDay} ${block.blockingNumber}`;
-                const blockDateObj = new Date(`${blockedDate} 2025`); // Add year for completeness
-                return blockDateObj.toLocaleDateString() === dayDate.toLocaleDateString();
-              });
+if (Array.isArray(blockingData) && dayDate) {
+  // Check if any blocking record matches the current day
+  const isBlockedByAny = blockingData.some((block) => {
+    const currentYear = new Date().getFullYear(); // Get the current year
+    const blockedDate = `${block.blockingMonth} ${block.blockingNumber} ${currentYear}`;
+    const blockDateObj = new Date(blockedDate); // Construct the blocked date using the current year
+    return blockDateObj.toLocaleDateString() === dayDate.toLocaleDateString(); // Compare with the current day
+  });
 
-              cellStyle = {
-                backgroundColor: "lightcoral",
-                color: "white",
-                cursor: "not-allowed",
-              };
-              cellText = blockingRecord?.blockingMessage || "Blocked";  // Display the blocking message
-            }
-          }
+  if (isBlockedByAny) {
+    const blockingRecord = blockingData.find((block) => {
+      const currentYear = new Date().getFullYear(); // Get the current year
+      const blockedDate = `${block.blockingMonth} ${block.blockingNumber} ${currentYear}`;
+      const blockDateObj = new Date(blockedDate);
+      return blockDateObj.toLocaleDateString() === dayDate.toLocaleDateString();
+    });
+
+    cellStyle = {
+      backgroundColor: "lightcoral",
+      color: "white",
+      cursor: "not-allowed",
+    };
+    cellText = blockingRecord?.blockingMessage || "Blocked";  // Display the blocking message
+  }
+}
+
 
           // Apply styles for weekends and other conditions
           if (isTimeColumn) {
@@ -628,6 +714,5 @@ useEffect(() => {
     </div>
   );
 }
-
 
 export default BookingTable;

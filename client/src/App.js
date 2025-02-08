@@ -18,6 +18,7 @@ import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { useNavigate } from "react-router-dom";
 import DeleteRecords from "./pages/deleteOldRecords/DeleteRecords.jsx";
 import ProfessorDashboard from "./pages/ProffesorsDashboard/ProfessorDashboard.jsx"
+import EquipmentBlocking from "./pages/UpdateEquipmentStatus/EquipmentBlocking.jsx";
 function App() {
   const auth = useAuthUser();
   const navigate = useNavigate();
@@ -105,6 +106,14 @@ function App() {
           element={
             <LayOut showHeader={true} showFooter={true}>
               <ProfessorDashboard />
+            </LayOut>
+          }
+        />
+        <Route
+          path="/blockBooking"
+          element={
+            <LayOut showHeader={true} showFooter={true}>
+              <EquipmentBlocking />
             </LayOut>
           }
         />

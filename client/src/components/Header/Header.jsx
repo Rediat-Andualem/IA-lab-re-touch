@@ -80,6 +80,11 @@ function DashBoard() {
                 </MDBNavbarItem>
                 <MDBNavbarItem>
                   <MDBNavbarLink className={`${classes.custom_navbar_link}`}>
+                    <Link className={`${classes.link}`}  to="/blockBooking">Block Booking</Link>
+                  </MDBNavbarLink>
+                </MDBNavbarItem>
+                <MDBNavbarItem>
+                  <MDBNavbarLink className={`${classes.custom_navbar_link}`}>
                     <Link className={`${classes.link}`} to="#">Alter Equipment Availability</Link>
                   </MDBNavbarLink>
                 </MDBNavbarItem>

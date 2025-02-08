@@ -111,11 +111,11 @@ function AddProfessors() {
         console.error("Error deleting answer:", error);
       }
     };
-    console.log(professors)
+
       useEffect(() => {
         getProfessorsDetail();
       }, []);
-    console.log(professors)
+
   return (
    <div className={classes.mainDash}>
        <MDBContainer fluid  className="p-5 container">
