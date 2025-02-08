@@ -42,7 +42,7 @@ react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
         on booking quota should be checke for a single proffesor and the booking student for blocking
         ክሊን አፕ ስታረግ ፣ ኢሜል ስትልክ ያካተትካቸውን ሊንኮች ቼክ አርጋቸው http እና ሪሌትድ ነገሮች ፕሮዳክሽን ላይ መስተካከል አለባቸው
         FINALLY DO CLEANUP ON THE CODE SPECAILLY IN FRONTEND NAMING AND FLOW .. (REFACTOR)
-        የቀኖችን ማስወጣት ከምርጫ ውስጥ ማለት ነው ፣ የሚያስችለውን ፍሮንት ኢንድ መስራት (dropdown new mehonew hulume maletme sostume, kenu , kuteru , ena messagu)
+         blocking laye delete marege ena masayete blocked date information 
         የቂኩፕመንት ውሮኪንግ ስታተስ አፕዴት ማረጊያውን front end meserate new drop down new mehonew , equipemnt yemertalu keza id yeyezelenale then true or false  ena true kehone meyasayewn message maskemete new false kehonem endezaw.
 ------------------------------      
         admin

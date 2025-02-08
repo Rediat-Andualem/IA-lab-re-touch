@@ -2,18 +2,15 @@ const { Blocking } = require('../models');
 // day type should be  = Feb 8  three first letter with
 
 const BlockingInputs = async (req, res) => {
-  const { blockingDay, blockingNumber, blockingMessage } = req.body;
+  const { blockingMonth, blockingNumber, blockingMessage } = req.body;
   const errors = [];
 
   // Helper function for input validation
   const validateInputs = () => {
     // Check for missing fields
-    if (!blockingDay || !blockingMessage || !blockingNumber) {
+    if (!blockingMessage || !blockingNumber || !blockingMonth) {
       errors.push("All fields are required.");
-    } else if (blockingMessage.length > 25) {
-      // Adjusted message length validation
-      errors.push("Message should be less than 25 characters including spaces.");
-    }
+    } 
   };
 
   // Run validation
@@ -27,16 +24,16 @@ const BlockingInputs = async (req, res) => {
   try {
     // Create the blocking record
     const BlockingInputsSaving = await Blocking.create({
-      blockingNumber,
-      blockingDay,
       blockingMessage,
+      blockingNumber,
+      blockingMonth,
     });
 
     return res.status(200).json({
       message: "Blocking created successfully.",
       data: {
         blockingMessage: BlockingInputsSaving.blockingMessage,
-        blockingDay: BlockingInputsSaving.blockingDay,
+        blockingMonth: BlockingInputsSaving.blockingMonth,
         blockingNumber: BlockingInputsSaving.blockingNumber,
       },
     });
