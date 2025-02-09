@@ -37,6 +37,8 @@ react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
         integrating react tost 
         ክሊን አፕ ስታረግ ፣ ኢሜል ስትልክ ያካተትካቸውን ሊንኮች ቼክ አርጋቸው http እና ሪሌትድ ነገሮች ፕሮዳክሽን ላይ መስተካከል አለባቸው
         FINALLY DO CLEANUP ON THE CODE SPECAILLY IN FRONTEND NAMING AND FLOW .. (REFACTOR)
+
+        operator rating if possible ---->
 ------------------------------      
         admin
             alter equipment availability

@@ -6,29 +6,26 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
     },
-    // bookingId: {
-    //   type: DataTypes.UUID,
-    //   allowNull: false,
-    //   references: {
-    //     model: 'Booking', // Should match the actual table name
-    //     key: 'bookingId',
-    //   },
-      
-    // },
-    
+    bookingId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
     operatorStatusConfirmation: {
       type: DataTypes.ENUM(
         'completed',
         'in progress',
         'student was absent on slot time',
         'sample issue',
-        'technical issue'
+        'technical issue',
+        'booking reserved'
       ),
       allowNull: true,
+      defaultValue: 'booking reserved',
     },
     studentConfirmation: {
-      type: DataTypes.ENUM('All Results not collected', 'All Results collected'),
+      type: DataTypes.ENUM('Results not collected', 'Results collected', ),
       allowNull: true,
+      defaultValue: 'Results not collected',
     },
     createdAt: {
       type: DataTypes.DATE,

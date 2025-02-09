@@ -1,72 +1,8 @@
 
-const { Equipment ,Booking,User } = require('../models');
-// const bookEquipment = async (req, res) => {
-//   const { bookings, bookingsCount, equipmentId, userID } = req.body;
-
-//   try {
-//     // Check if equipment exists
-//     const equipment = await Equipment.findOne({ where: { equipmentId } });
-//     const {guideId} = await User.findOne({ where: { userID } });
-//     const bookingDoneByProfessor = await Booking.count({
-//       where: {
-//         equipmentId: equipmentId,
-//         guideId: guideId
-//       }
-//     });
-
-
-
-//     if (!equipment) {
-//       return res.status(404).json({ message: "Equipment not found." });
-//     }
-
-//     // Check maxBookingsPerTwoWeeks limit
-//     if (parseInt(bookingDoneByProfessor, 10) > parseInt(equipment.maxBookingsPerTwoWeeks, 10)) {
-//       return res.status(201).json({ message: "Faculty quota exhausted" });
-//     }
-
-//     // Ensure bookings is a valid array
-//     let parsedBookings = bookings;
-//     if (typeof bookings === 'string') {
-//       try {
-//         parsedBookings = JSON.parse(bookings); // Parse if it's a stringified JSON array
-//       } catch (error) {
-//         return res.status(400).json({ message: "Invalid bookings data format." });
-//       }
-//     }
-
-//     // Check if bookings is an array after parsing
-//     if (!Array.isArray(parsedBookings)) {
-//       return res.status(400).json({ message: "Bookings must be an array." });
-//     }
-
-//     // Prepare booking data
-//     const bookingData = parsedBookings?.map((booking) => ({
-//       userId: userID,
-//       equipmentId,
-//       bookedDate: booking.bookingDate,
-//       slotTime: booking.timeSlot,
-//       slotDate: booking.slotDate,
-//       bookingStatus: "Booked",
-//       guideId
-//     }));
-
-//     // Insert bookings into the database
-//     await Booking.bulkCreate(bookingData);
-
-//     return res.status(201).json({ message: "Booking successful." });
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({ message: "An error occurred while processing the booking." });
-//   }
-// };
-
- 
-//  to get booked slot based on equipment ID 
+const { Equipment ,Booking,User,Result } = require('../models');
 
 const bookEquipment = async (req, res) => {
   const { bookings, bookingsCount, equipmentId, userID } = req.body;
-
   try {
     // Check if equipment exists
     const equipment = await Equipment.findOne({ where: { equipmentId } });
@@ -111,8 +47,27 @@ const bookEquipment = async (req, res) => {
       guideId
     }));
 
+    // await Result.map({
+    //   bookingId :bookingData.bookingId,
+    // });
     // Insert bookings into the database
-    await Booking.bulkCreate(bookingData);
+    let bookingInfoForResult = await Booking.bulkCreate(bookingData);
+// ! for inserting in result table
+// After successful creation of bookings, extract the bookingIds
+const bookingIds = bookingInfoForResult.map(booking => booking.bookingId);
+
+// Insert the bookingIds into the Result table (assumes a Result table structure with a column for bookingId)
+const resultData = bookingIds.map(bookingId => ({
+  bookingId: bookingId,  // or any other data you want to include in the Result table
+  createdAt: new Date(),
+  updatedAt: new Date(),
+}));
+
+// Bulk create the results using the extracted bookingIds
+await Result.bulkCreate(resultData);
+
+// !-------------------------------
+
 
     return res.status(201).json({ message: "Booking successful." });
   } catch (error) {
@@ -120,7 +75,6 @@ const bookEquipment = async (req, res) => {
     return res.status(500).json({ message: "An error occurred while processing the booking." });
   }
 };
-
 
 
 const getBookingById = async (req,res)=>{
@@ -133,7 +87,35 @@ const getBookingById = async (req,res)=>{
   }
 }
 
+const getStudentBooking = async (req,res)=>{
+  const {userId}=req.params
+  try {
+    // Fetch the booking history of the student, including the related equipment details
+    const bookingHistoryOfStudent = await Booking.findAll({
+      where: { userId },
+      include: {
+        model: Equipment,
+        attributes: ['equipmentName'], // Only include the equipmentName from the Equipment table
+      },
+      attributes: ['bookingId', 'bookedDate', 'slotTime', 'slotDate', 'bookingStatus'], // Only include the necessary fields from Booking
+    });
+console.log(bookingHistoryOfStudent)
+    // Respond with an empty array if no bookings are found, but still return 200 OK
+    if (bookingHistoryOfStudent.length === 0) {
+      return res.status(200).json({ message: ["No booking history found."] });
+    }
+
+    // Respond with the booking history along with the equipment name
+    return res.status(200).json({ bookingHistoryOfStudent });
+  } catch (err) {
+    if (err.name === "ValidationErrorItem") {
+      const validationErrors = err.errors.map((e) => e.message);
+      return res.status(400).json({ errors: [validationErrors.message] });
+    }
+    return res.status(500).json({ errors: [err.message] });
+  }
+}
 
 
 
-module.exports = { bookEquipment,getBookingById };
+module.exports = { bookEquipment,getBookingById,getStudentBooking };
