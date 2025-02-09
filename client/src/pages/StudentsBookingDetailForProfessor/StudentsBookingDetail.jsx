@@ -27,7 +27,7 @@ function bookingHisotryBookingDetail() {
     try {
       const res = await axiosInstance.get(`/professors/viewStudentBooking/${userId}/${professorId}`);
 
-      if (response?.status === 200) {
+      if (res?.status === 200) {
                if(res?.data.bookingHistoryOfStudent.length === 0){
                    setBookingHistory(["No booking history"])
                }

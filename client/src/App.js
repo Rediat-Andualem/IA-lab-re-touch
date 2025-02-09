@@ -24,6 +24,7 @@ import EquipmentBlocking from "./pages/BlockEquipmentSlot/EquipmentBlocking.jsx"
 import UpdateEquipStatus from "./pages/UpateEquipmentStatus/UpdateEquipStatus.jsx";
 import ProfessorLogIn from "./pages/ProfessorLogIn/ProfessorLogIn.jsx";
 import StudentsBookingDetail from "./pages/StudentsBookingDetailForProfessor/StudentsBookingDetail.jsx"
+import StudentsDashBoard from "./pages/StudentDashBoard/StudentsDashBoard.jsx"
 function App() {
   const auth = useAuthUser();
   const navigate = useNavigate();
@@ -153,6 +154,14 @@ function App() {
           element={
             <LayOut showHeader={false} showFooter={true}>
               <StudentsBookingDetail/>
+            </LayOut>
+          }
+        />
+        <Route
+          path="/myBookings"
+          element={
+            <LayOut showHeader={false} showFooter={true}>
+              <StudentsDashBoard/>
             </LayOut>
           }
         />
