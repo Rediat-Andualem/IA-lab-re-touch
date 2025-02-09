@@ -22,7 +22,8 @@ import DeleteRecords from "./pages/deleteOldRecords/DeleteRecords.jsx";
 import ProfessorDashboard from "./pages/ProffesorsDashboard/ProfessorDashboard.jsx"
 import EquipmentBlocking from "./pages/BlockEquipmentSlot/EquipmentBlocking.jsx";
 import UpdateEquipStatus from "./pages/UpateEquipmentStatus/UpdateEquipStatus.jsx";
-import ProfessorLogIn from "./pages/ProfessorLogIn/ProfessorLogIn.jsx"
+import ProfessorLogIn from "./pages/ProfessorLogIn/ProfessorLogIn.jsx";
+import StudentsBookingDetail from "./pages/StudentsBookingDetailForProfessor/StudentsBookingDetail.jsx"
 function App() {
   const auth = useAuthUser();
   const navigate = useNavigate();
@@ -144,6 +145,14 @@ function App() {
           element={
             <LayOut showHeader={false} showFooter={true}>
               <ProfessorLogIn/>
+            </LayOut>
+          }
+        />
+        <Route
+          path="/professors/viewStudentBooking/:userId/:professorId"
+          element={
+            <LayOut showHeader={false} showFooter={true}>
+              <StudentsBookingDetail/>
             </LayOut>
           }
         />

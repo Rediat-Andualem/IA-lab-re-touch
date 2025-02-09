@@ -1,4 +1,4 @@
-const { Professor } = require("../models");
+const { Professor,User,Booking,Equipment } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -454,7 +454,6 @@ const ProfessorResetRequest = async (req, res) => {
 const ProfessorPasswordUpdate = async (req, res) => {
   const { professorId	 } = req.params;
   const { newPassword } = req.body;
-console.log(professorId,newPassword)
   const errors = [];
 
   // Validate new password (as previously done)
@@ -508,7 +507,89 @@ console.log(professorId,newPassword)
 };
 
 
+const GetProfessorStudents = async (req,res)=>{
+      const {professorId}=req.params
 
-  module.exports = {
-    allProfessorsFinder,createProfessorProfile,deleteProfessor,ProfessorLogin,ProfessorResetRequest,ProfessorPasswordUpdate
+      try {
+        // Fetch all users from the database, excluding sensitive fields like password
+        const AllProfessorsStudents = await User.findAll({
+          where: { guideId: professorId },
+          attributes: { exclude: ['password'] }
+        });
+        
+        // Respond with an empty array if no users are found, but still return 200 OK
+        if (AllProfessorsStudents.length === 0) {
+          return res.status(200).json({ message: ["No Student list to show"] });
+        }
+    
+        // Respond with the list of users
+        return res.status(200).json({ AllProfessorsStudents });
+      } catch (err) {
+        if (err.name === "ValidationErrorItem") {
+          const validationErrors = err.errors.map((e) => e.message);
+          return res.status(400).json({ errors: [validationErrors.message] });
+        }
+        return res.status(500).json({ errors: [err.message] });
+      }
+}
+
+const deleteProfessorStudents = async(req, res) => {
+  const { studentId } = req.params;
+
+  try {
+    // Check if the student exists
+    const studentToDelete = await User.findByPk(studentId);
+    if (!studentToDelete) {
+      return res.status(404).json({
+        errors: ["No student with the provided ID."],
+      });
+    }
+
+    // Delete the student
+    await User.destroy({
+      where: { userId: studentId } 
+    });
+
+    return res.status(200).json({
+      message: "Student deleted successfully.",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      errors: [err.message],
+    });
+  }
+};
+
+const viewStudentBooking = async (req, res) => {
+  const { userId, guideId } = req.params;
+
+  try {
+    // Fetch the booking history of the student, including the related equipment details
+    const bookingHistoryOfStudent = await Booking.findAll({
+      where: { guideId, userId },
+      include: {
+        model: Equipment,
+        attributes: ['equipmentName'], // Only include the equipmentName from the Equipment table
+      },
+      attributes: ['bookingId', 'bookedDate', 'slotTime', 'slotDate', 'bookingStatus'], // Only include the necessary fields from Booking
+    });
+
+    // Respond with an empty array if no bookings are found, but still return 200 OK
+    if (bookingHistoryOfStudent.length === 0) {
+      return res.status(200).json({ message: ["No booking history found."] });
+    }
+
+    // Respond with the booking history along with the equipment name
+    return res.status(200).json({ bookingHistoryOfStudent });
+  } catch (err) {
+    if (err.name === "ValidationErrorItem") {
+      const validationErrors = err.errors.map((e) => e.message);
+      return res.status(400).json({ errors: [validationErrors.message] });
+    }
+    return res.status(500).json({ errors: [err.message] });
+  }
+};
+
+module.exports = {
+    allProfessorsFinder,createProfessorProfile,deleteProfessor,ProfessorLogin,ProfessorResetRequest,ProfessorPasswordUpdate,GetProfessorStudents,deleteProfessorStudents,viewStudentBooking
   };

@@ -132,7 +132,7 @@ function AddProfessors() {
             className="px-3"
             style={{ color: "#F5F5F5", textAlign: "justify" }}
           >
-               Please enter the professor's details in the designated space. Be sure to double-check the information and refer to the example provided in the label if needed.
+               Please enter the professor's details in the designated space. Be sure to double-check the information and refer to the example provided in the label if needed. . <b style={{color:"red"}}>no need to add Dr.</b> on first name as it will be automatically added.
           </h5>
         </MDBCol>
 
