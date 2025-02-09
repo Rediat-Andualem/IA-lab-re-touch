@@ -5,13 +5,13 @@ import styles from './PasswordUpdator.module.css';
 import { axiosInstance } from '../../Utility/urlInstance';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function PasswordUpdater() {
+function ProfessorPasswordUpdator() {
   const [newPassword, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [response, setResponse] = useState('');
   const [showForm, setShowForm] = useState(true); // Manage form visibility
-  const { userId } = useParams();
+  const { professorId } = useParams();
   const navigate = useNavigate(); // Use useNavigate instead of useHistory
 
   const handleSubmit = async (e) => {
@@ -21,20 +21,21 @@ function PasswordUpdater() {
       setError('Passwords do not match');
       return;
     }
-
+console.log(newPassword,confirmPassword)
     try {
-      await axiosInstance.post(`/user/userPasswordReset/${userId}`, { newPassword });
+      await axiosInstance.post(`/professors/ProfessorsPasswordReset/${professorId}`, { newPassword });
       setError('');
       setResponse('Password updated successfully!');
       setShowForm(false); // Hide form on success
 
       // Redirect to login after 3 seconds
       setTimeout(() => {
-        navigate('/login'); // Use navigate for redirection
+        navigate('/ProfessorLogin'); // Use navigate for redirection
       }, 3000);
     } catch (error) {
       console.error('Error updating password:', error);
-      setError(error?.response?.data?.errors[0]);
+      console.log(error)
+    //   setError(error?.response?.data?.errors[0]);
     }
   };
 
@@ -84,4 +85,4 @@ function PasswordUpdater() {
   );
 }
 
-export default PasswordUpdater;
+export default ProfessorPasswordUpdator;

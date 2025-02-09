@@ -3,231 +3,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
-// const createProfessorProfile = async (req, res) => {
-//   const { firstName, lastName, email, labName, password, labRoomNumber } = req.body;
-
-//   // Helper function to validate individual fields
-//   const validateField = (value, errorMessage, regex = null) => {
-//     if (!value) {
-//       res.status(400).json({ error: errorMessage });
-//       return false; // Stop execution
-//     }
-//     if (regex && !regex.test(value)) {
-//       res.status(400).json({ error: errorMessage });
-//       return false; // Stop execution
-//     }
-//     return true;
-//   };
-
-//   // Trim input values
-//   const trimmedFirstName = firstName ? firstName.trim() : "";
-//   const trimmedLastName = lastName ? lastName.trim() : "";
-//   const trimmedEmail = email ? email.trim() : "";
-//   const trimmedLabName = labName ? labName.trim() : "";
-//   const trimmedLabRoomNumber = labRoomNumber ? labRoomNumber.trim() : "";
-//   const trimmedPassword = password ? password.trim() : "";
-
-//   // Check for missing required fields
-//   if (!trimmedFirstName || !trimmedLastName || !trimmedEmail || !trimmedPassword) {
-//     return res.status(400).json({
-//       error: "All required fields (firstName, lastName, email) must be provided.",
-//     });
-//   }
-
-//   // Validate each field individually
-//   if (
-//     !validateField(
-//       trimmedFirstName,
-//       'First name must start with "Dr." followed by a valid name(alphabet only) without spaces. Example: "Dr.George".',
-//       /^Dr\.[A-Za-z]+$/
-//     )
-//   )
-//     return;
-
-//   if (
-//     !validateField(
-//       trimmedLastName,
-//       "Last name must contain only letters.",
-//       /^[A-Za-z]+$/
-//     )
-//   )
-//     return;
-
-//   if (
-//     !validateField(
-//       trimmedEmail,
-//       'Email must be a valid IITR email address ending with "iitr.ac.in". Example: "name_t@ch.iitr.ac.in".',
-//       /^[^\s@]+@.*\.iitr\.ac\.in$/
-//     )
-//   )
-//     return;
-
-//   // Optional fields validation
-//   if (
-//     trimmedLabName &&
-//     !validateField(
-//       trimmedLabName,
-//       "Lab name must only include letters, numbers, and spaces. Example: 'Advanced Research Lab'.",
-//       /^[A-Za-z0-9 ]+$/
-//     )
-//   )
-//     return;
-
-//   if (
-//     trimmedLabRoomNumber &&
-//     !validateField(
-//       trimmedLabRoomNumber,
-//       "Lab room number must contain only letters, numbers, and hyphens. Example: 'B-304'.",
-//       /^[A-Za-z0-9-]+$/
-//     )
-//   )
-//     return;
-//   if (
-//     trimmedPassword &&
-//     !validateField(
-//       trimmedPassword,
-//       "Password must be at least 6 characters long and include one uppercase letter, one lowercase letter, one number, and one special character.",
-
-//       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/
-//     )
-//   )
-//     return;
-
-//     // Hash the password
-//     const salt = await bcrypt.genSalt(10);
-//     const hashPassword = await bcrypt.hash(trimmedPassword, salt);
-
-
-//   try {
-//     // Create the professor record
-//     const professor = await Professor.create({
-//       firstName: trimmedFirstName,
-//       lastName: trimmedLastName,
-//       email: trimmedEmail.toLowerCase(),
-//       labName: trimmedLabName || null,
-//       labRoomNumber: trimmedLabRoomNumber || null,
-//       password: hashPassword,
-//     });
-
-//     //*  send credential to professors to login with notification to update there password 
-//    // Send email asynchronously
-//    const sendEmail = async () => {
-//     let mailSender = nodemailer.createTransport({
-//       service: "gmail",
-//       port: 465,
-//       auth: {
-//         user: process.env.EMAIL_USER,
-//         pass: process.env.EMAIL_PASS,
-//       },
-//     });
-
-//     const details = {
-//       from: process.env.EMAIL_USER,
-//       to: professor.email,
-//       subject: "Credentials for accessing IA lab professors portal",
-//       html: `
-//         <!DOCTYPE html>
-//         <html lang="en">
-//         <head>
-//             <meta charset="UTF-8">
-//             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//             <title>Update Password</title>
-//             <style>
-//                 body {
-//                     font-family: Arial, sans-serif;
-//                     background-color: #f6f6f6;
-//                     margin: 0;
-//                     padding: 0;
-//                 }
-//                 .container {
-//                     max-width: 600px;
-//                     margin: 0 auto;
-//                     background-color: #ffffff;
-//                     padding: 20px;
-//                     border-radius: 8px;
-//                     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-//                     border: 1px solid #cccccc;
-//                 }
-//                 .header {
-//                     text-align: center;
-//                     padding: 10px 0;
-//                 }
-//                 .content {
-//                     text-align: center;
-//                     padding: 20px;
-//                 }
-//                 .cta-button {
-//                     display: inline-block;
-//                     padding: 15px 25px;
-//                     margin: 20px 0;
-//                     background-color: #FF8318;
-//                     color: #ffffff;
-//                     font-weight: bold;
-//                     text-decoration: none;
-//                     border-radius: 5px;
-//                     text-align: center;
-//                 }
-//                 .footer {
-//                     text-align: center;
-//                     padding: 10px 0;
-//                     font-size: 12px;
-//                     color: #777777;
-//                 }
-//             </style>
-//         </head>
-//         <body>
-//             <div class="container">
-//                 <div class="header">
-//                     <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-//                         <rect width="100" height="100" fill="#007BFF"/>
-//                         <h1>IA Lab.</h1>
-//                     </svg>
-//                 </div>
-//                 <div class="content">
-//                     <h3>Credentials</h3>
-//                     <h5>Make sure to update your password using the forgot password option up on login</h5>
-                    
-//                        <h6> email : ${email}</h6>
-//                        <h6> password : ${password}</h6>
-
-//                 </div>
-//                 <div class="footer">
-//                     <p>If you did not sign up for this account, please ignore this email.</p>
-//                 </div>
-//             </div>
-//         </body>
-//         </html>
-//       `,
-//     };
-    
-//     try {
-//       // Send the email asynchronously and await its result
-//       const info = await mailSender.sendMail(details);
-//       console.log("Email sent:", info.response);
-//       return res.status(200).json({ message: ["Password reset email sent"] });
-//     } catch (err) {
-//       console.log("Error sending email:", err);
-//       return res.status(500).json({ message: ["Error sending email"] });
-//     }
-//   };
-
-//   // Call sendEmail asynchronously
-//   await sendEmail();
-
-
-// //* -------------------------------------------------
-//     return res
-//       .status(201)
-//       .json({ message: ["Professor profile created successfully"], professor });
-//   } catch (err) {
-//     if (err.name === "SequelizeUniqueConstraintError") {
-//       const validationErrors = err.errors.map((e) => e.message);
-//       return res.status(400).json({ errors: validationErrors });
-//     }
-//     return res.status(500).json({ errors: [err.message] });
-//   }
-// };
-
 const createProfessorProfile = async (req, res) => {
   const { firstName, lastName, email, labName, password, labRoomNumber } = req.body;
 
@@ -428,9 +203,6 @@ const createProfessorProfile = async (req, res) => {
   }
 };
 
-
-
-
 const allProfessorsFinder = async (req, res) => {
     try {
       // Fetch all users from the database, excluding sensitive fields like password
@@ -452,8 +224,7 @@ const allProfessorsFinder = async (req, res) => {
     }
   };
 
-
-  const deleteProfessor = async (req, res) => {
+const deleteProfessor = async (req, res) => {
     const { professorId } = req.params;
   
     try {
@@ -479,8 +250,6 @@ const allProfessorsFinder = async (req, res) => {
     }
   };
   
-
-
 const ProfessorLogin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -512,16 +281,14 @@ const ProfessorLogin = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ errors: ["Invalid credentials"] });
     }
-    if(!user.verification){
-      return res.status(401).json({ errors: ["You're not verified yet. Please ask your guide to respond to the confirmation email that was already sent."] });
-    }
-
+    
     // Generate JWT token
     const token = jwt.sign(
       {
         userId: user.professorId	,
         userName: user.firstName,
-        userEmail:user.email
+        userEmail:user.email,
+        userRole : "5"
       },
       process.env.JWT_SECRET_KEY,
       { expiresIn: "3d" }
@@ -569,7 +336,7 @@ const ProfessorResetRequest = async (req, res) => {
     }
 
     // Create a password reset link
-    const resetLink = `http://${process.env.FRONTEND_URL}/userPasswordReset/${user.professorId}`
+    const resetLink = `http://${process.env.FRONTEND_URL}/ProfessorPasswordReset/${user.professorId}`
 
 
     // Send email asynchronously
@@ -586,7 +353,7 @@ const ProfessorResetRequest = async (req, res) => {
       const details = {
         from: process.env.EMAIL_USER,
         to: user.email,
-        subject: "Password Reset Request",
+        subject: "Password Reset Request For Professors",
         html: `
           <!DOCTYPE html>
           <html lang="en">
@@ -647,7 +414,7 @@ const ProfessorResetRequest = async (req, res) => {
                   </div>
                   <div class="content">
                       <h3>Update your password</h3>
-                      <h5>Click the button below to update your password.</h5>
+                      <h5>Click the button below to update the password which was provided to you from admin section</h5>
                       
                       <a href="${resetLink}" class="cta-button">Update Password</a>
                   </div>
@@ -687,7 +454,7 @@ const ProfessorResetRequest = async (req, res) => {
 const ProfessorPasswordUpdate = async (req, res) => {
   const { professorId	 } = req.params;
   const { newPassword } = req.body;
-
+console.log(professorId,newPassword)
   const errors = [];
 
   // Validate new password (as previously done)

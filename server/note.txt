@@ -34,16 +34,9 @@ roles 👍
 // 4  super-admin
 ----------------------------
 react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
-        styling the table
         integrating react tost 
-        delete everything based on batch or year.. to save data ( yehenen functionality inside user create argew ke admin pannel clean endiderege) - controller completed
-        HOW TO INTERFEAR TO GIVE HOLIDAY OR OTHER THINGS
-        admin daash board
-        on booking quota should be checke for a single proffesor and the booking student for blocking
         ክሊን አፕ ስታረግ ፣ ኢሜል ስትልክ ያካተትካቸውን ሊንኮች ቼክ አርጋቸው http እና ሪሌትድ ነገሮች ፕሮዳክሽን ላይ መስተካከል አለባቸው
         FINALLY DO CLEANUP ON THE CODE SPECAILLY IN FRONTEND NAMING AND FLOW .. (REFACTOR)
-         blocking laye delete marege ena masayete blocked date information 
-        የቂኩፕመንት ውሮኪንግ ስታተስ አፕዴት ማረጊያውን front end meserate new drop down new mehonew , equipemnt yemertalu keza id yeyezelenale then true or false  ena true kehone meyasayewn message maskemete new false kehonem endezaw.
 ------------------------------      
         admin
             alter equipment availability

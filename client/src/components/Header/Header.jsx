@@ -85,7 +85,7 @@ function DashBoard() {
                 </MDBNavbarItem>
                 <MDBNavbarItem>
                   <MDBNavbarLink className={`${classes.custom_navbar_link}`}>
-                    <Link className={`${classes.link}`} to="#">Alter Equipment Availability</Link>
+                    <Link className={`${classes.link}`} to="/EquipStatusUpdate">Alter Equipment Status</Link>
                   </MDBNavbarLink>
                 </MDBNavbarItem>
               </MDBNavbarNav>

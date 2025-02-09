@@ -95,7 +95,7 @@ console.log(blocking)
       <MDBRow>
         <MDBCol md="6" className="text-center text-md-start">
           <h1 className="my-5 display-3 fw-bold text-white">
-            Update <span className="text-warning">Equipment Status</span>
+            Block <span className="text-warning">Equipment Booking</span>
           </h1>
           <h5 className="text-white">
             By selecting The Day, month and reason for blocking, you can block

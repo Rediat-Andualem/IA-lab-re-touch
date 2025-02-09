@@ -1,47 +1,6 @@
 
 const { Equipment,User } = require('../models'); 
 
-//  add new equipment 
-// const addEquipment = async (req, res) => {
-//   const {
-//     equipmentName,
-//     equipmentModel,
-//     guidelines,
-//     maxSamples,
-//     maxBookingsPerTwoWeeks,
-//     operatorName,
-//     operatorEmail,
-//     operatorPhoneNumber,
-//     workingStatus,
-//   } = req.body;
-
-//   try {
-//     // Create a new equipment record
-//     const newEquipment = await Equipment.create({
-//       equipmentName,
-//       equipmentModel,
-//       guidelines,
-//       maxSamples,
-//       maxBookingsPerTwoWeeks,
-//       operatorName,
-//       operatorEmail,
-//       operatorPhoneNumber,
-//       workingStatus,
-//     });
-
-//     // Respond with the newly created equipment
-//     res.status(201).json({
-//       message: 'Equipment added successfully',
-//       data: newEquipment,
-//     });
-//   } catch (error) {
-//     // Handle validation errors or other database-related issues
-//     res.status(500).json({
-//       message: 'Failed to add equipment',
-//       error: error.message,
-//     });
-//   }
-// };
 
 const addEquipment = async (req, res) => {
   const {
@@ -91,9 +50,8 @@ const addEquipment = async (req, res) => {
 
 //  update inserted equipments based on availability 
 const updateEquipmentWorkingStatus = async (req, res) => {
-  const { equipmentId } = req.params; 
-  const { workingStatus } = req.body; 
-
+  const { workingStatus,equipmentId } = req.body; 
+console.log(workingStatus,equipmentId )
   try {
     // Find the equipment by ID
     const equipment = await Equipment.findByPk(equipmentId);
@@ -136,6 +94,13 @@ const getAllEquipments = async (req, res) => {
       });
     }
   };
+
+//  get equipments not functioning
+// const getEquipmentsOutOfFunction = async (req,res)=>{
+    
+// }
+
+
 // get single equipment 
 const getEquipmentById = async (req, res) => {
     const { equipmentId } = req.params; // Extract equipmentId from request parameters

@@ -3,18 +3,18 @@ import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBInput } 
 import axios from 'axios';
 import classes from './DeleteRecords.module.css';
 import { BeatLoader } from "react-spinners";
-import {axiosInstance} from "../../Utility/urlInstance"
+import { axiosInstance } from "../../Utility/urlInstance";
 
 function DeleteRecords() {
   const [year, setYear] = useState('');
   const [handleError, setHandleError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false); // New state for confirmation modal
+  const [isDeleting, setIsDeleting] = useState(false); // New state to check if deletion is in progress
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("this is ", year);
-  
     // Basic validation for year
     if (!year) {
       setHandleError("Year is required.");
@@ -24,10 +24,18 @@ function DeleteRecords() {
       setHandleError("Invalid year format. Please enter a 4-digit year.");
       return;
     }
-  
+
+    // Show confirmation modal before proceeding with deletion
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setShowConfirmModal(false); // Close confirmation modal
+    setIsDeleting(true); // Start deletion process
     setLoading(true);
+
     try {
-      // Use POST instead of DELETE and pass the year in the body as data
+      // Send the request to delete the records
       const res = await axiosInstance.post("/user/deleteOldRecord", { year });
       setSuccess(res?.data.message);
       setHandleError('');
@@ -35,9 +43,13 @@ function DeleteRecords() {
       setHandleError(err?.response?.data?.errors?.[0] || "An error occurred");
     } finally {
       setLoading(false);
+      setIsDeleting(false); // End deletion process
     }
   };
-  
+
+  const handleCancelDelete = () => {
+    setShowConfirmModal(false); // Close confirmation modal if user cancels
+  };
 
   const handleInputChange = (e) => {
     setYear(e.target.value);
@@ -47,10 +59,7 @@ function DeleteRecords() {
     <div className={`${classes.mainDash} d-flex flex-column`}>
       <MDBContainer fluid className="p-4 container">
         <MDBRow>
-          <MDBCol
-            md="6"
-            className="text-center text-md-start d-flex flex-column justify-content-center"
-          >
+          <MDBCol md="6" className="text-center text-md-start d-flex flex-column justify-content-center">
             <h1 className="my-5 display-3 fw-bold ls-tight px-3 text-white">
               Clean <br />
               <span className="text-warning">Old Data </span>
@@ -95,7 +104,7 @@ function DeleteRecords() {
                         className="w-100 mb-4"
                         size="md"
                         type="submit"
-                        disabled={loading}
+                        disabled={loading || isDeleting}
                       >
                         {loading ? <BeatLoader /> : "Clean Data"}
                       </MDBBtn>
@@ -107,8 +116,34 @@ function DeleteRecords() {
           </MDBCol>
         </MDBRow>
       </MDBContainer>
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div className="modal" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Are you sure?</h5>
+                <button type="button" className="btn-close" onClick={handleCancelDelete}></button>
+              </div>
+              <div className="modal-body">
+                <p>All data related to this year, including booking and user profile, will be deleted and can't be reversed.</p>
+              </div>
+              <div className="modal-footer">
+                <MDBBtn color="success" onClick={handleConfirmDelete}>
+                  Continue Deleting
+                </MDBBtn>
+                <MDBBtn color="danger" onClick={handleCancelDelete}>
+                  Cancel
+                </MDBBtn>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 export default DeleteRecords;
+

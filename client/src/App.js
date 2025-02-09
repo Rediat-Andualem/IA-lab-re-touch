@@ -5,7 +5,9 @@ import LogInSignUp from "./pages/LogInSignUp/LogInSignUp.jsx";
 import RequireAuth from "@auth-kit/react-router/RequireAuth";
 import BookingTable from "./pages/BookingTable/BookingTable.jsx";
 import EmailForPassword from "./pages/EmailForPassword/EmailForPassword.jsx";
+import EmailForPasswordForProfessors from "./pages/EmailForPassword/EmailForPasswordForProfessors.jsx";
 import PasswordUpdater from "./pages/PasswordUpdator/PasswordUpdater.jsx";
+import ProfessorPasswordUpdator from "./pages/PasswordUpdator/ProfessorPasswordUpdator.jsx"
 import PageNotFound from "./pages/PageNotFound/PageNotFound.jsx";
 import LayOut from "./components/LayOut/LayOut.jsx";
 import AddEquipment from "./pages/AddEquipment/AddEquipment.jsx";
@@ -18,7 +20,9 @@ import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { useNavigate } from "react-router-dom";
 import DeleteRecords from "./pages/deleteOldRecords/DeleteRecords.jsx";
 import ProfessorDashboard from "./pages/ProffesorsDashboard/ProfessorDashboard.jsx"
-import EquipmentBlocking from "./pages/UpdateEquipmentStatus/EquipmentBlocking.jsx";
+import EquipmentBlocking from "./pages/BlockEquipmentSlot/EquipmentBlocking.jsx";
+import UpdateEquipStatus from "./pages/UpateEquipmentStatus/UpdateEquipStatus.jsx";
+import ProfessorLogIn from "./pages/ProfessorLogIn/ProfessorLogIn.jsx"
 function App() {
   const auth = useAuthUser();
   const navigate = useNavigate();
@@ -52,10 +56,20 @@ function App() {
           }
         />
         <Route path="/emailProvide" element={<EmailForPassword />} />
+        <Route path="/ProfessorEmailProvide" element={<EmailForPasswordForProfessors />} />
+        
         <Route
           path="/userPasswordReset/:userId"
           element={<PasswordUpdater />}
         />
+        <Route
+          path="/professorPasswordReset/:professorId"
+          element={<ProfessorPasswordUpdator />}
+        />
+        {/* <Route
+          path="//:userId"
+          element={<PasswordUpdater />}
+        /> */}
         <Route
           path="/addEquipments"
           element={
@@ -114,6 +128,22 @@ function App() {
           element={
             <LayOut showHeader={true} showFooter={true}>
               <EquipmentBlocking />
+            </LayOut>
+          }
+        />
+        <Route
+          path="/EquipStatusUpdate"
+          element={
+            <LayOut showHeader={true} showFooter={true}>
+              < UpdateEquipStatus/>
+            </LayOut>
+          }
+        />
+        <Route
+          path="/ProfessorLogin"
+          element={
+            <LayOut showHeader={false} showFooter={true}>
+              <ProfessorLogIn/>
             </LayOut>
           }
         />

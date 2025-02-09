@@ -761,7 +761,6 @@ const confirmUser = async (req, res) => {
 
 const deleteUsersByYear = async (req, res) => {
   const { year } = req.body;
-   console.log(year)
   // Validation check
   if (!year) {
     return res.status(400).json({ errors: ["Year is required."] });

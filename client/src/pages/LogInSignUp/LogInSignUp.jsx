@@ -129,6 +129,9 @@ function LogInSignUp() {
                   <div className="forgot">
                     <Link to="/emailProvide">Forgot password?</Link>
                   </div>
+                  <div className="forgot mt-2">
+                    <Link to="/ProfessorLogin">Click Here For Professor's LogIn</Link>
+                  </div>
                 </form>
               </div>
 
