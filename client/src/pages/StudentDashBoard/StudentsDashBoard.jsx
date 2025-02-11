@@ -40,9 +40,9 @@ function StudentsDashBoard() {
     }
   };
 
-  useEffect(() => {
-    console.log(bookingHistory);  // Log booking history when it changes
-  }, [bookingHistory]);
+  // useEffect(() => {
+  //   console.log(bookingHistory);  // Log booking history when it changes
+  // }, [bookingHistory]);
 
   const columns = [
     { field: 'EquipmentName', headerName: 'Booked equipment name', width: 220 },
