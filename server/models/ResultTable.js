@@ -10,6 +10,30 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: true,
     },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    equipmentId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    guideId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    bookedDate: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    slotTime: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    slotDate: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     operatorStatusConfirmation: {
       type: DataTypes.ENUM(
         'completed',

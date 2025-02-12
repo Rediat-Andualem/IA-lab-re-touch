@@ -37,8 +37,9 @@ react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
         integrating react tost 
         ክሊን አፕ ስታረግ ፣ ኢሜል ስትልክ ያካተትካቸውን ሊንኮች ቼክ አርጋቸው http እና ሪሌትድ ነገሮች ፕሮዳክሽን ላይ መስተካከል አለባቸው
         FINALLY DO CLEANUP ON THE CODE SPECAILLY IN FRONTEND NAMING AND FLOW .. (REFACTOR)
-
-        operator rating if possible ---->
+        operator rating if possible ---->****
+        clean up booking table every 15days (back end is implemented but front side is remaining to use a button to clean it)
+         እስቲ ዲስፕሌይ ሲያረግ ስታርቲንግ ዴት እና ኢንዲንግ ዴትን ሪጅስተር ለማረግ ሞክር እና ከዛ ፣ ኢንዲንግ ዴት ቼክ አርጎ ወደ ሁዋላ ያሉትን ሙሉ ዴሊት እንዲያረግ አውቶማቲካሊ መሞከርመሞከር
 ------------------------------      
         admin
             alter equipment availability
@@ -51,6 +52,5 @@ react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
             see there students list and booking 
             remove the student from there lab list 
  --------------------------------       
-
 
 ፕሮፌሰር ቴብል ላይ ያው ከበድ ያለ ነገር ገጥሞኛል እና ያለው አማረጭ እአራስችን መዝግበን እራሳችን ፓስወርድ ሰጥተን እራሳችን እሜል እንልክላቸዋልነ ከነ ክሪደንሻል እና ናቪጌት አርገው ገብተው እሚያዩበትን ሊንክ እንዲሁም ፓስወርድ አፕዴት ሚያረጉበትን መንገድ ጭምር ከዛ በነሱ ክሪደንሻል ያው  ያሉትን ተማሪዎቻቸውን እና መደለት እንዲችሉ እንዲሁም ከነ ብኪንጊቻቸው እናሳያቸዋለነ ማለት ነው , ኢሜእል ላይ ማለትም ሪጂስተር ካረጉ ባእኋላ ለፕሮፌሰሮቹ ሚላከው ላየ የ ሎጊን ፓገ ሊንክ ማካተት አትርሳgit s

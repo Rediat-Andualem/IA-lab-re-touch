@@ -87,7 +87,7 @@ const DeleteBlocking = async (req, res) => {
   };
   
 
-  const GetAllBlocking = async (req, res) => {
+const GetAllBlocking = async (req, res) => {
     try {
       // Retrieve all blocking records from the database
       const allBlockingRecords = await Blocking.findAll();
