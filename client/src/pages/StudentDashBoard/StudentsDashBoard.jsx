@@ -19,14 +19,14 @@ function StudentsDashBoard() {
 
   const getUserBookings = async () => {
     try {
-      const res = await axiosInstance.get(`/booking/getStudentSingleBooking/${userId}`);
-      console.log(res.data.bookingHistoryOfStudent);  // Logs response data immediately after fetching
+      const res = await axiosInstance.get(`/result/findAllBooking/${userId}`);
+      console.log(res?.data.results)
       if (res?.status === 200) {
-        if (res?.data.bookingHistoryOfStudent.length === 0) {
+        if (res?.data.results.length === 0) {
           setMessage("No booking history found");
           setBookingHistory([]);  // Set to empty array instead of string
         } else {
-          setBookingHistory(res?.data.bookingHistoryOfStudent);
+          setBookingHistory(res?.data.results);
         }
       } else {
         setMessage("Error fetching booking history");
@@ -39,7 +39,7 @@ function StudentsDashBoard() {
       setLoading(false);  // Ensure loading is set to false no matter what
     }
   };
-
+console.log(bookingHistory)
   // useEffect(() => {
   //   console.log(bookingHistory);  // Log booking history when it changes
   // }, [bookingHistory]);
@@ -49,6 +49,8 @@ function StudentsDashBoard() {
     { field: 'bookedDate', headerName: 'Date of booking', width: 180 },
     { field: 'slotDate', headerName: 'Slot Date', width: 180 },
     { field: 'slotTime', headerName: 'Slot Time', width: 180 },
+    { field: 'operatorStatusConfirmation', headerName: 'operatorStatus Confirmation', width: 180 },
+    { field: 'studentConfirmation', headerName: 'student Confirmation', width: 180 },
   ];
 
   return (
@@ -65,6 +67,8 @@ function StudentsDashBoard() {
           id: booking.bookingId,
           EquipmentName: booking.Equipment.equipmentName,
           bookedDate: booking.bookedDate,
+          operatorStatusConfirmation:booking.operatorStatusConfirmation,
+          studentConfirmation:booking.studentConfirmation,
           slotDate: booking.slotDate,
           slotTime: booking.slotTime,
         }))}
