@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
     equipmentId: {
       type: DataTypes.UUID,
       allowNull: false,
+      references: {
+        model: 'Equipment', 
+        key: 'equipmentId',
+      },
     },
     guideId: {
       type: DataTypes.UUID,
@@ -65,9 +69,9 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true,
   });
 
-  // Result.associate = models => {
-  //   Result.belongsTo(models.Booking, { foreignKey: 'bookingId', onDelete: 'CASCADE' });
-  // };
+  Result.associate = models => {
+    Result.belongsTo(models.Equipment, { foreignKey: 'equipmentId', onDelete: 'CASCADE' });
+  };
 
   return Result;
 };

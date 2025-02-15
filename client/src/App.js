@@ -160,7 +160,7 @@ function App() {
         <Route
           path="/myBookings"
           element={
-            <LayOut showHeader={false} showFooter={true}>
+            <LayOut showHeader={true} showFooter={true}>
               <StudentsDashBoard/>
             </LayOut>
           }
