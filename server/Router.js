@@ -6,6 +6,7 @@ const {userRoute} =require('./Routers/UserRoute.js')
 const {ProfessorsRoute} =require('./Routers/ProfessorsRoute.js')
 const {BlockingRouter} =require('./Routers/BlockingRoute.js')
 const {ResultRouter} =require('./Routers/ResultsRoute.js')
+const {ClearanceRouter} =require('./Routers/ClearanceRoute.js')
 
 // const {fileUploader}=require('./Routers/fileUploader.js')
 const AllRouters = express.Router();
@@ -17,6 +18,7 @@ AllRouters.use('/equipments',EquipmentRoute)
 AllRouters.use('/professors',ProfessorsRoute)
 AllRouters.use('/blocking',BlockingRouter)
 AllRouters.use('/result',ResultRouter)
+AllRouters.use('/clear',ClearanceRouter)
 // AllRouters.use('/files',fileUploader)
 
 module.exports={AllRouters} 

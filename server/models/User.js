@@ -56,6 +56,12 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     timestamps: true,
     freezeTableName: true,
+    indexes: [
+      {
+        unique: true, 
+        fields: ['email'], 
+      },
+    ],
   });
 
   // Associations
@@ -81,7 +87,7 @@ module.exports = (sequelize, DataTypes) => {
           guideId:"Dr.Prakash Biswas",
           email:"rediat_ta@ch.iitr.ac.in",
           mobileNumber:"+917452099300",
-          role: '4 ',
+          role: '4',
           verification:true,
           password: hashedPasswordSuperAdmin,
         },
@@ -95,7 +101,7 @@ module.exports = (sequelize, DataTypes) => {
           guideId:"Dr.Deepak Kumar Ojha",
           email:"dojha@ch.iitr.ac.in",
           mobileNumber:"+911332824945",
-          role: '3 ',
+          role: '3',
           verification:true,
           password: hashedPasswordSubAdmin,
         },
@@ -126,3 +132,4 @@ module.exports = (sequelize, DataTypes) => {
 
   return User;
 };
+

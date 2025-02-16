@@ -207,7 +207,7 @@ const allProfessorsFinder = async (req, res) => {
     try {
       // Fetch all users from the database, excluding sensitive fields like password
       const AllProfessors = await Professor.findAll();
-  
+  console.log(AllProfessors)
       // Respond with an empty array if no users are found, but still return 200 OK
       if (AllProfessors.length === 0) {
         return res.status(200).json({ message: ["No Professor list found."] });

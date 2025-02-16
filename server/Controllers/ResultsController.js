@@ -1,45 +1,64 @@
-const {Result,Equipment} = require("../models");
+const {Result,Equipment,User} = require("../models");
 
 
-// const AllBookingFinderFromResultForUser = async (req, res) => {
-//     const {userId}=req.params
 
-//     try {
-//       // Fetch all users from the database, excluding sensitive fields like password
-//       const results = await Result.findAll({
-//         where :{userId}
-//       });
-//       // Respond with an empty array if no users are found, but still return 200 OK
-//       if (results.length === 0) {
-//         return res.status(200).json({ message: ["No Booking/result history found."] });
-//       }else{
-//         console.log(results[0].equipmentId)
-//       }
-  
-//       // Respond with the list of users
-//       return res.status(200).json({ results });
-//     } catch (err) {
-//       if (err.name === "ValidationErrorItem") {
-//         const validationErrors = err.errors.map((e) => e.message);
-//         return res.status(400).json({ errors: [validationErrors.message] });
-//       }
-//       return res.status(500).json({ errors: [err.message] });
-//     }
-//   };
-
-
-const AllBookingFinderFromResultForUser = async (req, res) => {
+const AllBookingFinderFromResultForOperator = async (req, res) => {
     const { userId } = req.params;
 
     try {
         // Fetch all results and include the related equipment details
         const results = await Result.findAll({
-            where: { userId },
-            include: [{
-                model: Equipment,
-                as: 'Equipment',
-              }]
-        });
+          where: { userId ,visibility:true},
+          include: [
+              {
+                  model: Equipment,
+                  as: 'Equipment',
+              },
+              {
+                  model: User,
+                  as: 'User',
+                  attributes: ['firstName', 'instituteId'], 
+              },
+          ],
+      });
+      
+
+        // Check if there are no results
+        if (results.length === 0) {
+            return res.status(200).json({ message: ["No Booking/result history found."] });
+        }
+
+        // Now the results will include the equipmentName, you can directly send it
+        return res.status(200).json({ results });
+    } catch (err) {
+        // Handle validation or other errors
+        if (err.name === "ValidationErrorItem") {
+            const validationErrors = err.errors.map((e) => e.message);
+            return res.status(400).json({ errors: [validationErrors.message] });
+        }
+        return res.status(500).json({ errors: [err.message] });
+    }
+};
+const AllBookingFinderFromResultForStudent = async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        // Fetch all results and include the related equipment details
+        const results = await Result.findAll({
+          where: { userId},
+          include: [
+              {
+                  model: Equipment,
+                  as: 'Equipment',
+              },
+              {
+                  model: User,
+                  as: 'User',
+                  attributes: ['firstName', 'instituteId'], 
+              },
+          ],
+      });
+      
 
         // Check if there are no results
         if (results.length === 0) {
@@ -98,14 +117,66 @@ const StatusUpdateByStudent = async (req, res) => {
   };
   
 
- const statusUpdateByOperator = async (req,res)=>{
-    
- }
+const statusUpdateByOperator = async (req, res) => {
+    const { resultId, operatorStatusConfirmation } = req.body;
+  
+    try {
+      // Check if the resultId and operatorStatusConfirmation were provided in the request body
+      if (!resultId || !operatorStatusConfirmation) {
+        return res.status(400).json({ message: 'resultId and operatorStatusConfirmation are required.' });
+      }
+  
+      // Update the Result table
+      const updatedResult = await Result.update(
+        { operatorStatusConfirmation },  // Values to update
+        { where: { resultId }, returning: true, plain: true }  // Conditions to match
+      );
+  
+      // If no rows were updated, it means resultId didn't match any entry in the table
+      if (updatedResult[0] === 0) {
+        return res.status(404).json({ message: 'Result not found.' });
+      }
+  
+      // Successfully updated the record, return the updated data
+      return res.status(200).json({ message: 'Result updated successfully.', updatedResult: updatedResult[1] });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'An error occurred while updating the result.', error: error.message });
+    }
+  };
+
+const UpdateVisibility = async(req,res)  =>{
+  const { resultId } = req.body;
+  try {
+    // Check if the resultId and operatorStatusConfirmation were provided in the request body
+    if (!resultId) {
+      return res.status(400).json({ message: 'resultId is required.' });
+    }
+
+    // Update the Result table
+    const updatedResult = await Result.update(
+      { visibility : false },  // Values to update
+      { where: { resultId }, returning: true, plain: true }  // Conditions to match
+    );
+
+    // If no rows were updated, it means resultId didn't match any entry in the table
+    if (updatedResult[0] === 0) {
+      return res.status(404).json({ message: 'Result not found.' });
+    }
+
+    // Successfully updated the record, return the updated data
+    return res.status(200).json({ message: 'Result Visibility updated successfully.', updatedResult: updatedResult[1] });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'An error occurred while updating the result visibility.', error: error.message });
+  }
+}
+  
 
 
 
 
-  module.exports={AllBookingFinderFromResultForUser,StatusUpdateByStudent,statusUpdateByOperator}
+  module.exports={StatusUpdateByStudent,statusUpdateByOperator,UpdateVisibility,AllBookingFinderFromResultForOperator,AllBookingFinderFromResultForStudent}
 
 
  

@@ -3,6 +3,8 @@ const cors = require('cors');
 const db = require('./models');
 const {AllRouters}= require('./Router.js');
 const dotenv = require('dotenv')
+require('./middleware/CronToDistory.js'); // Ensure path matches your file structure
+
 // require('./utility/scheduler.js')
 dotenv.config();
 const app = express();

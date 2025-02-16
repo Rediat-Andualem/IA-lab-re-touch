@@ -59,6 +59,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       defaultValue: 'Results not collected',
     },
+    visibility: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: true,
+    },
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -75,6 +80,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Result.associate = models => {
     Result.belongsTo(models.Equipment, { foreignKey: 'equipmentId', onDelete: 'CASCADE' });
+    Result.belongsTo(models.User, { foreignKey: 'userId', onDelete: 'CASCADE' });
   };
 
   return Result;
