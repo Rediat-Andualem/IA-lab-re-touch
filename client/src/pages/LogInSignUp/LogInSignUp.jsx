@@ -47,7 +47,7 @@ function LogInSignUp() {
     };
     fetchProfessors();
   }, []);
-
+console.log(professors)
   const handleInputChange = (setter) => (e) => {
     setter((prevData) => ({ ...prevData, [e.target.name]: e.target.value }));
   };

@@ -21,7 +21,7 @@ function StudentsDashBoard() {
 
   const getUserBookings = async () => {
     try {
-      const res = await axiosInstance.get(`/result/findAllBooking/${userId}`);
+      const res = await axiosInstance.get(`/result/findAllBookingForStudent/${userId}`);
       if (res?.status === 200) {
         if (res?.data.results.length === 0) {
           setMessage("No booking history found");
@@ -40,12 +40,12 @@ function StudentsDashBoard() {
       setLoading(false);  // Ensure loading is set to false no matter what
     }
   };
-
+console.log(bookingHistory)
   // Function to handle booking completion
   const handleCompleteBooking = async (resultId, userId) => {
     try {
       // Call your update API here (the controller you provided above)
-      const result = await axiosInstance.get(`/result/statusUpdateByOperator/${userId}/${resultId}`);
+      const result = await axiosInstance.get(`/result/statusUpdateByStudent/${userId}/${resultId}`);
 
       if (result.status === 200) {
         // Successfully updated status, disable the button for this bookingId
@@ -59,7 +59,7 @@ function StudentsDashBoard() {
   };
 
   const columns = [
-    { field: 'EquipmentName', headerName: 'Booked equipment name', width: 220 },
+    { field: 'EquipmentName', headerName: 'Equipment name', width: 190 },
     { field: 'bookedDate', headerName: 'Date of booking', width: 180 },
     { field: 'slotDate', headerName: 'Slot Date', width: 180 },
     { field: 'slotTime', headerName: 'Slot Time', width: 180 },

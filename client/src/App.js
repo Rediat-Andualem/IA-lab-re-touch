@@ -26,6 +26,7 @@ import ProfessorLogIn from "./pages/ProfessorLogIn/ProfessorLogIn.jsx";
 import StudentsBookingDetail from "./pages/StudentsBookingDetailForProfessor/StudentsBookingDetail.jsx"
 import StudentsDashBoard from "./pages/StudentDashBoard/StudentsDashBoard.jsx"
 import OperatorDashBoard from "./pages/OperatorsDashBoard/OperatorDashBoard.jsx";
+import OperatorUpdating from "./pages/OperatorUpdating/OperatorUpdating.jsx";
 function App() {
   const auth = useAuthUser();
   const navigate = useNavigate();
@@ -171,6 +172,14 @@ function App() {
           element={
             <LayOut showHeader={true} showFooter={true}>
               <OperatorDashBoard/>
+            </LayOut>
+          }
+        />
+        <Route
+          path="/operatorUpdates/:resultId"
+          element={
+            <LayOut showHeader={true} showFooter={true}>
+              <OperatorUpdating/>
             </LayOut>
           }
         />
