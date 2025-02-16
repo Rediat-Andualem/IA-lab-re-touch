@@ -12,12 +12,16 @@ import {
 import {BeatLoader} from 'react-spinners'
 import classes from './AddProfessors.module.css'
 import Button from "react-bootstrap/Button";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import the toastify CSS
+
 // import Spinner from 'react-bootstrap/spi';
 function AddProfessors() {
   const [loading, setLoading] = useState(false);
   const [handleError, setHandleError] = useState("");
   const [success, setHandleSuccess] = useState("");
   const [professors, setProfessors] = useState("");
+  
   //!   ---------------------
   const [registerProf, setProfData] = useState({
     firstName: "",
@@ -27,6 +31,24 @@ function AddProfessors() {
     labRoomNumber: "",
     password:""
   });
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  
+  //   // Clear previous messages
+  //   setHandleError(""); 
+  //   setHandleSuccess(""); 
+  //   try {
+  //     const response = await axiosInstance.post("/professors/createProfessorProfile", registerProf);
+  //     setHandleSuccess(response?.data.message);
+  //     getProfessorsDetail()
+  //   } catch (error) {
+  //     console.log(error)
+  //     setHandleError(error.response.data.errors[0]);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -34,13 +56,20 @@ function AddProfessors() {
     // Clear previous messages
     setHandleError(""); 
     setHandleSuccess(""); 
+  
     try {
       const response = await axiosInstance.post("/professors/createProfessorProfile", registerProf);
-      setHandleSuccess(response?.data.message);
-      getProfessorsDetail()
+      
+      // Show success toast notification
+      toast.success(response?.data.message);
+  
+      // Optionally, you can call this function after success
+      getProfessorsDetail();
     } catch (error) {
-      console.log(error)
-      setHandleError(error.response.data.errors[0]);
+      console.log(error);
+      
+      // Show error toast notification
+      toast.error(error.response?.data.errors[0] || "An unexpected error occurred.");
     } finally {
       setLoading(false);
     }
@@ -220,6 +249,7 @@ function AddProfessors() {
                       {loading ? <BeatLoader /> : "Add Professor Profile"}
                     </MDBBtn>
                   </form>
+                  <ToastContainer />
                 </div>
               </div>
             </MDBCardBody>

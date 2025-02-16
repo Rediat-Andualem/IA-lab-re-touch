@@ -4,7 +4,7 @@ const { Equipment ,Booking,User,Result } = require('../models');
 
 const bookEquipment = async (req, res) => {
   const { bookings, bookingsCount, equipmentId, userID } = req.body;
-
+console.log(bookings, bookingsCount, equipmentId, userID )
   // Function to generate a 6-digit random number
   const generateRandomNumber = () => {
     return Math.floor(100000 + Math.random() * 900000);

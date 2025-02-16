@@ -420,6 +420,8 @@ const userRoleUpdater = async (req, res) => {
     // Check if user exists
     if (!user) {
       return res.status(404).json({ errors: ["User not found."] });
+    }else if(user.role ===4 ){
+      return res.status(404).json({ errors: ["role for admin cant be updated"] });
     }
 
     // Update user role

@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { axiosInstance } from '../../Utility/urlInstance';
 import Button from 'react-bootstrap/Button';
-
+import { toast, ToastContainer } from "react-toastify";
 function ListOfUsers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +27,6 @@ function ListOfUsers() {
       setUsers(res?.data.users || []);
     } catch (error) {
       setError("Failed to fetch users");
-      console.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -37,39 +36,63 @@ function ListOfUsers() {
     fetchAllUsers();
   }, []);
 
-  const deleteUser = async (userId, role) => {
-    // Prevent deletion if the user is an admin (role 3 or 4)
-    if (role === 3 || role === 4) {
-      setMessage("Can't delete admin.");
-      return;
-    }
+  // const deleteUser = async (userId, role) => {
+  //   // Prevent deletion if the user is an admin (role 3 or 4)
+  //   if (role === 3 || role === 4) {
+  //     setMessage("Can't delete admin.");
+  //     return;
+  //   }
 
-    try {
-      const response = await axiosInstance.delete(
-        `/user/userProfileDelete/${userId}`);
-      if (response.status === 200) {
-        setResponse({
-          message: "User deleted successfully",
-          status: true,
-        });
-        fetchAllUsers();
-      } else {
-        setResponse({
-          message: `Unexpected status code: ${response.status}`,
-          status: false,
-        });
-      }
-    } catch (error) {
-      setResponse({
-        message: error?.response?.data?.errors[0] || "Error deleting user",
-        status: false,
-      });
-    }
-  };
+  //   try {
+  //     const response = await axiosInstance.delete(
+  //       `/user/userProfileDelete/${userId}`);
+  //     if (response.status === 200) {
+  //       setResponse({
+  //         message: "User deleted successfully",
+  //         status: true,
+  //       });
+  //       fetchAllUsers();
+  //     } else {
+  //       setResponse({
+  //         message: `Unexpected status code: ${response.status}`,
+  //         status: false,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     setResponse({
+  //       message: error?.response?.data?.errors[0] || "Error deleting user",
+  //       status: false,
+  //     });
+  //   }
+  // };
   // {
   //   headers: { Authorization: `Bearer ${token}` },
   // }
   // Columns configuration for Material UI DataGrid
+  
+  const deleteUser = async (userId, role) => {
+    // Prevent deletion if the user is an admin (role 3 or 4)
+    if (role === 3 || role === 4) {
+      toast.error("Can't delete admin."); // Show error toast for admins
+      return;
+    }
+  
+    try {
+      const response = await axiosInstance.delete(
+        `/user/userProfileDelete/${userId}`
+      );
+      if (response.status === 200) {
+        toast.success("User deleted successfully!"); // Success toast
+        fetchAllUsers(); // Fetch updated list of users
+      } else {
+        toast.error(`Unexpected status code: ${response.status}`); // Error toast
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.errors[0] || "Error deleting user"); // Show error message if there's an issue
+    }
+  };
+  
+  
   const columns = [
     { field: 'instituteId', headerName: 'Institute ID', width: 180 },
     { field: 'firstName', headerName: 'First Name', width: 130 },
@@ -81,13 +104,16 @@ function ListOfUsers() {
       field: 'action',
       headerName: 'Action',
       renderCell: (params) => (
+        <>
         <Button
           style={{ margin: "5px" }}
-          onClick={() => deleteUser(params.row.userId, params.row.role)}
+          onClick={() => deleteUser(params?.row.userId, params?.row.role)}
           variant="danger"
         >
           Delete
         </Button>
+            <ToastContainer />
+        </>
       ),
       width: 150,
     },

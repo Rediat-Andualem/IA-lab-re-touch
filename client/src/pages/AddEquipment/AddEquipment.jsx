@@ -13,6 +13,12 @@ import {
 import { BeatLoader } from "react-spinners";
 import classes from "./AddEquipment.module.css"
 import Button from "react-bootstrap/Button";
+// !-------------------------
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import the toastify CSS
+// !----------------------
+
+
 function AddEquipment() {
   const [loading, setLoading] = useState(false);
   const [handleError, setHandleError] = useState("");
@@ -50,24 +56,41 @@ function AddEquipment() {
     const { name, value } = e.target;
     setSignUpData((prev) => ({ ...prev, [name]: value }));
   };
-console.log(operator)
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+
+  //   try {
+  //     const response = await axiosInstance.post("/equipments/equipmentDetails", signUpData);
+    
+  //     setHandleSuccess("Equipment Added Successfully")
+  //     getEquipmentList();
+  //   } catch (error) {
+  //     setHandleError("Failed to add equipment. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-console.log(signUpData)
+  
     try {
       const response = await axiosInstance.post("/equipments/equipmentDetails", signUpData);
-      console.log(response.data);
-      setHandleSuccess("Equipment Added Successfully")
+  
+      // Display success toast
+      toast.success("Equipment Added Successfully");
       getEquipmentList();
     } catch (error) {
-      setHandleError("Failed to add equipment. Please try again.");
+      // Display error toast
+      toast.error("Failed to add equipment. Please try again.");
     } finally {
       setLoading(false);
     }
   };
-
-
+  
   const getEquipmentList = async () => {
     try {
       const res = await axiosInstance.get(`/equipments/getAllEquipmentDetails`);
@@ -77,7 +100,7 @@ console.log(signUpData)
         setEquipments([]);
       }
     } catch (error) {
-      console.log(error);
+   
       setEquipments([]); 
     }
   };
@@ -203,6 +226,7 @@ return (
                       {loading ? <BeatLoader /> : "Add Equipment"}
                     </MDBBtn>
                   </form>
+                  <ToastContainer />
                 </div>
               </div>
             </MDBCardBody>

@@ -247,16 +247,16 @@ function DashBoard() {
                         <Link className={`${classes.link}`} to="/deleteOldData">Delete old data</Link>
                       </MDBNavbarLink>
                     </MDBNavbarItem>
-                    <MDBNavbarItem>
+                    {/* <MDBNavbarItem>
                     <MDBNavbarLink className={`${classes.custom_navbar_link}`}>
                       <Link className={`${classes.link}`} to="/operatorList">Operator Dashboard</Link>
                     </MDBNavbarLink>
-                  </MDBNavbarItem>
-                  <MDBNavbarItem>
+                  </MDBNavbarItem> */}
+                  {/* <MDBNavbarItem>
                     <MDBNavbarLink className={`${classes.custom_navbar_link}`}>
                       <Link className={`${classes.link}`} to="/ProfessorDashboard">Professor Dashboard</Link>
                     </MDBNavbarLink>
-                  </MDBNavbarItem>
+                  </MDBNavbarItem> */}
                   <MDBNavbarItem>
                       <MDBNavbarLink className={`${classes.custom_navbar_link}`}>
                         <Link className={`${classes.link}`} to="/blockBooking">Block Booking</Link>
@@ -267,11 +267,11 @@ function DashBoard() {
                         <Link className={`${classes.link}`} to="/EquipStatusUpdate">Alter Equipment Status</Link>
                       </MDBNavbarLink>
                     </MDBNavbarItem>
-                    <MDBNavbarItem>
+                    {/* <MDBNavbarItem>
                     <MDBNavbarLink className={`${classes.custom_navbar_link}`}>
                       <Link className={`${classes.link}`} to="/myBookings">My Booking</Link>
                     </MDBNavbarLink>
-                  </MDBNavbarItem>
+                  </MDBNavbarItem> */}
                   </>
                 )}
 
