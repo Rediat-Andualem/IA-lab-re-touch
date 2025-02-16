@@ -34,6 +34,7 @@ const addEquipment = async (req, res) => {
       operatorEmail: operator.email,
       operatorPhoneNumber: operator.mobileNumber,
       workingStatus,
+      operatorUserID:operatorId
     });
 
     res.status(201).json({

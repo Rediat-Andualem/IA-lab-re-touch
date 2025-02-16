@@ -13,7 +13,6 @@ import {
 import { BeatLoader } from "react-spinners";
 import classes from "./AddEquipment.module.css"
 import Button from "react-bootstrap/Button";
-import { Link, useParams } from "react-router-dom";
 function AddEquipment() {
   const [loading, setLoading] = useState(false);
   const [handleError, setHandleError] = useState("");
@@ -42,7 +41,7 @@ function AddEquipment() {
     };
     getOperators();
   }, []);
-
+console.log(operator)
   const handleOperatorChange = (userId) => {
     setSignUpData((prev) => ({ ...prev, operatorId: userId }));
   };
@@ -51,11 +50,11 @@ function AddEquipment() {
     const { name, value } = e.target;
     setSignUpData((prev) => ({ ...prev, [name]: value }));
   };
-
+console.log(operator)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+console.log(signUpData)
     try {
       const response = await axiosInstance.post("/equipments/equipmentDetails", signUpData);
       console.log(response.data);
@@ -188,7 +187,7 @@ return (
                       <option value="" disabled>
                         Select Operator
                       </option>
-                      {operator.map((op) => (
+                      {operator?.map((op) => (
                         <option key={op.userId} value={op.userId}>
                           {op.email}
                         </option>

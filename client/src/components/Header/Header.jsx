@@ -93,6 +93,11 @@ function DashBoard() {
                     <Link className={`${classes.link}`} to="/myBookings">My Booking</Link>
                   </MDBNavbarLink>
                 </MDBNavbarItem>
+                <MDBNavbarItem>
+                  <MDBNavbarLink className={`${classes.custom_navbar_link}`}>
+                    <Link className={`${classes.link}`} to="/operatorList">Operator Dashboard</Link>
+                  </MDBNavbarLink>
+                </MDBNavbarItem>
               </MDBNavbarNav>
             </MDBCollapse>
             <MDBRow>

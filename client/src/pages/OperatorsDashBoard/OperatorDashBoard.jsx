@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import Button from '@mui/material/Button'; // Importing MUI Button
 
-function StudentsDashBoard() {
+function OperatorDashBoard() {
   const [bookingHistory, setBookingHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -63,7 +63,6 @@ function StudentsDashBoard() {
     { field: 'bookedDate', headerName: 'Date of booking', width: 180 },
     { field: 'slotDate', headerName: 'Slot Date', width: 180 },
     { field: 'slotTime', headerName: 'Slot Time', width: 180 },
-    { field: 'displayBookingId', headerName: 'Booking ID', width: 180 },
     { field: 'operatorStatusConfirmation', headerName: 'Operator Status Confirmation', width: 210 },
     { field: 'studentConfirmation', headerName: 'Student Confirmation', width: 180 },
     {
@@ -90,8 +89,8 @@ function StudentsDashBoard() {
 
   return (
     <div>
-       <h1 className='text-center mt-3 text-white'>Student Booking History</h1>
-    <Paper sx={{ height: '90%', width: '80%', margin: '2% auto' }}>
+       <h1 className='text-center mt-3 text-white'>Equipment Slot Booking History</h1>
+    <Paper sx={{ height: '90%', width: '70%', margin: '2% auto' }}>
       {message && (
         <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '10px' }}>
           {message}
@@ -111,7 +110,6 @@ function StudentsDashBoard() {
           bookedDate: booking.bookedDate,
           operatorStatusConfirmation: booking.operatorStatusConfirmation,
           studentConfirmation: booking.studentConfirmation,
-          displayBookingId:booking.displayBookingId,
           slotDate: booking.slotDate,
           slotTime: booking.slotTime
         }))}
@@ -128,4 +126,4 @@ function StudentsDashBoard() {
   );
 }
 
-export default StudentsDashBoard;
+export default OperatorDashBoard;

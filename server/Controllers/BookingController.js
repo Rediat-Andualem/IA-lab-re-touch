@@ -1,6 +1,7 @@
 
 const { Equipment ,Booking,User,Result } = require('../models');
 
+
 // const bookEquipment = async (req, res) => {
 //   const { bookings, bookingsCount, equipmentId, userID } = req.body;
 //   try {
@@ -44,37 +45,31 @@ const { Equipment ,Booking,User,Result } = require('../models');
 //       slotTime: booking.timeSlot,
 //       slotDate: booking.slotDate,
 //       bookingStatus: "Booked",
-//       guideId
+//       guideId,
+//       displayBookingId : 
 //     }));
 
-//     // await Result.map({
-//     //   bookingId :bookingData.bookingId,
-//     // });
 //     // Insert bookings into the database
 //     let bookingInfoForResult = await Booking.bulkCreate(bookingData);
-// // ! for inserting in result table
-// // After successful creation of bookings, extract the bookingIds
-// const bookingIds = bookingInfoForResult.map(booking => booking.bookingId);
 
-// // Insert the bookingIds into the Result table (assumes a Result table structure with a column for bookingId)
+//     // Extract the bookingIds from the inserted bookings
+//     const bookingIds = bookingInfoForResult.map(booking => booking.bookingId);
 
-// const resultData = bookingIds.map(bookingId => ({
-//   bookingId: bookingId,
-//   userId : bookingData.userId,
-//   equipmentId: bookingData.equipmentId,
-//   guideId: bookingData.guideId,
-//   bookedDate: bookingData.bookedDate,
-//   slotDate: bookingData.slotDate,
-//   slotTime: bookingData.slotTime,
-//   createdAt: new Date(),
-//   updatedAt: new Date(),
-// }));
+//     // Prepare the result data based on the bookingIds
+//     const resultData = bookingIds.map((bookingId, index) => ({
+//       bookingId: bookingId,
+//       userId: bookingData[index].userId,
+//       equipmentId: bookingData[index].equipmentId,
+//       guideId: bookingData[index].guideId,
+//       bookedDate: bookingData[index].bookedDate,
+//       slotDate: bookingData[index].slotDate,
+//       slotTime: bookingData[index].slotTime,
+//       createdAt: new Date(),
+//       updatedAt: new Date(),
+//     }));
 
-// // Bulk create the results using the extracted bookingIds
-// await Result.bulkCreate(resultData);
-
-// // !-------------------------------
-
+//     // Bulk create the results using the extracted bookingIds
+//     await Result.bulkCreate(resultData);
 
 //     return res.status(201).json({ message: "Booking successful." });
 //   } catch (error) {
@@ -82,14 +77,19 @@ const { Equipment ,Booking,User,Result } = require('../models');
 //     return res.status(500).json({ message: "An error occurred while processing the booking." });
 //   }
 // };
-
 const bookEquipment = async (req, res) => {
   const { bookings, bookingsCount, equipmentId, userID } = req.body;
+
+  // Function to generate a 6-digit random number
+  const generateRandomNumber = () => {
+    return Math.floor(100000 + Math.random() * 900000);
+  };
+
   try {
     // Check if equipment exists
     const equipment = await Equipment.findOne({ where: { equipmentId } });
     const { guideId } = await User.findOne({ where: { userID } });
-    
+
     // Ensure no duplicate bookings for the same slot
     for (let booking of bookings) {
       const existingBooking = await Booking.findOne({
@@ -110,7 +110,7 @@ const bookEquipment = async (req, res) => {
     const bookingDoneByProfessor = await Booking.count({
       where: {
         equipmentId: equipmentId,
-        guideId: guideId
+        guideId: guideId,
       }
     });
 
@@ -118,7 +118,7 @@ const bookEquipment = async (req, res) => {
       return res.status(201).json({ message: "Faculty quota exhausted" });
     }
 
-    // Prepare booking data
+    // Prepare booking data with unique displayBookingId
     const bookingData = bookings.map((booking) => ({
       userId: userID,
       equipmentId,
@@ -126,7 +126,8 @@ const bookEquipment = async (req, res) => {
       slotTime: booking.timeSlot,
       slotDate: booking.slotDate,
       bookingStatus: "Booked",
-      guideId
+      guideId,
+      displayBookingId: generateRandomNumber(), // Generate unique 6-digit number for each booking
     }));
 
     // Insert bookings into the database
@@ -142,6 +143,7 @@ const bookEquipment = async (req, res) => {
       equipmentId: bookingData[index].equipmentId,
       guideId: bookingData[index].guideId,
       bookedDate: bookingData[index].bookedDate,
+      displayBookingId: bookingData[index].displayBookingId,
       slotDate: bookingData[index].slotDate,
       slotTime: bookingData[index].slotTime,
       createdAt: new Date(),

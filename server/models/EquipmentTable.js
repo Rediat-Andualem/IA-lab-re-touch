@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    operatorUserID: {
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
     operatorEmail: {
       type: DataTypes.STRING,
       allowNull: true,

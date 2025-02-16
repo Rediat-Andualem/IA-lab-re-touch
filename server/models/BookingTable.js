@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         key: 'professorId',
       },
     },
+    displayBookingId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     bookedDate: {
       type: DataTypes.STRING,
       allowNull: false,
