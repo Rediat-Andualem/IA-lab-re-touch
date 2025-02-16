@@ -27,6 +27,8 @@ import StudentsBookingDetail from "./pages/StudentsBookingDetailForProfessor/Stu
 import StudentsDashBoard from "./pages/StudentDashBoard/StudentsDashBoard.jsx"
 import OperatorDashBoard from "./pages/OperatorsDashBoard/OperatorDashBoard.jsx";
 import OperatorUpdating from "./pages/OperatorUpdating/OperatorUpdating.jsx";
+import About from "./pages/AboutPage/AboutPage.jsx";
+import Information from "./pages/InformationDesk/Information.jsx";
 function App() {
   const auth = useAuthUser();
   const navigate = useNavigate();
@@ -180,6 +182,22 @@ function App() {
           element={
             <LayOut showHeader={true} showFooter={true}>
               <OperatorUpdating/>
+            </LayOut>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <LayOut showHeader={true} showFooter={true}>
+              <About/>
+            </LayOut>
+          }
+        />
+        <Route
+          path="/information"
+          element={
+            <LayOut showHeader={true} showFooter={true}>
+              <Information/>
             </LayOut>
           }
         />

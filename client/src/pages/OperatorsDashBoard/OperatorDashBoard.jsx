@@ -243,17 +243,17 @@ function OperatorDashBoard() {
   useEffect(() => {
     getUserBookings();
   }, []);
-
+console.log(userId)
   const getUserBookings = async () => {
     try {
       const res = await axiosInstance.get(`/result/findAllBookingForOperator/${userId}`);
-      console.log(res);
       if (res?.status === 200) {
         if (res?.data.results.length === 0) {
           setMessage("No booking history found");
           setMessageType("error");  
           setBookingHistory([]); 
         } else {
+          console.log(res)
           // Filter out rows where visible is false here
           const filteredBookings = res?.data.results.filter(booking => booking.visible !== false);
           setBookingHistory(filteredBookings);
@@ -394,7 +394,7 @@ function OperatorDashBoard() {
 
 
 
-      <Paper sx={{ height: '90%', width: '85%', margin: '2% auto' }}>
+      <Paper sx={{ height: '90%', width: '80%', margin: '2% auto' }}>
         {message && (
           <div
             style={{

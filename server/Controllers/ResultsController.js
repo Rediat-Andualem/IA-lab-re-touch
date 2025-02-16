@@ -1,44 +1,99 @@
+
 const {Result,Equipment,User} = require("../models");
+const { Op } = require('sequelize');
 
 
+// const AllBookingFinderFromResultForOperator = async (req, res) => {
+//     const { userId } = req.params;
+
+//     try {
+
+//         // Fetch all results and include the related equipment details
+//         const equipmentId = await Equipment.findAll({
+//           where:{operatorUserID:userId}
+//         })
+
+//         const results = await Result.findAll({
+//           where: { equipmentId ,userId,visibility:true},
+//           include: [
+//               {
+//                   model: Equipment,
+//                   as: 'Equipment',
+//               },
+//               {
+//                   model: User,
+//                   as: 'User',
+//                   attributes: ['firstName', 'instituteId'], 
+//               },
+//           ],
+//       });
+      
+
+//         // Check if there are no results
+//         if (results.length === 0) {
+//             return res.status(200).json({ message: ["No Booking/result history found."] });
+//         }
+
+//         // Now the results will include the equipmentName, you can directly send it
+//         return res.status(200).json({ results });
+//     } catch (err) {
+//         // Handle validation or other errors
+//         if (err.name === "ValidationErrorItem") {
+//             const validationErrors = err.errors.map((e) => e.message);
+//             return res.status(400).json({ errors: [validationErrors.message] });
+//         }
+//         return res.status(500).json({ errors: [err.message] });
+//     }
+// };
 
 const AllBookingFinderFromResultForOperator = async (req, res) => {
-    const { userId } = req.params;
+  const { userId } = req.params;
 
-    try {
-        // Fetch all results and include the related equipment details
-        const results = await Result.findAll({
-          where: { userId ,visibility:true},
+  try {
+      // Fetch all equipment assigned to the operator
+      const equipment = await Equipment.findAll({
+          where: { operatorUserID: userId }
+      });
+
+      // Extract equipmentIds from the fetched equipment
+      const equipmentIds = equipment.map(e => e.equipmentId);
+      // Fetch results for the operator's equipment
+      const results = await Result.findAll({
+          where: { 
+              equipmentId: { [Op.in]: equipmentIds }, // Filter by equipmentId
+              visibility: true
+          },
           include: [
               {
                   model: Equipment,
-                  as: 'Equipment',
+                  as: 'Equipment', // Including related Equipment model
               },
               {
                   model: User,
-                  as: 'User',
-                  attributes: ['firstName', 'instituteId'], 
+                  as: 'User', // Including related User model
+                  attributes: ['firstName', 'instituteId'], // Only select specific fields
               },
           ],
       });
-      
+console.log(results)
+      // Check if there are no results
+      if (results.length === 0) {
+          return res.status(200).json({ message: ["No Booking/result history found."] });
+      }
 
-        // Check if there are no results
-        if (results.length === 0) {
-            return res.status(200).json({ message: ["No Booking/result history found."] });
-        }
-
-        // Now the results will include the equipmentName, you can directly send it
-        return res.status(200).json({ results });
-    } catch (err) {
-        // Handle validation or other errors
-        if (err.name === "ValidationErrorItem") {
-            const validationErrors = err.errors.map((e) => e.message);
-            return res.status(400).json({ errors: [validationErrors.message] });
-        }
-        return res.status(500).json({ errors: [err.message] });
-    }
+      // Return the results with all related details
+      return res.status(200).json({ results });
+  } catch (err) {
+      // Handle errors
+      if (err.name === "ValidationErrorItem") {
+          const validationErrors = err.errors.map((e) => e.message);
+          return res.status(400).json({ errors: [validationErrors.message] });
+      }
+      return res.status(500).json({ errors: [err.message] });
+  }
 };
+
+
 const AllBookingFinderFromResultForStudent = async (req, res) => {
     const { userId } = req.params;
 

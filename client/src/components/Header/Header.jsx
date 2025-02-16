@@ -202,6 +202,11 @@ function DashBoard() {
                         <Link className={`${classes.link}`} to="/addEquipments">Add Equipment</Link>
                       </MDBNavbarLink>
                     </MDBNavbarItem>
+                    <MDBNavbarItem>
+                    <MDBNavbarLink className={`${classes.custom_navbar_link}`}>
+                      <Link className={`${classes.link}`} to="/myBookings">My Booking</Link>
+                    </MDBNavbarLink>
+                  </MDBNavbarItem>
                   </>
                 )}
 
@@ -278,6 +283,16 @@ function DashBoard() {
                     </MDBNavbarLink>
                   </MDBNavbarItem>
                 )}
+                            <MDBNavbarItem active>
+                  <MDBNavbarLink aria-current='page' className={`${classes.custom_navbar_link}`}>
+                    <Link className={`${classes.link}`} to="/about">About</Link>
+                  </MDBNavbarLink>
+                </MDBNavbarItem>
+                            <MDBNavbarItem active>
+                  <MDBNavbarLink aria-current='page' className={`${classes.custom_navbar_link}`}>
+                    <Link className={`${classes.link}`} to="/information">Information</Link>
+                  </MDBNavbarLink>
+                </MDBNavbarItem>
               </MDBNavbarNav>
             </MDBCollapse>
 

@@ -41,7 +41,7 @@ function AddEquipment() {
     };
     getOperators();
   }, []);
-console.log(operator)
+
   const handleOperatorChange = (userId) => {
     setSignUpData((prev) => ({ ...prev, operatorId: userId }));
   };
