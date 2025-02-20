@@ -90,7 +90,7 @@ const createProfessorProfile = async (req, res) => {
   try {
     // Create the professor record
     const professor = await Professor.create({
-      firstName: trimmedFirstName,
+      firstName: `Dr.${trimmedFirstName} `,
       lastName: trimmedLastName,
       email: trimmedEmail.toLowerCase(),
       labName: trimmedLabName || null,

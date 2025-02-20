@@ -47,7 +47,7 @@ function LogInSignUp() {
     };
     fetchProfessors();
   }, []);
-console.log(professors)
+
   const handleInputChange = (setter) => (e) => {
     setter((prevData) => ({ ...prevData, [e.target.name]: e.target.value }));
   };
@@ -61,7 +61,7 @@ console.log(professors)
       const decodedToken = jwtDecode(token);
       if (signIn({
         auth: { token, type: "Bearer", expiresIn: 4320 },
-        userState: { userId: decodedToken.userId, userName: decodedToken.userName, userRole: decodedToken.userRole, token },
+        userState: { userId: decodedToken.userId, userName: decodedToken.userName, userRole: decodedToken.userRole,verification : decodedToken.verification, token },
       })) {
         navigate("/dashboard");
       }
@@ -82,6 +82,7 @@ console.log(professors)
         }
        await axiosInstance.post("/user/createUser", signUpData);  
         navigate("/successReg");
+      
       }
       setError("");
     } catch (err) {
@@ -158,7 +159,7 @@ console.log(professors)
                   <select className="form-select mb-4" name="guideId" value={signUpData.guideId || ""} onChange={handleInputChange(setSignUpData)} required>
                     <option value="" disabled>Select Guide</option>
                     {professors.map((prof) => (
-                      <option key={prof.professorId} value={prof.professorId}>{prof.firstName}</option>
+                      <option key={prof.professorId} value={prof.professorId}>{prof.firstName} {prof.lastName}</option>
                     ))}
                   </select>
                   <MDBInput wrapperClass="mb-4" label="Contact Number (+91..)" name="mobileNumber" onChange={handleInputChange(setSignUpData)} />

@@ -287,6 +287,7 @@ const userLogIn = async (req, res) => {
         userName: user.firstName,
         userEmail:user.email,
         userRole: user.role,
+        verification: user.verification
       },
       process.env.JWT_SECRET_KEY,
       { expiresIn: "3d" }

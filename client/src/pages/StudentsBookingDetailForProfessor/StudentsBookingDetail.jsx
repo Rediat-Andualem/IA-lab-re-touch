@@ -30,11 +30,12 @@ function bookingHisotryBookingDetail() {
       if (res?.status === 200) {
                if(res?.data.bookingHistoryOfStudent.length === 0){
                    setBookingHistory(["No booking history"])
+               }else{
+                setBookingHistory(res?.data.bookingHistoryOfStudent)
+                setLoading(false);
                }
-      } else {
-
-          setBookingHistory(res?.data.bookingHistoryOfStudent)
-          setLoading(false);
+      }else{
+        setBookingHistory(["Error while fetching user data please try again"])
       }
     } catch (error) {
       setResponse({
@@ -54,7 +55,7 @@ function bookingHisotryBookingDetail() {
     { field: 'slotDate', headerName: 'Slot Date', width: 180 },
     { field: 'slotTime', headerName: 'Slot Time', width: 180 },
   ];
-  
+ 
   const paginationModel = { page: 0, pageSize: 10 };
 
   return (

@@ -41,3 +41,6 @@ react auth kit = https://authkit.arkadip.dev/getting_started/authheader/
 deployment and testing 
 clean up console log 
 integrate email and see deployment steps .. when integrating ያው ኢሜል ላይ ሊንክ መግባት አለበት እና ሲአይሲዲ ሊኖረው ይገባል ፍሮንቱ ወይም ባኩ ቀድሞ ሚለውን ነገር ፊገር አውት 
+
+------------------------------
+-upon deployment, professors id should be updated so first register professors and then update teh admins id accordingly

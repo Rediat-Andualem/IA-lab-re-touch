@@ -1,5 +1,6 @@
 import React from 'react';
 import './AboutPage.css'
+import mohammedAli  from "../../mediaFiles/mmpic.jpg"
 const About = () => {
   return (
     <section className="mt-5 flex flex-col justify-center items-center text-center">
@@ -8,7 +9,7 @@ const About = () => {
         <i>This web app was developed by : "Engineering of Catalyst and Reaction Kinetics Research Lab"</i>
       </h2>
 
-      <div className="d-md-flex">
+      <div className="">
         <div className="resizer">
           <h5 className="text-xl mb-5 text-justify text-white">
             The inspiration behind this web app came from the frequent need for students to visit professors for paper signatures to access lab machinery, and the constant requests and calls to equipment operators for sample status and queries. This app streamlines communication and processes, saving time, energy, and effort for students, operators, and professors alike.
@@ -19,9 +20,15 @@ const About = () => {
           <p className="text-white">
             To close, we’d like to share a famous quote from the legendary American boxer and social activist, Muhammad Ali:
           </p>
-          <h5 className="text-white text-xl italic">
-            <b className='text-dark'>"Service to others is the rent you pay for your room here on Earth."</b>
-          </h5>
+       
+          
+        </div>
+        <div className='d-column'>
+          <div>
+          </div>
+          <div>
+            <img src={mohammedAli} alt="" />
+          </div>
         </div>
       </div>
     </section>

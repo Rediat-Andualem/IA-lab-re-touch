@@ -43,6 +43,7 @@ function EmailForPassword() {
           name="email"
           placeholder="Enter email"
           onChange={handleChange}
+          required
         />
         <Form.Text className="text-muted">
           Provide the email used upon registration...
