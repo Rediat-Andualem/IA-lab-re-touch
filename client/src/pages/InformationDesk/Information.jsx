@@ -64,7 +64,7 @@ export default function Information() {
           ))}
         </Grid>
       ) : (
-        <Typography variant="h6" sx={{ textAlign: 'center' }}>No Equipment Found</Typography>
+        <Typography variant="h6" sx={{ textAlign: 'center' ,color:'white'}}>Oops, no Equipment Found 🫢</Typography>
       )}
     </div>
   );
