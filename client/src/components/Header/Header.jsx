@@ -148,7 +148,7 @@ function DashBoard() {
   };
 
   let role = auth?.userRole;
-  console.log(role);
+ console.log(auth)
   return (
     <>
       <header>
@@ -409,7 +409,7 @@ function DashBoard() {
             {/* LogOut Button (Always visible after login) */}
             <MDBRow>
               {
-                role&&(        <MDBCol>
+                (role===0 || role)&&(        <MDBCol>
                   <h5>Welcome : {`${auth?.userName}`}</h5>
                   <MDBBtn onClick={logOut} className="me-1" color="danger">
                     LogOut

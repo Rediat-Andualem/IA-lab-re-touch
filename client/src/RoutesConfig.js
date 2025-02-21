@@ -21,6 +21,12 @@ import AddEquipment from "./pages/AddEquipment/AddEquipment.jsx"
 import EmailForPassword from "./pages/EmailForPassword/EmailForPassword.jsx"
 import ProfessorLogIn from "./pages/ProfessorLogIn/ProfessorLogIn.jsx"
 import EmailForPasswordForProfessors from "./pages/EmailForPassword/EmailForPasswordForProfessors.jsx"
+import AddProfessors from "./pages/AddProfessors/AddProfessors.jsx"
+import ListOfUsers from "./pages/ListOfUsersForAdmin/ListOfUsers.jsx"
+import UserRoleUpdater from "./pages/userRoleUpdator/UserRoleUpdater.jsx"
+import DeleteRecords from "./pages/deleteOldRecords/DeleteRecords.jsx";
+import OperatorUpdating from "./pages/OperatorUpdating/OperatorUpdating.jsx";
+import ContactForm from "./pages/ContactForm/ContactForm.jsx"
 const RoutesConfig = () => {
   return (
     <Routes>
@@ -41,6 +47,12 @@ const RoutesConfig = () => {
         <Route path="/blockBooking"element={ <Layout> <EquipmentBlocking /></Layout>}/>
         <Route path="/EquipStatusUpdate" element={<Layout > < UpdateEquipStatus/></Layout>}/>
          <Route path="/addEquipments" element={<Layout ><AddEquipment /></Layout>}/>
+         <Route path="/addProfessors" element={<Layout ><AddProfessors /></Layout>}/>
+         <Route path="/ListOfAllUsers" element={<Layout ><ListOfUsers /></Layout>}/>
+         <Route path="/userRoleUpdate" element={<Layout ><UserRoleUpdater /></Layout>}/>
+         <Route path="/deleteOldData" element={<Layout ><DeleteRecords /></Layout>}/>
+         <Route path="/operatorUpdates/:resultId" element={<Layout ><OperatorUpdating /></Layout>}/>
+         <Route path="/contactForCode" element={<Layout ><ContactForm /></Layout>}/>
       </Route>
          <Route path="/emailProvide" element={<Layout ><EmailForPassword  /></Layout>}/>
 
