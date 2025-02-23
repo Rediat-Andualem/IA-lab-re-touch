@@ -104,7 +104,7 @@ const RoutesConfig = () => {
         <Route path="/userRoleUpdate" element={<Layout><UserRoleUpdater /></Layout>} />
         <Route path="/deleteOldData" element={<Layout><DeleteRecords /></Layout>} />
         <Route path="/operatorUpdates/:resultId" element={<Layout><OperatorUpdating /></Layout>} />
-        <Route path="/professors/viewStudentBooking/:userId/:professorId" element={<LayOut showHeader={false} showFooter={true}> <StudentsBookingDetail/></LayOut>} />
+        <Route path="/professors/viewStudentBooking/:userId/:professorId" element={<Layout showHeader={false} showFooter={true}> <StudentsBookingDetail/></Layout>} />
         
       </Route>
 
