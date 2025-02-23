@@ -29,6 +29,7 @@ import OperatorUpdating from "./pages/OperatorUpdating/OperatorUpdating.jsx";
 import ContactForm from "./pages/ContactForm/ContactForm.jsx"
 import StudentConfirmation from "./pages/StudentConfirmation/StudentConfirmation.jsx";
 import EmailForPassword from "./pages/EmailForPassword/EmailForPassword.jsx";
+import EmailForPasswordForProfessors from "./pages/EmailForPassword/EmailForPasswordForProfessors.jsx";
 // const RoutesConfig = () => {
 //   return (
 //     <Routes>
@@ -84,6 +85,7 @@ const RoutesConfig = () => {
       <Route path="/contactForCode" element={<Layout><ContactForm /></Layout>} />
       <Route path="/studentConfirmation/:userId"  element={<StudentConfirmation />}/>
       <Route path="/emailProvide" element={<EmailForPassword />} />
+      <Route path="/ProfessorEmailProvide" element={<EmailForPasswordForProfessors />} />
       {/* Protected Routes - Require Authentication */}
       <Route element={<PrivateRoute />}>
         <Route path="/dashboard" element={<Layout><DashBoard /></Layout>} />
