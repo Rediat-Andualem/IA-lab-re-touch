@@ -29,7 +29,9 @@ import OperatorUpdating from "./pages/OperatorUpdating/OperatorUpdating.jsx";
 import ContactForm from "./pages/ContactForm/ContactForm.jsx"
 import StudentConfirmation from "./pages/StudentConfirmation/StudentConfirmation.jsx";
 import EmailForPassword from "./pages/EmailForPassword/EmailForPassword.jsx";
-import EmailForPasswordForProfessors from "./pages/EmailForPassword/EmailForPasswordForProfessors.jsx";
+import StudentsBookingDetail from "./pages/StudentsBookingDetailForProfessor/StudentsBookingDetail.jsx"
+import ProfessorPasswordUpdator from "./pages/PasswordUpdator/ProfessorPasswordUpdator.jsx"
+import PasswordUpdater from "./pages/PasswordUpdator/PasswordUpdater.jsx";
 // const RoutesConfig = () => {
 //   return (
 //     <Routes>
@@ -85,7 +87,8 @@ const RoutesConfig = () => {
       <Route path="/contactForCode" element={<Layout><ContactForm /></Layout>} />
       <Route path="/studentConfirmation/:userId"  element={<StudentConfirmation />}/>
       <Route path="/emailProvide" element={<EmailForPassword />} />
-      <Route path="/ProfessorEmailProvide" element={<EmailForPasswordForProfessors />} />
+      <Route  path="/professorPasswordReset/:professorId" element={<ProfessorPasswordUpdator />} />
+      <Route path="/userPasswordReset/:userId" element={<PasswordUpdater />}/>
       {/* Protected Routes - Require Authentication */}
       <Route element={<PrivateRoute />}>
         <Route path="/dashboard" element={<Layout><DashBoard /></Layout>} />
@@ -101,6 +104,8 @@ const RoutesConfig = () => {
         <Route path="/userRoleUpdate" element={<Layout><UserRoleUpdater /></Layout>} />
         <Route path="/deleteOldData" element={<Layout><DeleteRecords /></Layout>} />
         <Route path="/operatorUpdates/:resultId" element={<Layout><OperatorUpdating /></Layout>} />
+        <Route path="/professors/viewStudentBooking/:userId/:professorId" element={<LayOut showHeader={false} showFooter={true}> <StudentsBookingDetail/></LayOut>} />
+        
       </Route>
 
       {/* Public Info Pages */}
