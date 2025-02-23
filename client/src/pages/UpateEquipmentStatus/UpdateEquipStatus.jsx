@@ -4,7 +4,9 @@ import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody } from "mdb-
 import { BeatLoader } from "react-spinners";
 import classes from "./UpdateEquipStatus.module.css";
 import Button from "react-bootstrap/Button";
-
+import { DataGrid } from '@mui/x-data-grid';
+import Paper from '@mui/material/Paper';
+import { ToastContainer, toast } from 'react-toastify';
 function UpdateEquipStatus() {
   const [loading, setLoading] = useState(false);
   const [handleError, setHandleError] = useState("");
@@ -12,7 +14,7 @@ function UpdateEquipStatus() {
   const [equipments, setEquipments] = useState([]);
   const [selectedEquipment, setSelectedEquipment] = useState(""); // Store selected equipment ID
   const [visibility, setVisibility] = useState(""); // Store visibility status
-
+  const [message, setMessage] = useState("");
   useEffect(() => {
     const fetchEquipmentList = async () => {
       try {
@@ -84,7 +86,30 @@ function UpdateEquipStatus() {
       console.error("Error making equipment visible:", error);
     }
   };
-
+  // table section 
+  const columns = [
+    { field: 'equipmentName', headerName: 'Equipment model', width: 200 },
+    { field: 'equipmentModel', headerName: 'Equipment model', width: 200},
+    {
+      field: 'action',
+      headerName: 'Action',
+      renderCell: (params) => (
+        <>
+        <Button
+          style={{ margin: "5px" }}
+          onClick={() => handleMakeVisible(params?.row.id)}
+          variant="danger"
+        >
+            Make Visible
+        </Button>
+            <ToastContainer />
+        </>
+      ),
+      width: 150,
+    },
+  ];
+  
+  const paginationModel = { page: 0, pageSize: 10 };
   return (
     <div className={classes.mainDash}>
       <MDBContainer fluid className="p-5 container">
@@ -149,22 +174,27 @@ function UpdateEquipStatus() {
             List of Invisible Equipments
           </h2>
           {notWorkingEquipments.length > 0 ? (
-            notWorkingEquipments.map((equipment) => (
-              <div key={equipment.equipmentId} className={`${classes.equipment_row} text-white mb-3`}>
-                <div className={`${classes.equipment_item} col-12 col-md-3`}>
-                  <strong>Equipment Name:</strong> {equipment.equipmentName}
-                </div>
-                <div className={`${classes.equipment_item} col-12 col-md-3`}>
-                  <strong>Equipment Model:</strong> {equipment.equipmentModel}
-                </div>
-                <div>
-                  <Button className="m-4" onClick={() => handleMakeVisible(equipment.equipmentId)} variant="success">
-                    Make Visible
-                  </Button>
-                </div>
-                <h1>-------------------------------------------------------------------------</h1>
-              </div>
-            ))
+            <Paper sx={{ height: '90%', width: '80%', margin: '2% auto' }}>
+      {/* Conditionally render the message for admin users */}
+      {message && (
+        <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '10px' }}>
+          {message}
+        </div>
+      )}
+      <DataGrid
+        rows={notWorkingEquipments?.map(equipment => ({
+          id: equipment.equipmentId,
+          equipmentName: equipment.equipmentName,
+          equipmentModel: equipment.equipmentModel
+        }))}
+        columns={columns}
+        initialState={{ pagination: { paginationModel } }}
+        pageSizeOptions={[5, 10]}
+        checkboxSelection={false}
+        loading={loading}
+        sx={{ border: 2 }}
+      />
+    </Paper>
           ) : (
             <h3 className="text-center text-white">No Equipment marked as Invisible.</h3>
           )}

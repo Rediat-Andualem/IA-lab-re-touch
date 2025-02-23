@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../Utility/urlInstance.js";
+import { DataGrid } from '@mui/x-data-grid';
+import Paper from '@mui/material/Paper';
 import {
   MDBBtn,
   MDBContainer,
@@ -21,7 +23,7 @@ function AddProfessors() {
   const [handleError, setHandleError] = useState("");
   const [success, setHandleSuccess] = useState("");
   const [professors, setProfessors] = useState("");
-  
+  const [message, setMessage] = useState("");
   //!   ---------------------
   const [registerProf, setProfData] = useState({
     firstName: "",
@@ -31,24 +33,7 @@ function AddProfessors() {
     labRoomNumber: "",
     password:""
   });
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  
-  //   // Clear previous messages
-  //   setHandleError(""); 
-  //   setHandleSuccess(""); 
-  //   try {
-  //     const response = await axiosInstance.post("/professors/createProfessorProfile", registerProf);
-  //     setHandleSuccess(response?.data.message);
-  //     getProfessorsDetail()
-  //   } catch (error) {
-  //     console.log(error)
-  //     setHandleError(error.response.data.errors[0]);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -62,19 +47,18 @@ function AddProfessors() {
       
       // Show success toast notification
       toast.success(response?.data.message);
-  
       // Optionally, you can call this function after success
       getProfessorsDetail();
     } catch (error) {
-      console.log(error);
+  
       
       // Show error toast notification
-      toast.error(error.response?.data.errors[0] || "An unexpected error occurred.");
+      toast.error(error.response?.data.errors || "An unexpected error occurred please try again.");
     } finally {
       setLoading(false);
     }
   };
-  
+
  //* -----------------------
   let handleProfessorDetails = (e) => {
     switch (e.target.name) {
@@ -144,7 +128,33 @@ function AddProfessors() {
       useEffect(() => {
         getProfessorsDetail();
       }, []);
+// table section 
+const columns = [
+  { field: 'firstName', headerName: 'First Name', width: 130 },
+  { field: 'lastName', headerName: 'Last Name', width: 130 },
+  { field: 'email', headerName: 'Email', width: 220 },
+  { field: 'labName', headerName: 'Lab Name', width: 180 },
+  { field: 'labRoomNumber', headerName: 'Lab Room No.', width: 150 },
+  {
+    field: 'action',
+    headerName: 'Action',
+    renderCell: (params) => (
+      <>
+      <Button
+        style={{ margin: "5px" }}
+        onClick={() => toDelete(params?.row.id)}
+        variant="danger"
+      >
+        Delete
+      </Button>
+     
+      </>
+    ),
+    width: 150,
+  },
+];
 
+const paginationModel = { page: 0, pageSize: 10 };
   return (
    <div className={classes.mainDash}>
        <MDBContainer fluid  className="p-5 container">
@@ -157,11 +167,12 @@ function AddProfessors() {
            Add <br />
             <span className="text-warning">Professor Profile</span>
           </h1>
+          {/* <span>{error&&error.message}</span> */}
           <h5
             className="px-3"
             style={{ color: "#F5F5F5", textAlign: "justify" }}
           >
-               Please enter the professor's details in the designated space. Be sure to double-check the information and refer to the example provided in the label if needed. . <b style={{color:"red"}}>no need to add Dr.</b> on first name as it will be automatically added.
+               Please enter the professor's details in the designated space. Be sure to double-check the information and refer to the example provided in the label if needed. . <b style={{color:"red"}}>no need to add Dr.</b> on first name as it will be automatically added, email must contain @ch.iitr.ac.in, first name and last name cant take space or special character.
           </h5>
         </MDBCol>
 
@@ -249,7 +260,7 @@ function AddProfessors() {
                       {loading ? <BeatLoader /> : "Add Professor Profile"}
                     </MDBBtn>
                   </form>
-                  <ToastContainer />
+            
                 </div>
               </div>
             </MDBCardBody>
@@ -258,40 +269,65 @@ function AddProfessors() {
       </MDBRow>
       <div className={`${classes.listContainer}`}>
   <h2 className="text-center text-decoration-underline text-white m-4">List of Professors</h2>
+
+
   {professors?.length > 0 ? (
-    professors.map((singleProfessor, i) => (
-      <div key={i} className={`${classes.equipment_row} text-white mb-3`}>
+    // professors.map((singleProfessor, i) => (
+    //   <div key={i} className={`${classes.equipment_row} text-white mb-3`}>
     
-        <div className={`${classes.equipment_item} col-12 col-md-3`}>
-          <strong>Prof. First Name:</strong> {singleProfessor?.firstName}
-        </div>
-        <div className={`${classes.equipment_item} col-12 col-md-3`}>
-          <strong>Prof. Last Name:</strong> {singleProfessor?.lastName}
-        </div>
-        <div className={`${classes.equipment_item} col-12 col-md-3 ${classes.guideline}`}>
-          <strong>Prof. email:</strong> {singleProfessor?.email}
-        </div>
+    //     <div className={`${classes.equipment_item} col-12 col-md-3`}>
+    //       <strong>Prof. First Name:</strong> {singleProfessor?.firstName}
+    //     </div>
+    //     <div className={`${classes.equipment_item} col-12 col-md-3`}>
+    //       <strong>Prof. Last Name:</strong> {singleProfessor?.lastName}
+    //     </div>
+    //     <div className={`${classes.equipment_item} col-12 col-md-3 ${classes.guideline}`}>
+    //       <strong>Prof. email:</strong> {singleProfessor?.email}
+    //     </div>
      
-        <div className={`${classes.equipment_item} col-12 col-md-2`}>
-          <strong>Prof. lab room number:</strong> {singleProfessor?.labRoomNumber}
+    //     <div className={`${classes.equipment_item} col-12 col-md-2`}>
+    //       <strong>Prof. lab room number:</strong> {singleProfessor?.labRoomNumber}
+    //     </div>
+    //     <div className={`${classes.equipment_item} col-12 col-md-2`}>
+    //       <strong>Prof. Lab Name:</strong> {singleProfessor?.labName}
+    //     </div>
+    //     <div>
+    //       <Button className="m-4" onClick={() => toDelete(singleProfessor?.professorId)} variant="danger">
+    //         Delete Prof. profile
+    //       </Button>
+    //     </div>
+    //   <h1>-------------------------------------------------------------------------</h1>
+    //   </div>    
+    // ))
+    <Paper sx={{ height: '90%', width: '96%', margin: '2%' }}>
+      {/* Conditionally render the message for admin users */}
+      {message && (
+        <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '10px' }}>
+          {message}
         </div>
-        <div className={`${classes.equipment_item} col-12 col-md-2`}>
-          <strong>Prof. Lab Name:</strong> {singleProfessor?.labName}
-        </div>
-        <div>
-          <Button className="m-4" onClick={() => toDelete(singleProfessor?.professorId)} variant="danger">
-            Delete Prof. profile
-          </Button>
-        </div>
-      <h1>-------------------------------------------------------------------------</h1>
-      </div>    
-    ))
-  
+      )}
+      <DataGrid
+        rows={professors?.map(user => ({
+          id: user.professorId,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          labName: user.labName,
+          labRoomNumber:user.labRoomNumber
+        }))}
+        columns={columns}
+        initialState={{ pagination: { paginationModel } }}
+        pageSizeOptions={[5, 10]}
+        checkboxSelection={false}
+        loading={loading}
+        sx={{ border: 2 }}
+      />
+    </Paper>
   ) : (
     <h3 className="text-center text-white">No Professor Detail Added so far.</h3>
   )}
 </div>
-
+<ToastContainer />
     </MDBContainer>
    </div>
   );

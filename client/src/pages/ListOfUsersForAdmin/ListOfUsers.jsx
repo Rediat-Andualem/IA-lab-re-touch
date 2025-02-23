@@ -35,40 +35,6 @@ function ListOfUsers() {
   useEffect(() => {
     fetchAllUsers();
   }, []);
-
-  // const deleteUser = async (userId, role) => {
-  //   // Prevent deletion if the user is an admin (role 3 or 4)
-  //   if (role === 3 || role === 4) {
-  //     setMessage("Can't delete admin.");
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await axiosInstance.delete(
-  //       `/user/userProfileDelete/${userId}`);
-  //     if (response.status === 200) {
-  //       setResponse({
-  //         message: "User deleted successfully",
-  //         status: true,
-  //       });
-  //       fetchAllUsers();
-  //     } else {
-  //       setResponse({
-  //         message: `Unexpected status code: ${response.status}`,
-  //         status: false,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     setResponse({
-  //       message: error?.response?.data?.errors[0] || "Error deleting user",
-  //       status: false,
-  //     });
-  //   }
-  // };
-  // {
-  //   headers: { Authorization: `Bearer ${token}` },
-  // }
-  // Columns configuration for Material UI DataGrid
   
   const deleteUser = async (userId, role) => {
     // Prevent deletion if the user is an admin (role 3 or 4)

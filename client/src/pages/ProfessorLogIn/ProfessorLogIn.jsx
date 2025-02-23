@@ -49,7 +49,7 @@ function LogInSignUp() {
       console.log("this is decoded data",decodedToken)
       if (signIn({
         auth: { token, type: "Bearer", expiresIn: 4320 },
-        userState: { userId: decodedToken.userId, userName: decodedToken.userName, userRole: decodedToken.userRole, token },
+        userState: { userId: decodedToken.userId, userName: decodedToken.userName, userRole: decodedToken.userRole,verification : decodedToken.verification, token },
       })) {
         navigate('/ProfessorDashboard')
       }
@@ -74,7 +74,7 @@ function LogInSignUp() {
   };
 
   return (
-    <MDBContainer fluid className="p-5 container">
+    <MDBContainer fluid className="p-1 container">
       <MDBRow>
         <MDBCol md="6" className="text-center text-md-start d-flex flex-column justify-content-center">
           <h1 className="my-5 display-3 fw-bold ls-tight px-3 text-white">
@@ -88,7 +88,7 @@ function LogInSignUp() {
 
         <MDBCol md="6" className="position-relative">
           <MDBCard>
-            <MDBCardBody className="p-5 position-relative overflow-hidden" style={{ height: "550px" }}>
+            <MDBCardBody className="p-5 position-relative overflow-hidden" style={{ height: "515px" }}>
               <div
                 className="form-transition-container"
                 style={{ position: "absolute", width: "80%", height: "100%", top: 0, left: isLogin ? "0%" : "-100%", transition: "left 0.6s ease-in-out", padding: "6% 0 0 20%" }}>

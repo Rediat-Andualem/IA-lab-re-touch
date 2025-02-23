@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { DataGrid } from '@mui/x-data-grid';
+import Paper from '@mui/material/Paper';
 import { axiosInstance } from "../../Utility/urlInstance.js";
 import {
   MDBBtn,
@@ -25,6 +27,7 @@ function AddEquipment() {
   const [operator, setOperator] = useState([]);
   const [success, setHandleSuccess] = useState("");
   const [Equipments, setEquipments] = useState([]);
+    const [message, setMessage] = useState("");
   const [signUpData, setSignUpData] = useState({
     equipmentName: "",
     equipmentModel: "",
@@ -57,28 +60,12 @@ function AddEquipment() {
     setSignUpData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-
-  //   try {
-  //     const response = await axiosInstance.post("/equipments/equipmentDetails", signUpData);
-    
-  //     setHandleSuccess("Equipment Added Successfully")
-  //     getEquipmentList();
-  //   } catch (error) {
-  //     setHandleError("Failed to add equipment. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
   
     try {
-      const response = await axiosInstance.post("/equipments/equipmentDetails", signUpData);
+        await axiosInstance.post("/equipments/equipmentDetails", signUpData);
   
       // Display success toast
       toast.success("Equipment Added Successfully");
@@ -123,7 +110,32 @@ function AddEquipment() {
   useEffect(() => {
     getEquipmentList();
   }, []);
-
+// table section 
+const columns = [
+  { field: 'equipmentName', headerName: 'Equipment Name', width: 130 },
+  { field: 'equipmentModel', headerName: 'Equipment Model', width: 130 },
+  { field: 'guidelines', headerName: 'Guideline', width: 220 },
+  { field: 'maxBookingsPerTwoWeeks', headerName: 'Max. Booking per 2 weeks ', width: 180 },
+  { field: 'maxSamples', headerName: 'Max. samples.', width: 150 },
+  {
+    field: 'action',
+    headerName: 'Action',
+    renderCell: (params) => (
+      <>
+      <Button
+        style={{ margin: "5px" }}
+        onClick={() => toDelete(params?.row.id)}
+        variant="danger"
+      >
+        Delete
+      </Button>
+        
+      </>
+    ),
+    width: 150,
+  },
+];
+const paginationModel = { page: 0, pageSize: 10 };
 return (
   <div className={`${classes.mainDash} d-flex flex-column`}>
     <MDBContainer fluid className="p-4 container">
@@ -226,8 +238,9 @@ return (
                       {loading ? <BeatLoader /> : "Add Equipment"}
                     </MDBBtn>
                   </form>
-                  <ToastContainer />
+              
                 </div>
+                <ToastContainer />
               </div>
             </MDBCardBody>
           </MDBCard>
@@ -236,40 +249,67 @@ return (
 
    <div className={`${classes.listContainer}`}>
   <h2 className="text-center text-decoration-underline text-white m-4">List of Equipment</h2>
-  {Equipments?.length > 0 ? (
-    Equipments.map((singleEquipment, i) => (
-      <div key={i} className={`${classes.equipment_row} text-white mb-3`}>
-    
-        <div className={`${classes.equipment_item} col-12 col-md-3`}>
-          <strong>Equipment Name:</strong> {singleEquipment?.equipmentName}
-        </div>
-        <div className={`${classes.equipment_item} col-12 col-md-3`}>
-          <strong>Equipment Model:</strong> {singleEquipment?.equipmentModel}
-        </div>
-        <div className={`${classes.equipment_item} col-12 col-md-4 ${classes.guideline}`}>
-          <strong>Equipment Guideline:</strong> {singleEquipment?.guidelines}
-        </div>
-        <div className={`${classes.equipment_item} col-12 col-md-2`}>
-          <strong>Allowed booking per week:</strong> {singleEquipment?.maxBookingsPerTwoWeeks}
-        </div>
-        <div className={`${classes.equipment_item} col-12 col-md-2`}>
-          <strong>Max sample per slot:</strong> {singleEquipment?.maxSamples}
-        </div>
-        <div className={`${classes.equipment_item} col-12 col-md-3`}>
-          <strong>Equipment Operator:</strong> {singleEquipment?.operatorName}
-        </div>
-        <div className={`${classes.equipment_item} col-12 col-md-3`}>
-          <strong>Equipment Operator:</strong> {singleEquipment?.operatorName}
-        </div>
 
-        <div>
-          <Button className="m-4" onClick={() => toDelete(singleEquipment?.equipmentId)} variant="danger">
-            Delete Equipment
-          </Button>
-        </div>
-      <h1>-----------------------------------------------------------------------------</h1>
-      </div>    
-    ))
+  {Equipments?.length > 0 ? (
+
+<Paper sx={{ height: '90%', width: '96%', margin: '2%' }}>
+{/* Conditionally render the message for admin users */}
+{message && (
+  <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '10px' }}>
+    {message}
+  </div>
+)}
+<DataGrid
+  rows={Equipments?.map(singleEquipment => ({
+    id:singleEquipment.equipmentId,
+    equipmentName: singleEquipment.equipmentName,
+    equipmentModel: singleEquipment.equipmentModel,
+    guidelines: singleEquipment.guidelines,
+    maxBookingsPerTwoWeeks: singleEquipment.maxBookingsPerTwoWeeks,
+    maxSamples:singleEquipment.maxSamples,
+    operatorName:singleEquipment.operatorName
+  }))}
+  columns={columns}
+  initialState={{ pagination: { paginationModel } }}
+  pageSizeOptions={[5, 10]}
+  checkboxSelection={false}
+  loading={loading}
+  sx={{ border: 2 }}
+/>
+</Paper>
+    // Equipments.map((singleEquipment, i) => (
+    //   <div key={i} className={`${classes.equipment_row} text-white mb-3`}>
+    
+    //     <div className={`${classes.equipment_item} col-12 col-md-3`}>
+    //       <strong>Equipment Name:</strong> {singleEquipment?.equipmentName}
+    //     </div>
+    //     <div className={`${classes.equipment_item} col-12 col-md-3`}>
+    //       <strong>Equipment Model:</strong> {singleEquipment?.equipmentModel}
+    //     </div>
+    //     <div className={`${classes.equipment_item} col-12 col-md-4 ${classes.guideline}`}>
+    //       <strong>Equipment Guideline:</strong> {singleEquipment?.guidelines}
+    //     </div>
+    //     <div className={`${classes.equipment_item} col-12 col-md-2`}>
+    //       <strong>Allowed booking per week:</strong> {singleEquipment?.maxBookingsPerTwoWeeks}
+    //     </div>
+    //     <div className={`${classes.equipment_item} col-12 col-md-2`}>
+    //       <strong>Max sample per slot:</strong> {singleEquipment?.maxSamples}
+    //     </div>
+    //     <div className={`${classes.equipment_item} col-12 col-md-3`}>
+    //       <strong>Equipment Operator:</strong> {singleEquipment?.operatorName}
+    //     </div>
+    //     <div className={`${classes.equipment_item} col-12 col-md-3`}>
+    //       <strong>Equipment Operator:</strong> {singleEquipment?.operatorName}
+    //     </div>
+
+    //     <div>
+    //       <Button className="m-4" onClick={() => toDelete(singleEquipment?.equipmentId)} variant="danger">
+    //         Delete Equipment
+    //       </Button>
+    //     </div>
+    //   <h1>-----------------------------------------------------------------------------</h1>
+    //   </div>    
+    // ))
   
   ) : (
     <h3 className="text-center text-white">No Equipment Detail uploaded so far.</h3>

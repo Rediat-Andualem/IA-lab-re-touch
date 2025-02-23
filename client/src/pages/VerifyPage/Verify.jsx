@@ -1,5 +1,5 @@
 import React from "react";
-
+import {Link} from "react-router-dom"
 function Verify() {
   return (
     <div>
@@ -25,6 +25,7 @@ function Verify() {
                 </h5>
             </h3>
           </div>
+          <Link to='/login' className="text-white fw-bold" > Click to logIn</Link>
         </div>
       </section>
     </div>

@@ -27,16 +27,60 @@ import UserRoleUpdater from "./pages/userRoleUpdator/UserRoleUpdater.jsx"
 import DeleteRecords from "./pages/deleteOldRecords/DeleteRecords.jsx";
 import OperatorUpdating from "./pages/OperatorUpdating/OperatorUpdating.jsx";
 import ContactForm from "./pages/ContactForm/ContactForm.jsx"
+// const RoutesConfig = () => {
+//   return (
+//     <Routes>
+//       {/* Public Routes */}
+//       <Route path="/" element={<LogInSignUp />} />
+//       <Route path="/login" element={<LogInSignUp />} />
+//       <Route path="/signup" element={<LogInSignUp />} />
+//       <Route path="/about" element={<Layout><About /></Layout>} />
+//       <Route path="/information" element={<Layout><Information /></Layout>} />
+//       <Route path="/ProfessorLogin" element={<Layout><ProfessorLogIn /></Layout>} />
+//       <Route path="/ProfessorEmailProvide" element={<Layout><EmailForPasswordForProfessors /></Layout>} />
+
+//       {/* Protected Routes - Require Authentication */}
+//       <Route element={<PrivateRoute />}>
+//         <Route path="/dashboard" element={<Layout><DashBoard /></Layout>} />
+//         <Route path="/bookingTable" element={<BookingTable />} />
+//         <Route path="/professorDashboard" element={<Layout><ProfessorDashboard /></Layout>} />
+//         <Route path="/myBookings" element={<Layout><StudentsDashBoard /></Layout>} />
+//         <Route path="/operatorList" element={<Layout><OperatorDashBoard /></Layout>} />
+//         <Route path="/blockBooking"element={ <Layout> <EquipmentBlocking /></Layout>}/>
+//         <Route path="/EquipStatusUpdate" element={<Layout > < UpdateEquipStatus/></Layout>}/>
+//          <Route path="/addEquipments" element={<Layout ><AddEquipment /></Layout>}/>
+//          <Route path="/addProfessors" element={<Layout ><AddProfessors /></Layout>}/>
+//          <Route path="/ListOfAllUsers" element={<Layout ><ListOfUsers /></Layout>}/>
+//          <Route path="/userRoleUpdate" element={<Layout ><UserRoleUpdater /></Layout>}/>
+//          <Route path="/deleteOldData" element={<Layout ><DeleteRecords /></Layout>}/>
+//          <Route path="/operatorUpdates/:resultId" element={<Layout ><OperatorUpdating /></Layout>}/>
+//          <Route path="/contactForCode" element={<Layout ><ContactForm /></Layout>}/>
+//       </Route>
+//          <Route path="/emailProvide" element={<Layout ><EmailForPassword  /></Layout>}/>
+
+//       {/* Public Info Pages */}
+//       <Route path="/verify" element={<VerifyRequest />} />
+//       <Route path="/verifyLogIn" element={<Verify />} />
+     
+
+//       {/* Redirect to Dashboard if No Match */}
+//       <Route path="/*" element={<PageNotFound/>} />
+//     </Routes>
+//   );
+// };
 const RoutesConfig = () => {
   return (
     <Routes>
-      {/* Public Routes */}
-      <Route path="/" element={<LogInSignUp />} />
-      <Route path="/login" element={<LogInSignUp />} />
+      {/* Public Routes (No authentication required) */}
+      <Route path="/" element={<Layout><LogInSignUp /></Layout>} />
+      <Route path="/login" element={<Layout><LogInSignUp /></Layout>} />
       <Route path="/signup" element={<LogInSignUp />} />
-      <Route path="/verify" element={<VerifyRequest />} />
-      <Route path="/verifyLogIn" element={<Verify />} />
-     
+      <Route path="/about" element={<Layout><About /></Layout>} />
+      <Route path="/information" element={<Layout><Information /></Layout>} />
+      <Route path="/ProfessorLogin" element={<Layout><ProfessorLogIn /></Layout>} />
+      <Route path="/ProfessorEmailProvide" element={<Layout><EmailForPasswordForProfessors /></Layout>} />
+      <Route path="/contactForCode" element={<Layout><ContactForm /></Layout>} />
+      
       {/* Protected Routes - Require Authentication */}
       <Route element={<PrivateRoute />}>
         <Route path="/dashboard" element={<Layout><DashBoard /></Layout>} />
@@ -44,26 +88,22 @@ const RoutesConfig = () => {
         <Route path="/professorDashboard" element={<Layout><ProfessorDashboard /></Layout>} />
         <Route path="/myBookings" element={<Layout><StudentsDashBoard /></Layout>} />
         <Route path="/operatorList" element={<Layout><OperatorDashBoard /></Layout>} />
-        <Route path="/blockBooking"element={ <Layout> <EquipmentBlocking /></Layout>}/>
-        <Route path="/EquipStatusUpdate" element={<Layout > < UpdateEquipStatus/></Layout>}/>
-         <Route path="/addEquipments" element={<Layout ><AddEquipment /></Layout>}/>
-         <Route path="/addProfessors" element={<Layout ><AddProfessors /></Layout>}/>
-         <Route path="/ListOfAllUsers" element={<Layout ><ListOfUsers /></Layout>}/>
-         <Route path="/userRoleUpdate" element={<Layout ><UserRoleUpdater /></Layout>}/>
-         <Route path="/deleteOldData" element={<Layout ><DeleteRecords /></Layout>}/>
-         <Route path="/operatorUpdates/:resultId" element={<Layout ><OperatorUpdating /></Layout>}/>
-         <Route path="/contactForCode" element={<Layout ><ContactForm /></Layout>}/>
+        <Route path="/blockBooking" element={<Layout showFooter={false}><EquipmentBlocking /></Layout>} />
+        <Route path="/EquipStatusUpdate" element={<Layout showFooter={false}><UpdateEquipStatus /></Layout>} />
+        <Route path="/addEquipments" element={<Layout showFooter={false}><AddEquipment /></Layout>} />
+        <Route path="/addProfessors" element={<Layout showFooter={false}><AddProfessors /></Layout>} />
+        <Route path="/ListOfAllUsers" element={<Layout><ListOfUsers /></Layout>} />
+        <Route path="/userRoleUpdate" element={<Layout><UserRoleUpdater /></Layout>} />
+        <Route path="/deleteOldData" element={<Layout><DeleteRecords /></Layout>} />
+        <Route path="/operatorUpdates/:resultId" element={<Layout><OperatorUpdating /></Layout>} />
       </Route>
-         <Route path="/emailProvide" element={<Layout ><EmailForPassword  /></Layout>}/>
 
       {/* Public Info Pages */}
-      <Route path="/about" element={<Layout><About /></Layout>} />
-      <Route path="/information" element={<Layout><Information /></Layout>} />
-      <Route path="/ProfessorLogin" element={<Layout><ProfessorLogIn /></Layout>} />
-      <Route path="/ProfessorEmailProvide" element={<Layout><EmailForPasswordForProfessors /></Layout>} />
+      <Route path="/verify" element={<VerifyRequest />} />
+      <Route path="/verifyLogIn" element={<Verify />} />
 
       {/* Redirect to Dashboard if No Match */}
-      <Route path="/*" element={<PageNotFound/>} />
+      <Route path="/*" element={<PageNotFound />} />
     </Routes>
   );
 };

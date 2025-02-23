@@ -148,7 +148,6 @@ function DashBoard() {
   };
 
   let role = auth?.userRole;
- console.log(auth)
   return (
     <>
       <header>
@@ -390,6 +389,16 @@ function DashBoard() {
                   >
                     <Link className={`${classes.link}`} to="/information">
                       Information
+                    </Link>
+                  </MDBNavbarLink>
+                </MDBNavbarItem>
+                <MDBNavbarItem active>
+                  <MDBNavbarLink
+                    aria-current="page"
+                    className={`${classes.custom_navbar_link}`}
+                  >
+                    <Link className={`${classes.link}`} to="https://ch.iitr.ac.in/">
+                      Department Site
                     </Link>
                   </MDBNavbarLink>
                 </MDBNavbarItem>

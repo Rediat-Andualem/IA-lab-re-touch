@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { DataGrid } from '@mui/x-data-grid';
+import Paper from '@mui/material/Paper';
 import { axiosInstance } from "../../Utility/urlInstance.js";
 import {
   MDBBtn,
@@ -11,6 +13,7 @@ import {
 import { BeatLoader } from "react-spinners";
 import classes from './EquipmentBlocking.module.css'
 import Button from "react-bootstrap/Button";
+import { ToastContainer, toast } from 'react-toastify';
 function EquipmentBlocking() {
   const [loading, setLoading] = useState(false);
   const [handleError, setHandleError] = useState("");
@@ -19,7 +22,7 @@ function EquipmentBlocking() {
   const [Month, setBlockingMonth] = useState("");
   const [Number, setBlockingNumber] = useState("");
   const [blocking, setBlocking] = useState("");
-
+  const [message, setMessage] = useState("");
 
       useEffect(() => {
         getAllBlocking();
@@ -47,6 +50,7 @@ function EquipmentBlocking() {
       });
 
       setHandleSuccess("Slot blocked successfully.");
+      getAllBlocking()
     } catch (error) {
       setHandleError(
         error.response?.data?.errors?.[0] || "Failed blocking."
@@ -87,7 +91,31 @@ function EquipmentBlocking() {
         }
       };
 
-console.log(blocking)
+
+      // table section 
+const columns = [
+  { field: 'blockingMonth', headerName: 'Month selected', width: 130 },
+  { field: 'blockingNumber', headerName: 'Day selected', width: 130 },
+  { field: 'blockingMessage', headerName: 'Reason selected', width: 220 },
+  {
+    field: 'action',
+    headerName: 'Action',
+    renderCell: (params) => (
+      <>
+      <Button
+        style={{ margin: "5px" }}
+        onClick={() => toDelete(params?.row.id)}
+        variant="danger"
+      >
+        Delete
+      </Button>
+          <ToastContainer />
+      </>
+    ),
+    width: 150,
+  },
+];
+const paginationModel = { page: 0, pageSize: 10 };
   return (
 
     <div className={classes.mainDash}>
@@ -193,27 +221,51 @@ console.log(blocking)
       <div className={`${classes.listContainer}`}>
   <h2 className="text-center text-decoration-underline text-white m-4">List of blockings</h2>
   {blocking?.length > 0 ? (
-    blocking?.map((singleBlocking, i) => (
+
+<Paper sx={{ height: '90%', width: '96%', margin: '2%' }}>
+{/* Conditionally render the message for admin users */}
+{message && (
+  <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '10px' }}>
+    {message}
+  </div>
+)}
+<DataGrid
+  rows={blocking?.map(singleBlocking => ({
+    id: singleBlocking.blockingId,
+    blockingMonth: singleBlocking.blockingMonth,
+    blockingNumber: singleBlocking.blockingNumber,
+    blockingMessage: singleBlocking.blockingMessage,
+  }))}
+  columns={columns}
+  initialState={{ pagination: { paginationModel } }}
+  pageSizeOptions={[5, 10]}
+  checkboxSelection={false}
+  loading={loading}
+  sx={{ border: 2 }}
+/>
+</Paper>
+
+    // blocking?.map((singleBlocking, i) => (
     
-      <div key={i} className={`${classes.equipment_row} text-white mb-3`}>
+    //   <div key={i} className={`${classes.equipment_row} text-white mb-3`}>
     
-        <div className={`${classes.equipment_item} col-12 col-md-3`}>
-          <strong> Blocked Month : </strong> {singleBlocking.blockingMonth}
-        </div>
-        <div className={`${classes.equipment_item} col-12 col-md-3`}>
-          <strong>Blocked Day :</strong> {singleBlocking.blockingNumber}
-        </div>
-        <div className={`${classes.equipment_item} col-12 col-md-3 ${classes.guideline}`}>
-          <strong>Blocked Message :</strong> {singleBlocking.blockingMessage}
-        </div>
-        <div>
-          <Button className="m-4" onClick={() => toDelete(singleBlocking.blockingId)} variant="danger">
-            Delete Blocking 
-          </Button>
-        </div>
-      <h1>-------------------------------------------------------------------------</h1>
-      </div>    
-    ))
+    //     <div className={`${classes.equipment_item} col-12 col-md-3`}>
+    //       <strong> Blocked Month : </strong> {singleBlocking.blockingMonth}
+    //     </div>
+    //     <div className={`${classes.equipment_item} col-12 col-md-3`}>
+    //       <strong>Blocked Day :</strong> {singleBlocking.blockingNumber}
+    //     </div>
+    //     <div className={`${classes.equipment_item} col-12 col-md-3 ${classes.guideline}`}>
+    //       <strong>Blocked Message :</strong> {singleBlocking.blockingMessage}
+    //     </div>
+    //     <div>
+    //       <Button className="m-4" onClick={() => toDelete(singleBlocking.blockingId)} variant="danger">
+    //         Delete Blocking 
+    //       </Button>
+    //     </div>
+    //   <h1>-------------------------------------------------------------------------</h1>
+    //   </div>    
+    // ))
   
   ) : (
     <h3 className="text-center text-white">No Blocking Detail Added so far.</h3>

@@ -52,7 +52,10 @@ function LogInSignUp() {
     setter((prevData) => ({ ...prevData, [e.target.name]: e.target.value }));
   };
 
-  const toggleAuthMode = () => setIsLogin((prev) => !prev);
+  const toggleAuthMode = () => {
+    setIsLogin((prev) => !prev)
+    setError("")
+  }
   const toggleVisibility = (setter) => () => setter((prev) => !prev);
 
   const handleAuthResponse = (res) => {
@@ -81,19 +84,19 @@ function LogInSignUp() {
           return;
         }
        await axiosInstance.post("/user/createUser", signUpData);  
-        navigate("/successReg");
+        navigate("/verify");
       
       }
       setError("");
     } catch (err) {
-      setError(err?.response?.data?.errors?.[0] || "An error occurred");
+      setError(err?.response?.data?.errors || "An error occurred");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <MDBContainer fluid className="p-5 container">
+    <MDBContainer fluid className="p-1 container">
       <MDBRow>
         <MDBCol md="6" className="text-center text-md-start d-flex flex-column justify-content-center">
           <h1 className="my-5 display-3 fw-bold ls-tight px-3 text-white">
@@ -107,7 +110,7 @@ function LogInSignUp() {
 
         <MDBCol md="6" className="position-relative">
           <MDBCard>
-            <MDBCardBody className="p-5 position-relative overflow-hidden" style={{ height: "550px" }}>
+            <MDBCardBody className="p-5 position-relative overflow-hidden" style={{ height: "515px" }}>
               <div
                 className="form-transition-container"
                 style={{ position: "absolute", width: "80%", height: "100%", top: 0, left: isLogin ? "0%" : "-100%", transition: "left 0.6s ease-in-out", padding: "6% 0 0 20%" }}>
